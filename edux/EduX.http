@@ -1,0 +1,37 @@
+@url = http://localhost:5000
+@userId = 00000000-0000-0000-0000-000000000001
+
+###
+GET {{url}}/users
+
+###
+GET {{url}}/users/{{userId}}
+
+###
+POST {{url}}/users
+Content-Type: application/json
+
+{
+    "email": "user1@edux.com",
+    "username": "user1",
+    "password": "Password123!",
+    "fullName": "John Smith",
+    "role": "user"
+}
+
+###
+# @name sign_in
+POST {{url}}/users/sign-in
+Content-Type: application/json
+
+{
+    "email": "user1@edux.com".
+    "password": 
+}
+
+###
+@accessToken = {{sign_in.response.body.$.accessToken}}
+
+###
+GET {{url}}/users/me
+Authorization: Bearer {{accessToken}}
