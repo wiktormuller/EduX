@@ -6,4 +6,8 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Edux.Modules.Users.Core\Edux.Modules.Users.Core.csproj" />
+  </ItemGroup>
+
 </Project>
