@@ -1,3 +1,3 @@
-#EduX
+# EduX
 
-##Platform to make learning easy :)
+## Platform making learning easy :)
