@@ -3,11 +3,11 @@ using Edux.Shared.Abstractions.Queries;
 
 namespace Edux.Modules.Users.Application.Queries
 {
-    public class GetUser : IQuery<UserMeResponse>
+    public class GetUserMe : IQuery<UserMeResponse>
     {
         public Guid UserId { get; }
 
-        public GetUser(Guid userId)
+        public GetUserMe(Guid userId)
         {
             UserId = userId;
         }

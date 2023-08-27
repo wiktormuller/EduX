@@ -12,7 +12,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\..\Shared\Edux.Shared.Abstractions\Edux.Shared.Abstractions.csproj" />
-    <ProjectReference Include="..\Edux.Modules.Users.Application\Edux.Modules.Users.Application.csproj" />
     <ProjectReference Include="..\Edux.Modules.Users.Infrastructure\Edux.Modules.Users.Infrastructure.csproj" />
   </ItemGroup>
 

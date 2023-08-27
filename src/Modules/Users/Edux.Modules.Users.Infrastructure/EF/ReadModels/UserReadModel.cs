@@ -1,6 +1,6 @@
-﻿namespace Edux.Modules.Users.Application.Contracts.Responses
+﻿namespace Edux.Modules.Users.Infrastructure.EF.ReadModels
 {
-    public class UserResponse
+    internal class UserReadModel
     {
         public Guid Id { get; set; }
         public string Email { get; set; }

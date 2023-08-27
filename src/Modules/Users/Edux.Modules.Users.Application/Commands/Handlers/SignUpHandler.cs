@@ -42,8 +42,9 @@ namespace Edux.Modules.Users.Application.Commands.Handlers
             var email = new Email(command.Email);
             var password = new Password(passwordHash);
             var role = new Role(command.Role);
+            var userName = new Username(command.Username);
 
-            var user = new User(Guid.NewGuid(), email, password, role, isActive: true, 
+            var user = new User(Guid.NewGuid(), email, userName, password, role, isActive: true, 
                 _clock.CurrentDate(), _clock.CurrentDate(), command.Claims);
             await _userRepository.AddAsync(user);
 

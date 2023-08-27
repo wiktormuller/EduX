@@ -23,6 +23,11 @@ namespace Edux.Modules.Users.Core.Entities
                 throw new EmptyRefreshTokenException();
             }
 
+            if (token.Length < 5 && token.Length > 256)
+            {
+                throw new InvalidRefreshTokenException();
+            }
+
             Id = id;
             UserId = userId;
             Token = token;

@@ -8,6 +8,12 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\..\Shared\Edux.Shared.Abstractions\Edux.Shared.Abstractions.csproj" />
+    <ProjectReference Include="..\..\..\Shared\Edux.Shared.Infrastructure\Edux.Shared.Infrastructure.csproj" />
+    <ProjectReference Include="..\Edux.Modules.Users.Application\Edux.Modules.Users.Application.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="EF\Migrations\" />
   </ItemGroup>
 
 </Project>

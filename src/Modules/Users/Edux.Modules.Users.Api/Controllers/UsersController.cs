@@ -38,7 +38,7 @@ namespace Edux.Modules.Users.Api.Controllers
             }
 
             var userId = Guid.Parse(User.Identity?.Name); // TODO: It could be taken from IContext
-            var query = new GetUser(userId);
+            var query = new GetUserMe(userId);
             var user = await _queryDispatcher.QueryAsync(query, cancellationToken);
 
             return Ok(user);
