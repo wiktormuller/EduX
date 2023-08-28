@@ -1,6 +1,5 @@
 ﻿using Edux.Modules.Users.Application.Exceptions;
 using Edux.Modules.Users.Core.Repositories;
-using Edux.Shared.Abstractions.Auth;
 using Edux.Shared.Abstractions.Commands;
 using Edux.Shared.Abstractions.Time;
 

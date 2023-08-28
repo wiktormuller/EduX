@@ -3,6 +3,6 @@
     public interface ITokenStorage
     {
         void Set(JsonWebToken jwt);
-        JsonWebToken Get();
+        JsonWebToken? Get();
     }
 }

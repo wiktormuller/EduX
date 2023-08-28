@@ -1,9 +1,13 @@
 ﻿using Edux.Modules.Users.Application.Events;
 using Edux.Modules.Users.Application.Exceptions;
+using Edux.Modules.Users.Core.Entities;
 using Edux.Modules.Users.Core.Repositories;
 using Edux.Shared.Abstractions.Auth;
 using Edux.Shared.Abstractions.Commands;
+using Edux.Shared.Abstractions.Crypto;
+using Edux.Shared.Abstractions.Kernel.Types;
 using Edux.Shared.Abstractions.Messaging;
+using Edux.Shared.Abstractions.Time;
 
 namespace Edux.Modules.Users.Application.Commands.Handlers
 {
@@ -11,22 +15,28 @@ namespace Edux.Modules.Users.Application.Commands.Handlers
     {
         private readonly IUserRepository _userRepository;
         private readonly IJwtProvider _jwtProvider;
-        private readonly IRefreshTokenProvider _refreshTokenProvider;
         private readonly IPasswordService _passwordService;
         private readonly ITokenStorage _tokenStorage;
         private readonly IMessageBroker _messageBroker;
+        private readonly IClock _clock;
+        private readonly IRandomNumberGenerator _rng;
+        private readonly IRefreshTokenRepository _refreshTokenRepository;
 
         public SignInHandler(IUserRepository userRepository,
             IJwtProvider jwtProvider,
-            IRefreshTokenProvider refreshTokenProvider,
             IPasswordService passwordService,
-            ITokenStorage tokenStorage)
+            ITokenStorage tokenStorage,
+            IClock clock,
+            IRandomNumberGenerator rng,
+            IRefreshTokenRepository refreshTokenRepository)
         {
             _userRepository = userRepository;
             _jwtProvider = jwtProvider;
-            _refreshTokenProvider = refreshTokenProvider;
             _passwordService = passwordService;
             _tokenStorage = tokenStorage;
+            _clock = clock;
+            _rng = rng;
+            _refreshTokenRepository = refreshTokenRepository;
         }
 
         public async Task HandleAsync(SignIn command, CancellationToken cancellationToken)
@@ -49,7 +59,12 @@ namespace Edux.Modules.Users.Application.Commands.Handlers
             }
 
             var jwt = _jwtProvider.CreateToken(user.Id.ToString(), email: user.Email, role: user.Role, claims: user.Claims);
-            jwt.RefreshToken = await _refreshTokenProvider.CreateAsync(user.Id);
+
+            var token = _rng.Generate(30, true);
+            var refreshToken = new RefreshToken(new AggregateId(), user.Id, token, _clock.CurrentDate());
+            await _refreshTokenRepository.AddAsync(refreshToken);
+
+            jwt.RefreshToken = token;
 
             _tokenStorage.Set(jwt);
 
