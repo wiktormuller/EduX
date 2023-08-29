@@ -5,9 +5,9 @@ namespace Edux.Shared.Infrastructure.Auth
 {
     internal sealed class PasswordService : IPasswordService
     {
-        private readonly IPasswordHasher<IPasswordService> _passwordHasher;
+        private readonly IPasswordHasher<PasswordService> _passwordHasher;
 
-        public PasswordService(IPasswordHasher<IPasswordService> passwordHasher)
+        public PasswordService(IPasswordHasher<PasswordService> passwordHasher)
         {
             _passwordHasher = passwordHasher;
         }

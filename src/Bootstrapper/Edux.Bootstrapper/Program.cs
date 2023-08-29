@@ -8,15 +8,11 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Host.LoadModuleSettings();
 var _assemblies = ModuleLoader.LoadAssemblies(builder.Configuration);
 var _modules = ModuleLoader.LoadModules(_assemblies);
-builder.Services.AddInfrastructure(_assemblies);
+builder.Services.AddInfrastructure(_assemblies, _modules);
 foreach (var module in _modules)
 {
     module.Register(builder.Services);
 }
-
-builder.Services.AddControllers();
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
@@ -30,17 +26,16 @@ foreach (var module in _modules)
 var logger = app.Services.GetService<ILogger<Program>>();
 logger.LogInformation($"Modules: {string.Join(", ", _modules.Select(x => x.Name))}");
 
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
-
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
 
-app.MapControllers();
+app.UseEndpoints(endpointRouteBuilder =>
+{
+    endpointRouteBuilder.MapControllers();
+    endpointRouteBuilder.MapGet("/", () => "Edux API!");
+    endpointRouteBuilder.MapModuleInfo();
+});
 
 _assemblies.Clear();
 _modules.Clear();

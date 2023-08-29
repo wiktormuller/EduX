@@ -11,4 +11,19 @@
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\Modules\Users\Edux.Modules.Users.Api\Edux.Modules.Users.Api.csproj" />
+    <ProjectReference Include="..\..\Shared\Edux.Shared.Abstractions\Edux.Shared.Abstractions.csproj" />
+    <ProjectReference Include="..\..\Shared\Edux.Shared.Infrastructure\Edux.Shared.Infrastructure.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Update="appsettings.development.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="appsettings.test.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
 </Project>

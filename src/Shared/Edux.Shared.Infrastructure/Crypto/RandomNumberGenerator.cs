@@ -9,7 +9,7 @@ namespace Edux.Shared.Infrastructure.Crypto
 
         public string Generate(int length = 50, bool removeSpecialChars = true)
         {
-            using var rng = new RNGCryptoServiceProvider();
+            using var rng = System.Security.Cryptography.RandomNumberGenerator.Create();
             var bytes = new byte[length];
             rng.GetBytes(bytes); // Fulfill array of bytes with random values
             var result = Convert.ToBase64String(bytes);

@@ -13,21 +13,23 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Modules", "Modules", "{D5F2
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Shared", "Shared", "{FA98E48A-B72A-4AFA-93EA-0C8F3BF50853}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Edux.Shared.Abstractions", "src\Shared\Edux.Shared.Abstractions\Edux.Shared.Abstractions.csproj", "{BCCCEAC0-8A85-4F4A-BDF9-F37CB226DEFC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Edux.Shared.Abstractions", "src\Shared\Edux.Shared.Abstractions\Edux.Shared.Abstractions.csproj", "{BCCCEAC0-8A85-4F4A-BDF9-F37CB226DEFC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Edux.Shared.Infrastructure", "src\Shared\Edux.Shared.Infrastructure\Edux.Shared.Infrastructure.csproj", "{E01EBFE5-C6E3-418B-B092-BAFDCBA5710D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Edux.Shared.Infrastructure", "src\Shared\Edux.Shared.Infrastructure\Edux.Shared.Infrastructure.csproj", "{E01EBFE5-C6E3-418B-B092-BAFDCBA5710D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Edux.Shared.Tests", "src\Shared\Edux.Shared.Tests\Edux.Shared.Tests.csproj", "{11ABC7A8-6167-4133-A7B2-F851EABF5DA9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Edux.Shared.Tests", "src\Shared\Edux.Shared.Tests\Edux.Shared.Tests.csproj", "{11ABC7A8-6167-4133-A7B2-F851EABF5DA9}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Users", "Users", "{E57BF411-12F6-4F36-8663-7F279A654562}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Edux.Modules.Users.Api", "src\Modules\Users\Edux.Modules.Users.Api\Edux.Modules.Users.Api.csproj", "{7B112C65-0F08-4A40-98C8-F6AC5C5C30F7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Edux.Modules.Users.Api", "src\Modules\Users\Edux.Modules.Users.Api\Edux.Modules.Users.Api.csproj", "{7B112C65-0F08-4A40-98C8-F6AC5C5C30F7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Edux.Modules.Users.Application", "src\Modules\Users\Edux.Modules.Users.Application\Edux.Modules.Users.Application.csproj", "{99C27796-B96F-464D-9491-DED182DEDB21}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Edux.Modules.Users.Application", "src\Modules\Users\Edux.Modules.Users.Application\Edux.Modules.Users.Application.csproj", "{99C27796-B96F-464D-9491-DED182DEDB21}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Edux.Modules.Users.Core", "src\Modules\Users\Edux.Modules.Users.Core\Edux.Modules.Users.Core.csproj", "{0BAFE2BD-59A3-4B94-A55B-DDBADB523B29}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Edux.Modules.Users.Core", "src\Modules\Users\Edux.Modules.Users.Core\Edux.Modules.Users.Core.csproj", "{0BAFE2BD-59A3-4B94-A55B-DDBADB523B29}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Edux.Modules.Users.Infrastructure", "src\Modules\Users\Edux.Modules.Users.Infrastructure\Edux.Modules.Users.Infrastructure.csproj", "{5B01AF12-42A2-4305-A918-250135D2D45E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Edux.Modules.Users.Infrastructure", "src\Modules\Users\Edux.Modules.Users.Infrastructure\Edux.Modules.Users.Infrastructure.csproj", "{5B01AF12-42A2-4305-A918-250135D2D45E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Edux.Bootstrapper", "src\Bootstrapper\Edux.Bootstrapper\Edux.Bootstrapper.csproj", "{45E224E1-0F66-4D11-8ED3-255FBBA1251F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -63,6 +65,10 @@ Global
 		{5B01AF12-42A2-4305-A918-250135D2D45E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5B01AF12-42A2-4305-A918-250135D2D45E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5B01AF12-42A2-4305-A918-250135D2D45E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{45E224E1-0F66-4D11-8ED3-255FBBA1251F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{45E224E1-0F66-4D11-8ED3-255FBBA1251F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{45E224E1-0F66-4D11-8ED3-255FBBA1251F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{45E224E1-0F66-4D11-8ED3-255FBBA1251F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -79,6 +85,7 @@ Global
 		{99C27796-B96F-464D-9491-DED182DEDB21} = {E57BF411-12F6-4F36-8663-7F279A654562}
 		{0BAFE2BD-59A3-4B94-A55B-DDBADB523B29} = {E57BF411-12F6-4F36-8663-7F279A654562}
 		{5B01AF12-42A2-4305-A918-250135D2D45E} = {E57BF411-12F6-4F36-8663-7F279A654562}
+		{45E224E1-0F66-4D11-8ED3-255FBBA1251F} = {DC6AA8F6-4C25-43F1-8B14-5213A7373B6A}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {51C71476-2300-4E0F-B132-2DC45395862F}
