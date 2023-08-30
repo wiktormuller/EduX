@@ -1,8 +1,8 @@
 ﻿namespace Edux.Shared.Abstractions.Kernel.Types
 {
-    public abstract class AggregateRoot<T>
+    public abstract class AggregateRoot
     {
-        public T Id { get; protected set; }
+        public AggregateId Id { get; protected set; }
         public int Version { get; protected set; }
         public IEnumerable<IDomainEvent> Events => _events;
         private List<IDomainEvent> _events = new();
@@ -31,9 +31,5 @@
         }
 
         public void ClearEvents() => _events.Clear();
-    }
-
-    public abstract class AggregateRoot : AggregateRoot<AggregateId>
-    {
     }
 }

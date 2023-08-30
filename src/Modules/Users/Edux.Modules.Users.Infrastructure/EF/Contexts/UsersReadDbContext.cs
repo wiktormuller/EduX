@@ -1,4 +1,5 @@
-﻿using Edux.Modules.Users.Infrastructure.EF.ReadModels;
+﻿using Edux.Modules.Users.Infrastructure.EF.Configurations;
+using Edux.Modules.Users.Infrastructure.EF.ReadModels;
 using Microsoft.EntityFrameworkCore;
 
 namespace Edux.Modules.Users.Infrastructure.EF.Contexts
@@ -14,7 +15,8 @@ namespace Edux.Modules.Users.Infrastructure.EF.Contexts
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.HasDefaultSchema("users");
-            modelBuilder.ApplyConfigurationsFromAssembly(GetType().Assembly);
+
+            modelBuilder.ApplyConfiguration(new UsersReadConfiguration());
 
             base.OnModelCreating(modelBuilder);
         }

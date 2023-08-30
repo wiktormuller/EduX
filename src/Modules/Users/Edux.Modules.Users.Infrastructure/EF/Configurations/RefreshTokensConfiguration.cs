@@ -10,6 +10,7 @@ namespace Edux.Modules.Users.Infrastructure.EF.Configurations
         public void Configure(EntityTypeBuilder<RefreshToken> builder)
         {
             builder.HasKey(rt => rt.Id);
+
             builder.Property(rt => rt.Id)
                 .HasConversion(x => x.Value, x => new AggregateId(x));
 

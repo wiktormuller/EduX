@@ -61,7 +61,7 @@ namespace Edux.Modules.Users.Application.Commands.Handlers
             var jwt = _jwtProvider.CreateToken(user.Id.ToString(), email: user.Email, role: user.Role, claims: user.Claims);
 
             var token = _rng.Generate(30, true);
-            var refreshToken = new RefreshToken(new AggregateId(), user.Id, token, _clock.CurrentDate());
+            var refreshToken = new RefreshToken(Guid.NewGuid(), user.Id, token, _clock.CurrentDate());
             await _refreshTokenRepository.AddAsync(refreshToken);
 
             jwt.RefreshToken = token;

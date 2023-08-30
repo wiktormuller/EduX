@@ -14,7 +14,7 @@ namespace Edux.Shared.Infrastructure.Commands
             services.Scan(scan => 
                 scan.FromAssemblies(assemblies)
                     .AddClasses(classes => classes.AssignableTo(typeof(ICommandHandler<>))
-                        .WithAttribute<DecoratorAttribute>())
+                        .WithoutAttribute<DecoratorAttribute>())
                     .AsImplementedInterfaces()
                     .WithScopedLifetime());
 

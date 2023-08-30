@@ -29,7 +29,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Edux.Modules.Users.Core", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Edux.Modules.Users.Infrastructure", "src\Modules\Users\Edux.Modules.Users.Infrastructure\Edux.Modules.Users.Infrastructure.csproj", "{5B01AF12-42A2-4305-A918-250135D2D45E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Edux.Bootstrapper", "src\Bootstrapper\Edux.Bootstrapper\Edux.Bootstrapper.csproj", "{45E224E1-0F66-4D11-8ED3-255FBBA1251F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Edux.Bootstrapper", "src\Bootstrapper\Edux.Bootstrapper\Edux.Bootstrapper.csproj", "{45E224E1-0F66-4D11-8ED3-255FBBA1251F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Edux.Modules.Users.Tests.Integration", "tests\Modules\Users\Edux.Modules.Users.Tests.Integration\Edux.Modules.Users.Tests.Integration.csproj", "{DBD0B37D-B6CC-4102-A39F-3431BCA3CEB3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Edux.Modules.Users.Tests.Unit", "tests\Modules\Users\Edux.Modules.Users.Tests.Unit\Edux.Modules.Users.Tests.Unit.csproj", "{6CD946DF-3121-457A-93F3-751C55E41DEC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Edux.Modules.Users.Tests.EndToEnd", "tests\Modules\Users\Edux.Modules.Users.Tests.EndToEnd\Edux.Modules.Users.Tests.EndToEnd.csproj", "{BED751FA-854D-4FC4-833F-96BCC84F58CB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -69,6 +75,18 @@ Global
 		{45E224E1-0F66-4D11-8ED3-255FBBA1251F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{45E224E1-0F66-4D11-8ED3-255FBBA1251F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{45E224E1-0F66-4D11-8ED3-255FBBA1251F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DBD0B37D-B6CC-4102-A39F-3431BCA3CEB3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DBD0B37D-B6CC-4102-A39F-3431BCA3CEB3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DBD0B37D-B6CC-4102-A39F-3431BCA3CEB3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DBD0B37D-B6CC-4102-A39F-3431BCA3CEB3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6CD946DF-3121-457A-93F3-751C55E41DEC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6CD946DF-3121-457A-93F3-751C55E41DEC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6CD946DF-3121-457A-93F3-751C55E41DEC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6CD946DF-3121-457A-93F3-751C55E41DEC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BED751FA-854D-4FC4-833F-96BCC84F58CB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BED751FA-854D-4FC4-833F-96BCC84F58CB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BED751FA-854D-4FC4-833F-96BCC84F58CB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BED751FA-854D-4FC4-833F-96BCC84F58CB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -86,6 +104,9 @@ Global
 		{0BAFE2BD-59A3-4B94-A55B-DDBADB523B29} = {E57BF411-12F6-4F36-8663-7F279A654562}
 		{5B01AF12-42A2-4305-A918-250135D2D45E} = {E57BF411-12F6-4F36-8663-7F279A654562}
 		{45E224E1-0F66-4D11-8ED3-255FBBA1251F} = {DC6AA8F6-4C25-43F1-8B14-5213A7373B6A}
+		{DBD0B37D-B6CC-4102-A39F-3431BCA3CEB3} = {9CF19716-AF3B-4AA7-A156-F349513668D1}
+		{6CD946DF-3121-457A-93F3-751C55E41DEC} = {9CF19716-AF3B-4AA7-A156-F349513668D1}
+		{BED751FA-854D-4FC4-833F-96BCC84F58CB} = {9CF19716-AF3B-4AA7-A156-F349513668D1}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {51C71476-2300-4E0F-B132-2DC45395862F}

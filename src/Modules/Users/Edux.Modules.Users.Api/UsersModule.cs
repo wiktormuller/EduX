@@ -11,7 +11,7 @@ namespace Edux.Modules.Users.Api
     {
         public const string BasePath = "users-module";
 
-        public string Name { get; } = "Users";
+        public string Name { get; } = "users";
         public string Path => BasePath;
 
         public IEnumerable<string> Policies { get; } = new[] { "users" };

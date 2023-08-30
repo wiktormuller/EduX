@@ -5,6 +5,7 @@ namespace Edux.Modules.Users.Core.Entities
 {
     public class User : AggregateRoot
     {
+        public AggregateId Id { get; private set; }
         public Email Email { get; private set; }
         public Username Username { get; private set; }
         public Role Role { get; private set; }
@@ -13,6 +14,10 @@ namespace Edux.Modules.Users.Core.Entities
         public DateTime CreatedAt { get; private set; }
         public DateTime UpdatedAt { get; private set; }
         public Dictionary<string, IEnumerable<string>> Claims { get; private set; }
+
+        protected User()
+        {
+        }
 
         public User(Guid id, Email email, Username username, Password password, Role role, bool isActive,
             DateTime createdAt, DateTime updatedAt, 

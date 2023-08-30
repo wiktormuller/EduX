@@ -27,9 +27,9 @@ namespace Edux.Modules.Users.Infrastructure.EF.Repositories
             return _users.SingleOrDefaultAsync(x => x.Id.Value == id);
         }
 
-        public Task<User?> GetAsync(string email)
+        public async Task<User?> GetAsync(string email)
         {
-            return _users.SingleOrDefaultAsync(x => x.Email.Value == email);
+            return await _users.SingleOrDefaultAsync(x => x.Email == email);
         }
 
         public async Task UpdateAsync(User user)
