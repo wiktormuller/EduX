@@ -1,8 +1,12 @@
 ﻿namespace Edux.Shared.Abstractions.Kernel.Types
 {
-    public record class AggregateId
+    public record AggregateId
     {
         public Guid Value { get; }
+
+        public AggregateId() : this(Guid.NewGuid())
+        {
+        }
 
         public AggregateId(Guid value)
         {

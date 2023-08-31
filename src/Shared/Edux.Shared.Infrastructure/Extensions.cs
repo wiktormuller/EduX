@@ -41,7 +41,7 @@ namespace Edux.Shared.Infrastructure
             services.AddSingleton<IRandomNumberGenerator, RandomNumberGenerator>();
             services.AddHttpContextAccessor();
 
-            //services.AddHostedService<AppInitializer>();
+            services.AddHostedService<AppInitializer>();
 
             services.AddModuleInfo(modules);
             services.AddControllersWithOpenApi();

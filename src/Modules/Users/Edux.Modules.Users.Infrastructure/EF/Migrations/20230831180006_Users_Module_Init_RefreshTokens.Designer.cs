@@ -4,16 +4,19 @@ using Edux.Modules.Users.Infrastructure.EF.Contexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
 namespace Edux.Modules.Users.Infrastructure.EF.Migrations
 {
-    [DbContext(typeof(UsersWriteDbContext))]
-    partial class UsersWriteDbContextModelSnapshot : ModelSnapshot
+    [DbContext(typeof(RefreshTokensDbContext))]
+    [Migration("20230831180006_Users_Module_Init_RefreshTokens")]
+    partial class Users_Module_Init_RefreshTokens
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -51,7 +54,7 @@ namespace Edux.Modules.Users.Infrastructure.EF.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("RefreshToken", "users");
+                    b.ToTable("RefreshTokens", "users");
                 });
 
             modelBuilder.Entity("Edux.Modules.Users.Core.Entities.User", b =>
@@ -104,7 +107,7 @@ namespace Edux.Modules.Users.Infrastructure.EF.Migrations
                     b.HasIndex("Username")
                         .IsUnique();
 
-                    b.ToTable("Users", "users");
+                    b.ToTable("User", "users");
                 });
 
             modelBuilder.Entity("Edux.Modules.Users.Core.Entities.RefreshToken", b =>

@@ -17,6 +17,7 @@ namespace Edux.Modules.Users.Infrastructure.EF.Contexts
             modelBuilder.HasDefaultSchema("users");
 
             modelBuilder.ApplyConfiguration(new RefreshTokensConfiguration());
+            modelBuilder.ApplyConfiguration(new UsersWriteConfiguration());
 
             base.OnModelCreating(modelBuilder);
         }

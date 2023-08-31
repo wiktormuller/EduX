@@ -5,7 +5,6 @@ namespace Edux.Modules.Users.Core.Entities
 {
     public class User : AggregateRoot
     {
-        public AggregateId Id { get; private set; }
         public Email Email { get; private set; }
         public Username Username { get; private set; }
         public Role Role { get; private set; }

@@ -1,16 +1,18 @@
 ﻿using Edux.Modules.Users.Application.Contracts.Requests;
-using Edux.Shared.Tests;
 using System.Net.Http.Json;
 using Shouldly;
 using System.Net;
-using Microsoft.AspNetCore.Mvc.Testing;
+using Edux.Shared.Tests;
 
 namespace Edux.Modules.Users.Tests.EndToEnd.Controllers
 {
-    public class UsersControllerTests : WebApiTestBase
+    public class UsersControllerTests : IClassFixture<EduxWebApplicationFactory<Program>>
     {
-        public UsersControllerTests(WebApplicationFactory<Program> factory) : base(factory)
+        private readonly EduxWebApplicationFactory<Program> _factory;
+
+        public UsersControllerTests(EduxWebApplicationFactory<Program> factory)
         {
+            _factory = factory;
         }
 
         [Fact]
@@ -30,7 +32,8 @@ namespace Edux.Modules.Users.Tests.EndToEnd.Controllers
             };
 
             // Act
-            var httpResponseMessage = await Client.PostAsJsonAsync("users", signUpRequest, SerializerOptions);
+            var httpResponseMessage = await _factory.CreateClient()
+                .PostAsJsonAsync("users-module/users/sign-up", signUpRequest, _factory.SerializerOptions);
 
             // Assert
             httpResponseMessage.IsSuccessStatusCode.ShouldBeTrue();

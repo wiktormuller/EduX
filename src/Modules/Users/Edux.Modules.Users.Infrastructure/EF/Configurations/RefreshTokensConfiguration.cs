@@ -21,6 +21,15 @@ namespace Edux.Modules.Users.Infrastructure.EF.Configurations
             builder.Property(rt => rt.CreatedAt)
                 .IsRequired();
 
+            builder.HasOne<User>()
+                .WithMany()
+                .HasForeignKey(e => e.UserId)
+                .IsRequired();
+
+            builder.Property(rt => rt.UserId)
+                .HasConversion(x => x.Value, x => new AggregateId(x))
+                .IsRequired();
+
             builder.HasIndex(x => x.Token);
 
             builder.Ignore(x => x.Revoked);

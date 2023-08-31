@@ -9,6 +9,8 @@ namespace Edux.Shared.Infrastructure.Api
     {
         public static IServiceCollection AddControllersWithOpenApi(this IServiceCollection services)
         {
+            services.AddRouting(options => options.LowercaseUrls = true);
+
             services.AddControllers()
                 .ConfigureApplicationPartManager(manager =>
                 {

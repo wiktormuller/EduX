@@ -58,7 +58,10 @@ namespace Edux.Modules.Users.Infrastructure.EF.Configurations
 
             builder.HasIndex(u => u.Id);
 
-
+            builder.HasMany<RefreshToken>()
+                .WithOne()
+                .HasForeignKey(e => e.UserId)
+                .IsRequired();
         }
     }
 }
