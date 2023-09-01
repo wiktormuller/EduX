@@ -3,9 +3,6 @@ using System.Text.Json.Serialization;
 using System.Text.Json;
 using Xunit;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.AspNetCore.TestHost;
-using Edux.Shared.Tests.Helpers;
 using Testcontainers.MsSql;
 using DotNet.Testcontainers.Builders;
 
@@ -34,17 +31,12 @@ namespace Edux.Shared.Tests
                 .Build();
         }
 
-        protected override void ConfigureWebHost(IWebHostBuilder webHostBuilder)
+        protected override void ConfigureWebHost(IWebHostBuilder webHostBuilder) // Before application gets built
         {
             webHostBuilder.UseEnvironment("test");
-            webHostBuilder.ConfigureTestServices(ConfigureServices);
 
+            // All components that use the SqlConnectionString will use the version from TestContainer
             webHostBuilder.UseSetting(ConnectionStringKey, _msSqlContainer.GetConnectionString());
-        }
-
-        public virtual void ConfigureServices(IServiceCollection services)
-        {
-            // Template method when we want to override some service registration
         }
 
         public async Task InitializeAsync()
@@ -55,7 +47,7 @@ namespace Edux.Shared.Tests
         public async Task DisposeAsync()
         {
             // Override when want to dispose something like DbContext, etc.
-            //await _databaseContainer.DisposeAsync();
+            await _msSqlContainer.DisposeAsync();
         }
     }
 }

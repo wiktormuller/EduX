@@ -1,18 +1,15 @@
 ﻿using Edux.Modules.Users.Application.Contracts.Requests;
-using System.Net.Http.Json;
 using Shouldly;
 using System.Net;
 using Edux.Shared.Tests;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Edux.Modules.Users.Tests.EndToEnd.Controllers
 {
-    public class UsersControllerTests : IClassFixture<EduxWebApplicationFactory<Program>>
+    public class UsersControllerTests : EduxTestBase
     {
-        private readonly EduxWebApplicationFactory<Program> _factory;
-
-        public UsersControllerTests(EduxWebApplicationFactory<Program> factory)
+        public UsersControllerTests(EduxWebApplicationFactory<Program> factory) : base(factory)
         {
-            _factory = factory;
         }
 
         [Fact]
@@ -32,12 +29,15 @@ namespace Edux.Modules.Users.Tests.EndToEnd.Controllers
             };
 
             // Act
-            var httpResponseMessage = await _factory.CreateClient()
-                .PostAsJsonAsync("users-module/users/sign-up", signUpRequest, _factory.SerializerOptions);
+            var httpResponseMessage = await PostAsync("users-module/users/sign-up", signUpRequest);
 
             // Assert
             httpResponseMessage.IsSuccessStatusCode.ShouldBeTrue();
             httpResponseMessage.StatusCode.ShouldBe(HttpStatusCode.Created);
+        }
+
+        protected override void ConfigureServices(IServiceCollection services)
+        {
         }
     }
 }

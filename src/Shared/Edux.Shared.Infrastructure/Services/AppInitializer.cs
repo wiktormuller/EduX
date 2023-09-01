@@ -1,4 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Edux.Shared.Infrastructure.SqlServer;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
@@ -31,6 +33,9 @@ namespace Edux.Shared.Infrastructure.Services
                 {
                     continue;
                 }
+
+                var x = scope.ServiceProvider.GetService<IConfiguration>();
+                var y = x.GetOptions<SqlServerOptions>("sqlServer");
 
                 await dbContext.Database.MigrateAsync(cancellationToken);
             }
