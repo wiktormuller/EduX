@@ -1,22 +1,19 @@
-@url = http://localhost:5000
-@userId = 00000000-0000-0000-0000-000000000001
+@url = http://localhost:5187/users-module
 
 ###
-GET {{url}}/users
-
-###
-GET {{url}}/users/{{userId}}
-
-###
-POST {{url}}/users
+POST {{url}}/users/sign-up
 Content-Type: application/json
 
 {
-    "email": "user1@edux.com",
-    "username": "user1",
-    "password": "Password123!",
-    "fullName": "John Smith",
-    "role": "user"
+  "email": "user1@email.com",
+  "username": "user1",
+  "password": "Password123!",
+  "role": "user",
+  "claims": {
+    "permissions": [
+      "users"
+    ]
+  }
 }
 
 ###
@@ -25,8 +22,8 @@ POST {{url}}/users/sign-in
 Content-Type: application/json
 
 {
-    "email": "user1@edux.com".
-    "password": 
+    "email": "user1@edux.com",
+    "password": "Password123!"
 }
 
 ###
@@ -35,3 +32,22 @@ Content-Type: application/json
 ###
 GET {{url}}/users/me
 Authorization: Bearer {{accessToken}}
+
+###
+GET {{url}}/users
+
+###
+POST {{url}}/users/refresh-tokens/revoke
+Content-Type: application/json
+
+{
+  "refreshToken": "string"
+}
+
+###
+POST {{url}}/users/refresh-tokens/use
+Content-Type: application/json
+
+{
+  "refreshToken": "string"
+}
