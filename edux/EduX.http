@@ -5,8 +5,8 @@ POST {{url}}/users/sign-up
 Content-Type: application/json
 
 {
-  "email": "user1@email.com",
-  "username": "user1",
+  "email": "user3@email.com",
+  "username": "user3",
   "password": "Password123!",
   "role": "user",
   "claims": {

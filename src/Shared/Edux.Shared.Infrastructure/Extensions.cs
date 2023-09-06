@@ -13,7 +13,6 @@ using Edux.Shared.Infrastructure.Messaging;
 using Edux.Shared.Infrastructure.Modules;
 using Edux.Shared.Infrastructure.Queries;
 using Edux.Shared.Infrastructure.Services;
-using Edux.Shared.Infrastructure.SqlServer;
 using Edux.Shared.Infrastructure.Time;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
