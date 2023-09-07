@@ -1,6 +1,4 @@
-﻿using Convey;
-using Convey.MessageBrokers.RabbitMQ;
-using Edux.Shared.Abstractions.Crypto;
+﻿using Edux.Shared.Abstractions.Crypto;
 using Edux.Shared.Abstractions.Modules;
 using Edux.Shared.Abstractions.Time;
 using Edux.Shared.Infrastructure.Api;
@@ -12,6 +10,8 @@ using Edux.Shared.Infrastructure.Exceptions;
 using Edux.Shared.Infrastructure.Messaging;
 using Edux.Shared.Infrastructure.Modules;
 using Edux.Shared.Infrastructure.Queries;
+using Edux.Shared.Infrastructure.RabbitMQ;
+using Edux.Shared.Infrastructure.RabbitMQ.Initializers;
 using Edux.Shared.Infrastructure.Services;
 using Edux.Shared.Infrastructure.Time;
 using Microsoft.AspNetCore.Builder;
@@ -39,22 +39,19 @@ namespace Edux.Shared.Infrastructure
             services.AddMessaging();
             services.AddSingleton<IRandomNumberGenerator, RandomNumberGenerator>();
             services.AddHttpContextAccessor();
+            services.AddRabbitMq();
 
             services.AddHostedService<AppInitializer>();
 
             services.AddModuleInfo(modules);
             services.AddControllersWithOpenApi();
 
-            services
-                .AddConvey()
-                .AddRabbitMq()
-                .Build();
-
             return services;
         }
 
         public static IApplicationBuilder UseInfrastructure(this IApplicationBuilder app)
         {
+            app.UseInitializers();
             app.UseCors("cors");
             app.UseErrorHandling();
             app.UseSwagger();
@@ -68,6 +65,15 @@ namespace Edux.Shared.Infrastructure
             app.UseAuthentication();
             app.UseRouting();
             app.UseAuthorization();
+
+            return app;
+        }
+
+        public static IApplicationBuilder UseInitializers(this IApplicationBuilder app)
+        {
+            using var scope = app.ApplicationServices.CreateScope();
+            var startupInitializer = scope.ServiceProvider.GetRequiredService<IStartupInitializer>();
+            Task.Run(() => startupInitializer.InitializeAsync()).GetAwaiter().GetResult();
 
             return app;
         }

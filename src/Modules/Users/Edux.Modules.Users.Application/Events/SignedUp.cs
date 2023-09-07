@@ -1,7 +1,9 @@
 ﻿using Edux.Shared.Abstractions.Events;
+using Edux.Shared.Abstractions.Messaging;
 
 namespace Edux.Modules.Users.Application.Events
 {
+    [Message("users")]
     public class SignedUp : IEvent
     {
         public Guid UserId { get; }

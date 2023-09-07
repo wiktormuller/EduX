@@ -1,4 +1,5 @@
-﻿using Edux.Shared.Infrastructure.RabbitMQ.Contexts;
+﻿using Edux.Shared.Infrastructure.RabbitMQ.Connections;
+using Edux.Shared.Infrastructure.RabbitMQ.Contexts;
 using Edux.Shared.Infrastructure.RabbitMQ.Conventions;
 using Edux.Shared.Infrastructure.RabbitMQ.Serializers;
 using Microsoft.Extensions.Logging;
@@ -25,12 +26,12 @@ namespace Edux.Shared.Infrastructure.RabbitMQ.Messaging.Clients
         private readonly ConcurrentDictionary<int, IModel> _availableChannels = new();
 
         public RabbitMqClient(RabbitMqOptions options,
-            IConnection connection,
+            ProducerConnection connection,
             ILogger<RabbitMqClient> logger,
             IRabbitMqSerializer serializer,
             IContextProvider contextProvider)
         {
-            _connection = connection;
+            _connection = connection.Connection;
             _loggerEnabled = options.Logger?.Enabled ?? false;
             _persistMessages = options?.MessagesPersisted ?? false;
             _contextEnabled = options?.Context?.Enabled ?? false;

@@ -1,5 +1,6 @@
-﻿using Convey.MessageBrokers;
+﻿using Edux.Shared.Abstractions.Contexts;
 using Edux.Shared.Abstractions.Messaging;
+using Edux.Shared.Abstractions.Messaging.Publishers;
 using Microsoft.Extensions.Logging;
 
 namespace Edux.Shared.Infrastructure.Messaging
@@ -8,12 +9,15 @@ namespace Edux.Shared.Infrastructure.Messaging
     {
         private readonly IBusPublisher _busPublisher;
         private readonly ILogger<MessageBroker> _logger;
+        private readonly ICorrelationContextAccessor _correlationContextAccessor;
 
         public MessageBroker(IBusPublisher busPublisher,
-            ILogger<MessageBroker> logger)
+            ILogger<MessageBroker> logger,
+            ICorrelationContextAccessor correlationContextAccessor)
         {
             _busPublisher = busPublisher;
             _logger = logger;
+            _correlationContextAccessor = correlationContextAccessor;
         }
 
         public async Task PublishAsync(params IMessage[] messages)
@@ -35,7 +39,7 @@ namespace Edux.Shared.Infrastructure.Messaging
                 var messageId = Guid.NewGuid().ToString("N");
                 _logger.LogTrace($"Publishing integration message: {message.GetType().Name} [id: '{messageId}'].");
 
-                await _busPublisher.PublishAsync(message);
+                await _busPublisher.PublishAsync(message, messageContext: _correlationContextAccessor.CorrelationContext);
             }
         }
     }

@@ -1,4 +1,4 @@
-﻿using Convey.MessageBrokers;
+﻿using Edux.Shared.Abstractions.Messaging;
 using System.Reflection;
 
 namespace Edux.Shared.Infrastructure.RabbitMQ.Conventions

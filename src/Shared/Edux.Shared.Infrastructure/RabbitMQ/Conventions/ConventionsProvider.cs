@@ -9,6 +9,13 @@ namespace Edux.Shared.Infrastructure.RabbitMQ.Conventions
         private IConventionsRegistry _registry;
         private readonly IConventionsBuilder _builder;
 
+        public ConventionsProvider(IConventionsRegistry registry, 
+            IConventionsBuilder builder)
+        {
+            _registry = registry;
+            _builder = builder;
+        }
+
         public IConventions Get<T>()
             => Get(typeof(T));
 
