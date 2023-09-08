@@ -1,12 +1,14 @@
 ﻿using Edux.Modules.Users.Core.Entities;
 using Edux.Modules.Users.Infrastructure.EF.Configurations;
 using Microsoft.EntityFrameworkCore;
+using Edux.Shared.Abstractions.Messaging.Outbox;
 
 namespace Edux.Modules.Users.Infrastructure.EF.Contexts
 {
     internal class UsersWriteDbContext : DbContext
     {
         public DbSet<User> Users { get; set; }
+        public DbSet<OutboxMessage> Outbox { get; set; }
 
         public UsersWriteDbContext(DbContextOptions<UsersWriteDbContext> options) : base(options)
         {

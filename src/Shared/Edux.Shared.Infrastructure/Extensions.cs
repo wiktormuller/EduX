@@ -1,5 +1,6 @@
 ﻿using Edux.Shared.Abstractions.Crypto;
 using Edux.Shared.Abstractions.Modules;
+using Edux.Shared.Abstractions.Serializers;
 using Edux.Shared.Abstractions.Time;
 using Edux.Shared.Infrastructure.Api;
 using Edux.Shared.Infrastructure.Auth;
@@ -12,8 +13,10 @@ using Edux.Shared.Infrastructure.Modules;
 using Edux.Shared.Infrastructure.Queries;
 using Edux.Shared.Infrastructure.RabbitMQ;
 using Edux.Shared.Infrastructure.RabbitMQ.Initializers;
+using Edux.Shared.Infrastructure.Serializers;
 using Edux.Shared.Infrastructure.Services;
 using Edux.Shared.Infrastructure.Time;
+using Edux.Shared.Infrastructure.Transactions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -41,7 +44,13 @@ namespace Edux.Shared.Infrastructure
             services.AddHttpContextAccessor();
             services.AddRabbitMq();
 
+            services.AddSingleton<IJsonSerializer, SystemTextJsonSerializer>();
+
             services.AddHostedService<AppInitializer>();
+
+            services.AddTransactionalDecorators();
+
+            services.AddOutbox();
 
             services.AddModuleInfo(modules);
             services.AddControllersWithOpenApi();
@@ -90,6 +99,21 @@ namespace Edux.Shared.Infrastructure
             var options = new T();
             configuration.GetSection(sectionName).Bind(options);
             return options;
+        }
+
+        public static string GetModuleName(this object value)
+            => value?.GetType().GetModuleName() ?? string.Empty;
+
+        public static string GetModuleName(this Type type, string namespacePart = "Modules", int splitIndex = 2)
+        {
+            if (type?.Namespace is null)
+            {
+                return string.Empty;
+            }
+
+            return type.Namespace.Contains(namespacePart)
+                ? type.Namespace.Split(".")[splitIndex].ToLowerInvariant()
+                : string.Empty;
         }
     }
 }

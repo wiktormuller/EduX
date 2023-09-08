@@ -7,5 +7,6 @@ namespace Edux.Modules.Users.Core.Repositories
         Task<RefreshToken?> GetAsync(string token);
         Task AddAsync(RefreshToken token);
         Task UpdateAsync(RefreshToken token);
+        Task SaveChangesAsync();
     }
 }

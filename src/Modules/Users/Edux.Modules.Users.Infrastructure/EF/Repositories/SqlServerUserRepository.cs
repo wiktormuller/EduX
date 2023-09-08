@@ -19,7 +19,6 @@ namespace Edux.Modules.Users.Infrastructure.EF.Repositories
         public async Task AddAsync(User user)
         {
             await _users.AddAsync(user);
-            await _dbContext.SaveChangesAsync();
         }
 
         public Task<User?> GetAsync(Guid id)
@@ -32,10 +31,14 @@ namespace Edux.Modules.Users.Infrastructure.EF.Repositories
             return await _users.SingleOrDefaultAsync(x => x.Email == email);
         }
 
+        public async Task SaveChangesAsync()
+        {
+            await _dbContext.SaveChangesAsync();
+        }
+
         public async Task UpdateAsync(User user)
         {
             _users.Update(user);
-            await _dbContext.SaveChangesAsync();
         }
     }
 }

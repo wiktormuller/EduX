@@ -32,5 +32,10 @@ namespace Edux.Modules.Users.Infrastructure.EF.Repositories
             _refreshTokens.Update(token);
             await _dbContext.SaveChangesAsync();
         }
+
+        public async Task SaveChangesAsync()
+        {
+            await _dbContext.SaveChangesAsync();
+        }
     }
 }

@@ -10,6 +10,8 @@ namespace Edux.Shared.Infrastructure.SqlServer
             var options = services.GetOptions<SqlServerOptions>("sqlserver");
             services.AddDbContext<T>(dbContextOptionsBuilder => dbContextOptionsBuilder.UseSqlServer(options.ConnectionString));
 
+            services.AddScoped<IUnitOfWork, SqlServerUnitOfWork<T>>();
+
             return services;
         }
     }

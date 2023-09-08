@@ -4,6 +4,7 @@ using Edux.Modules.Users.Infrastructure.EF.Contexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Edux.Modules.Users.Infrastructure.EF.Migrations
 {
     [DbContext(typeof(UsersWriteDbContext))]
-    partial class UsersWriteDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230908140215_Users_Module_Add_Outbox")]
+    partial class Users_Module_Add_Outbox
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

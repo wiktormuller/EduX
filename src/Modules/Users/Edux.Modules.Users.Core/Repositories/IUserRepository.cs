@@ -8,5 +8,6 @@ namespace Edux.Modules.Users.Core.Repositories
         Task<User?> GetAsync(string email);
         Task AddAsync(User user);
         Task UpdateAsync(User user);
+        Task SaveChangesAsync();
     }
 }
