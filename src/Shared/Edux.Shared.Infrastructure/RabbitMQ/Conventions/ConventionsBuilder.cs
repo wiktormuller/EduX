@@ -11,7 +11,7 @@ namespace Edux.Shared.Infrastructure.RabbitMQ.Conventions
 
         public ConventionsBuilder(RabbitMqOptions options)
         {
-            options = _options;
+            _options = options;
 
             _useSnakeCase = options?.ConventionsCasing
                 ?.Equals("snakeCase", StringComparison.InvariantCultureIgnoreCase) == true;

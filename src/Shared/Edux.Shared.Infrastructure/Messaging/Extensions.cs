@@ -1,5 +1,6 @@
 ﻿using Edux.Shared.Abstractions.Messaging;
 using Edux.Shared.Infrastructure.Messaging.Outbox;
+using Edux.Shared.Infrastructure.Messaging.Outbox.Processors;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -44,8 +45,8 @@ namespace Edux.Shared.Infrastructure.Messaging
                 return services;
             }
 
-            // services.AddHostedService<OutboxMessageProcessor>();
-            // services.AddHostedService<OutboxMessageCleanupProcessor>();
+            services.AddHostedService<OutboxMessageProcessor>();
+            //services.AddHostedService<OutboxMessageCleanupProcessor>();
 
             return services;
         }

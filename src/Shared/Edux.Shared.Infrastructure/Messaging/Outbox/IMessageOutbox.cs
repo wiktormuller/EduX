@@ -5,6 +5,7 @@ namespace Edux.Shared.Infrastructure.Messaging.Outbox
     internal interface IMessageOutbox
     {
         Task SaveAsync<T>(T message, string messageId = null, object messageContext = null) where T : IMessage;
-        // TODO: Add methods for publishing and cleaning up
+        Task PublishUnsentAsync();
+        Task CleanupAsync(DateTime? to = null);
     }
 }

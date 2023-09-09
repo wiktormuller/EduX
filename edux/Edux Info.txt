@@ -1,0 +1,40 @@
+TODO List:
+  [ ] Implement Inbox Pattern
+  [ ] Use ThreadLocal instead of ConcurrencyDictionary for storing the RabbitMQ Channels
+  [ ] Add RabbitMqContainers for E2E testing
+  [ ] Clean up Shared Infrstructure project
+  [ ] Learn about Domain Event Handlers
+  [ ] Implement Outbox Processor
+  [ ] Add Seq for logging
+  [ ] Create documentation about Swagger/Available Modules/RabbitUI etc.
+  [ ] Add first ADRs
+  [ ] Extend Message Broker to handle some type of Envelope
+  [ ] Extend Message Broker to handle many messages
+  [ ] Implement components for consuming Integration Messages
+  [ ] Mapping domain events to integration events
+  [ ] Implement in-memory communication between modules based on local contracts (or shared ones)
+  [ ] Add unit and integration tests (also for refresh tokens)
+  [ ] Implement some Saga via _Chronicle project
+  [ ] Add API Gateway
+  [ ] Implement asynchronous action in API with some type of Webhook or SignalR backchannel to client after adding API Gateway (maybe some hybrid action?)
+  [ ] Microservices registry with Consul and Fabio after distilling some part as a microservice
+  [ ] Performance tests with Nbomber
+  [ ] Contracts tests with PACT.NET and PactBroker
+  [ ] Add Serilog as a default logger
+  [ ] Pass logs to the Seq
+  [ ] Use Vault for safe app configuration
+  [ ] Define metrics and add monitoring with AppMetrics -> Prometheus -> Grafana
+  [ ] Implement distributed tracing with Jaeger
+  [ ] Use portainer to manage services based on Docker
+  [ ] Use K8S with some Sidecars
+  [ ] Use Rancher to manage K8S cluster and implement some Service Meshes with Istio
+  [ ] Implement Credential Lease for dynamically generated access to services as an alternative to centralized password storage (Vault)
+
+
+dotnet ef migrations add Users_Module_Init_Users --startup-project ..\..\..\Bootstrapper\Edux.Bootstrapper\ -o ./EF/Migrations --context UsersWriteDbContext
+
+dotnet ef migrations add Users_Module_Init_RefreshTokens --startup-project ..\..\..\Bootstrapper\Edux.Bootstrapper\ -o ./EF/Migrations --context RefreshTokensDbContext
+
+dotnet ef database update --startup-project ..\..\..\Bootstrapper\Edux.Bootstrapper\ --context UsersWriteDbContext
+
+dotnet ef database update --startup-project ..\..\..\Bootstrapper\Edux.Bootstrapper\ --context RefreshTokensDbContext
