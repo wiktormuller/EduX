@@ -46,7 +46,7 @@ namespace Edux.Shared.Infrastructure.Messaging
             }
 
             services.AddHostedService<OutboxMessageProcessor>();
-            //services.AddHostedService<OutboxMessageCleanupProcessor>();
+            services.AddHostedService<OutboxMessageCleanupProcessor>();
 
             return services;
         }

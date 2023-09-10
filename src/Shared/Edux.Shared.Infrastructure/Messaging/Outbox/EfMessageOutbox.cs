@@ -59,9 +59,28 @@ namespace Edux.Shared.Infrastructure.Messaging.Outbox
             await _dbContext.SaveChangesAsync();
         }
 
-        public Task CleanupAsync(DateTime? to = null)
+        public async Task CleanupAsync(DateTime? to = null)
         {
-            return Task.CompletedTask;
+            var module = _dbContext.GetModuleName();
+
+            var dateTo = to ?? _clock.CurrentDate();
+            var sentMessages = await _outboxMessageSet
+                .Where(o => o.SentAt != null &&
+                    o.CreatedAt <= dateTo)
+                .ToListAsync();
+
+            if (!sentMessages.Any())
+            {
+                _logger.LogTrace($"No sent messages found in outbox ('{module}') till: {dateTo}.");
+                return;
+            }
+
+            _logger.LogTrace($"Found {sentMessages.Count} sent messages in outbox ('{module}') till: {dateTo}, cleaning up...");
+
+            _outboxMessageSet.RemoveRange(sentMessages);
+            await _dbContext.SaveChangesAsync();
+
+            _logger.LogTrace($"Found {sentMessages.Count} sent messages in outbox ('{module}') till: {dateTo}, cleaning up...");
         }
 
         public async Task PublishUnsentAsync()
