@@ -1,4 +1,5 @@
 ﻿using Edux.Modules.Users.Core.Repositories;
+using Edux.Modules.Users.Infrastructure.EF;
 using Edux.Modules.Users.Infrastructure.EF.Contexts;
 using Edux.Modules.Users.Infrastructure.EF.Repositories;
 using Edux.Shared.Infrastructure.Messaging;
@@ -19,6 +20,8 @@ namespace Edux.Modules.Users.Infrastructure
             services.AddMsSqlServer<UsersReadDbContext>();
             services.AddMsSqlServer<UsersWriteDbContext>();
             services.AddMsSqlServer<RefreshTokensDbContext>();
+
+            services.AddUnitOfWork<UsersUnitOfWork>();
 
             services.AddOutbox<UsersWriteDbContext>();
 

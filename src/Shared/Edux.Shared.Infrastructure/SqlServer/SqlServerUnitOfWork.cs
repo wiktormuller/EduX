@@ -1,8 +1,9 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Edux.Shared.Abstractions.SqlServer;
+using Microsoft.EntityFrameworkCore;
 
 namespace Edux.Shared.Infrastructure.SqlServer
 {
-    internal sealed class SqlServerUnitOfWork<T> : IUnitOfWork where T : DbContext
+    public abstract class SqlServerUnitOfWork<T> : IUnitOfWork where T : DbContext
     {
         private readonly T _dbContext;
 
@@ -13,7 +14,7 @@ namespace Edux.Shared.Infrastructure.SqlServer
 
         public async Task ExecuteAsync(Func<Task> action, CancellationToken cancellationToken = default)
         {
-            var transaction = await _dbContext.Database.BeginTransactionAsync(cancellationToken);
+            using var transaction = await _dbContext.Database.BeginTransactionAsync(cancellationToken);
 
             try
             {
@@ -25,10 +26,6 @@ namespace Edux.Shared.Infrastructure.SqlServer
             {
                 await transaction.RollbackAsync(cancellationToken);
                 throw;
-            }
-            finally
-            {
-                await transaction.DisposeAsync();
             }
         }
     }

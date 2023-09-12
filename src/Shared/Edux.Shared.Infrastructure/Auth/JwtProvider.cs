@@ -19,13 +19,13 @@ namespace Edux.Shared.Infrastructure.Auth
 
         public JwtProvider(IClock clock, AuthOptions authOptions)
         {
-            if (_authOptions.IssuerSigningKey is null)
+            if (authOptions.IssuerSigningKey is null)
             {
                 throw new InvalidOperationException("Issuer signing key is not set.");
             }
 
             _signingCredentials = new SigningCredentials(
-                new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_authOptions.IssuerSigningKey)),
+                new SymmetricSecurityKey(Encoding.UTF8.GetBytes(authOptions.IssuerSigningKey)),
                 SecurityAlgorithms.HmacSha256);
 
             _clock = clock;

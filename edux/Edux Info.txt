@@ -1,10 +1,13 @@
 TODO List:
+  [x] Implement logic to verify user's permissions
+  [x] Add Dockerfile for app
+  [x] Implement Outbox Processor
+  [x] Add UoW registry
   [ ] Implement Inbox Pattern
   [ ] Use ThreadLocal instead of ConcurrencyDictionary for storing the RabbitMQ Channels
   [ ] Add RabbitMqContainers for E2E testing
-  [ ] Clean up Shared Infrstructure project
+  [ ] Clean up Shared Infrastructure project
   [ ] Learn about Domain Event Handlers
-  [ ] Implement Outbox Processor
   [ ] Add Seq for logging
   [ ] Create documentation about Swagger/Available Modules/RabbitUI etc.
   [ ] Add first ADRs

@@ -1,12 +1,12 @@
-@url = http://localhost:5187/users-module
+@url = http://localhost:5000/users-module
 
 ###
 POST {{url}}/users/sign-up
 Content-Type: application/json
 
 {
-  "email": "user12@email.com",
-  "username": "user12",
+  "email": "user14@email.com",
+  "username": "user14",
   "password": "Password123!",
   "role": "user",
   "claims": {

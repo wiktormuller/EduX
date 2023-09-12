@@ -28,7 +28,8 @@ namespace Edux.Modules.Users.Application.Commands.Handlers
             ITokenStorage tokenStorage,
             IClock clock,
             IRandomNumberGenerator rng,
-            IRefreshTokenRepository refreshTokenRepository)
+            IRefreshTokenRepository refreshTokenRepository,
+            IMessageBroker messageBroker)
         {
             _userRepository = userRepository;
             _jwtProvider = jwtProvider;
@@ -37,6 +38,7 @@ namespace Edux.Modules.Users.Application.Commands.Handlers
             _clock = clock;
             _rng = rng;
             _refreshTokenRepository = refreshTokenRepository;
+            _messageBroker = messageBroker;
         }
 
         public async Task HandleAsync(SignIn command, CancellationToken cancellationToken)

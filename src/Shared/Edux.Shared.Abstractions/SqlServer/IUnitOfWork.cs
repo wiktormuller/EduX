@@ -1,6 +1,6 @@
-﻿namespace Edux.Shared.Infrastructure.SqlServer
+﻿namespace Edux.Shared.Abstractions.SqlServer
 {
-    internal interface IUnitOfWork
+    public interface IUnitOfWork
     {
         Task ExecuteAsync(Func<Task> action, CancellationToken cancellationToken = default);
     }

@@ -1,6 +1,7 @@
 ﻿using Edux.Shared.Abstractions.Auth;
 using Edux.Shared.Abstractions.Modules;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization.Policy;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
@@ -19,6 +20,11 @@ namespace Edux.Shared.Infrastructure.Auth
 
             var options = services.GetOptions<AuthOptions>("auth");
             services.AddSingleton(options);
+
+            if (options.AuthenticationDisabled)
+            {
+                services.AddSingleton<IPolicyEvaluator, DisabledAuthenticationPolicyEvaluator>(); // TODO : Test it
+            }
 
             var tokenValidationParameters = BuildTokenValidationParameters(options);
 
@@ -49,7 +55,7 @@ namespace Edux.Shared.Infrastructure.Auth
 
             services.AddAuthorization(authOptions =>
             {
-                foreach (var policy in policies)
+                foreach (var policy in policies) // Register existing policies in system
                 {
                     authOptions.AddPolicy(policy, x => x.RequireClaim("permissions", policy));
                 }
