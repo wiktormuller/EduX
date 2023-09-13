@@ -19,7 +19,6 @@ namespace Edux.Modules.Users.Infrastructure.EF.Repositories
         public async Task AddAsync(RefreshToken token)
         {
             await _refreshTokens.AddAsync(token);
-            await _dbContext.SaveChangesAsync();
         }
 
         public Task<RefreshToken?> GetAsync(string token)
@@ -30,7 +29,6 @@ namespace Edux.Modules.Users.Infrastructure.EF.Repositories
         public async Task UpdateAsync(RefreshToken token)
         {
             _refreshTokens.Update(token);
-            await _dbContext.SaveChangesAsync();
         }
 
         public async Task SaveChangesAsync()

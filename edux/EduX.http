@@ -5,8 +5,8 @@ POST {{url}}/users/sign-up
 Content-Type: application/json
 
 {
-  "email": "user14@email.com",
-  "username": "user14",
+  "email": "user1@email.com",
+  "username": "user1",
   "password": "Password123!",
   "role": "user",
   "claims": {
@@ -22,7 +22,7 @@ POST {{url}}/users/sign-in
 Content-Type: application/json
 
 {
-    "email": "user1@edux.com",
+    "email": "user1@email.com",
     "password": "Password123!"
 }
 
@@ -31,17 +31,17 @@ Content-Type: application/json
 
 ###
 GET {{url}}/users/me
-Authorization: Bearer {{accessToken}}
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkM2E0MzU3Ny1iYmZjLTQwYmUtYjFlNi00ZDgwZWE5YzQ0YmQiLCJ1bmlxdWVfbmFtZSI6ImQzYTQzNTc3LWJiZmMtNDBiZS1iMWU2LTRkODBlYTljNDRiZCIsImp0aSI6Ijc1M2EzMDhiLTgxMWItNDY0Ni04M2NjLTY5ZDI2NjQ5M2NiYyIsImlhdCI6IjE2OTQ2MzQ2NzMiLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL3JvbGUiOiJ1c2VyIiwicGVybWlzc2lvbnMiOiJ1c2VycyIsIm5iZiI6MTY5NDYzNDY3MywiZXhwIjoxNjk0NjcwNjczLCJpc3MiOiJlZHV4In0.ypUaQGwYfl-UEA4tWYT0woPEoFq5_2FH_SmmsOKkZ0M
 
 ###
-GET {{url}}/users
+### GET {{url}}/users
 
 ###
 POST {{url}}/users/refresh-tokens/revoke
 Content-Type: application/json
 
 {
-  "refreshToken": "string"
+  "refreshToken": "bFEUh3uEEvDS11QUM52FOSOIQ4NVrwAbh5szI3b"
 }
 
 ###
@@ -49,5 +49,5 @@ POST {{url}}/users/refresh-tokens/use
 Content-Type: application/json
 
 {
-  "refreshToken": "string"
+  "refreshToken": "bFEUh3uEEvDS11QUM52FOSOIQ4NVrwAbh5szI3b"
 }

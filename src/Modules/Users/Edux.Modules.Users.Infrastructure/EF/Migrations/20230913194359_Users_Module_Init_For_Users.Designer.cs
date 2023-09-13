@@ -4,16 +4,19 @@ using Edux.Modules.Users.Infrastructure.EF.Contexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
 namespace Edux.Modules.Users.Infrastructure.EF.Migrations
 {
-    [DbContext(typeof(RefreshTokensDbContext))]
-    partial class RefreshTokensDbContextModelSnapshot : ModelSnapshot
+    [DbContext(typeof(UsersWriteDbContext))]
+    [Migration("20230913194359_Users_Module_Init_For_Users")]
+    partial class Users_Module_Init_For_Users
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -104,7 +107,39 @@ namespace Edux.Modules.Users.Infrastructure.EF.Migrations
                     b.HasIndex("Username")
                         .IsUnique();
 
-                    b.ToTable("User", "users");
+                    b.ToTable("Users", "users");
+                });
+
+            modelBuilder.Entity("Edux.Shared.Abstractions.Messaging.Outbox.OutboxMessage", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Context")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Data")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("SentAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Type")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Outbox", "users");
                 });
 
             modelBuilder.Entity("Edux.Modules.Users.Core.Entities.RefreshToken", b =>

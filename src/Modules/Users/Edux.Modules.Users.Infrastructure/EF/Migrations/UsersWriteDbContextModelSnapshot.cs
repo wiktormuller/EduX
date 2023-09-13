@@ -51,7 +51,7 @@ namespace Edux.Modules.Users.Infrastructure.EF.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("RefreshToken", "users");
+                    b.ToTable("RefreshTokens", "users");
                 });
 
             modelBuilder.Entity("Edux.Modules.Users.Core.Entities.User", b =>

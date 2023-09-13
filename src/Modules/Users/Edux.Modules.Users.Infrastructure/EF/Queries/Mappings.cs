@@ -21,7 +21,7 @@ namespace Edux.Modules.Users.Infrastructure.EF.Queries
 
         public static UserMeResponse AsUserMeResponse(this UserReadModel userReadModel)
         {
-            return new()
+            return new UserMeResponse()
             {
                 Id = userReadModel.Id,
                 Email = userReadModel.Email,

@@ -1,6 +1,7 @@
 ﻿using Edux.Modules.Users.Core.Entities;
 using Edux.Modules.Users.Core.Repositories;
 using Edux.Modules.Users.Infrastructure.EF.Contexts;
+using Edux.Shared.Abstractions.Kernel.Types;
 using Microsoft.EntityFrameworkCore;
 
 namespace Edux.Modules.Users.Infrastructure.EF.Repositories
@@ -21,9 +22,9 @@ namespace Edux.Modules.Users.Infrastructure.EF.Repositories
             await _users.AddAsync(user);
         }
 
-        public Task<User?> GetAsync(Guid id)
+        public Task<User?> GetAsync(AggregateId id)
         {
-            return _users.SingleOrDefaultAsync(x => x.Id.Value == id);
+            return _users.SingleOrDefaultAsync(x => x.Id == id);
         }
 
         public async Task<User?> GetAsync(string email)

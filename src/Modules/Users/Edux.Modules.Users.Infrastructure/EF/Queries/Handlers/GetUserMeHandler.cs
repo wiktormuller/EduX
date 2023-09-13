@@ -19,9 +19,10 @@ namespace Edux.Modules.Users.Infrastructure.EF.Queries.Handlers
         public async Task<UserMeResponse> HandleAsync(GetUserMe query)
         {
             return await _users
-                .Select(u => u.AsUserMeResponse())
+                .Where(u => u.Id == query.UserId)
+                .Select(userReadModel => userReadModel.AsUserMeResponse())
                 .AsNoTracking()
-                .SingleOrDefaultAsync(u => u.Id == query.UserId);
+                .SingleOrDefaultAsync();
         }
     }
 }

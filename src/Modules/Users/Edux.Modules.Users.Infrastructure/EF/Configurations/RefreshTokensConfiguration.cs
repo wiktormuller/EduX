@@ -9,6 +9,8 @@ namespace Edux.Modules.Users.Infrastructure.EF.Configurations
     {
         public void Configure(EntityTypeBuilder<RefreshToken> builder)
         {
+            builder.ToTable("RefreshTokens");
+
             builder.HasKey(rt => rt.Id);
 
             builder.Property(rt => rt.Id)
@@ -19,11 +21,6 @@ namespace Edux.Modules.Users.Infrastructure.EF.Configurations
                 .HasMaxLength(256);
 
             builder.Property(rt => rt.CreatedAt)
-                .IsRequired();
-
-            builder.HasOne<User>()
-                .WithMany()
-                .HasForeignKey(e => e.UserId)
                 .IsRequired();
 
             builder.Property(rt => rt.UserId)

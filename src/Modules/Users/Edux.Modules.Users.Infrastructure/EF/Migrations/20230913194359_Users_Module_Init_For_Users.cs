@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Edux.Modules.Users.Infrastructure.EF.Migrations
 {
     /// <inheritdoc />
-    public partial class Users_Module_Init_RefreshTokens : Migration
+    public partial class Users_Module_Init_For_Users : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -15,7 +15,25 @@ namespace Edux.Modules.Users.Infrastructure.EF.Migrations
                 name: "users");
 
             migrationBuilder.CreateTable(
-                name: "User",
+                name: "Outbox",
+                schema: "users",
+                columns: table => new
+                {
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Type = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Data = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Context = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    SentAt = table.Column<DateTime>(type: "datetime2", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Outbox", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Users",
                 schema: "users",
                 columns: table => new
                 {
@@ -32,7 +50,7 @@ namespace Edux.Modules.Users.Infrastructure.EF.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_User", x => x.Id);
+                    table.PrimaryKey("PK_Users", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -51,10 +69,10 @@ namespace Edux.Modules.Users.Infrastructure.EF.Migrations
                 {
                     table.PrimaryKey("PK_RefreshTokens", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_RefreshTokens_User_UserId",
+                        name: "FK_RefreshTokens_Users_UserId",
                         column: x => x.UserId,
                         principalSchema: "users",
-                        principalTable: "User",
+                        principalTable: "Users",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -72,22 +90,22 @@ namespace Edux.Modules.Users.Infrastructure.EF.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_User_Email",
+                name: "IX_Users_Email",
                 schema: "users",
-                table: "User",
+                table: "Users",
                 column: "Email",
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_User_Id",
+                name: "IX_Users_Id",
                 schema: "users",
-                table: "User",
+                table: "Users",
                 column: "Id");
 
             migrationBuilder.CreateIndex(
-                name: "IX_User_Username",
+                name: "IX_Users_Username",
                 schema: "users",
-                table: "User",
+                table: "Users",
                 column: "Username",
                 unique: true);
         }
@@ -96,11 +114,15 @@ namespace Edux.Modules.Users.Infrastructure.EF.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
+                name: "Outbox",
+                schema: "users");
+
+            migrationBuilder.DropTable(
                 name: "RefreshTokens",
                 schema: "users");
 
             migrationBuilder.DropTable(
-                name: "User",
+                name: "Users",
                 schema: "users");
         }
     }

@@ -29,13 +29,10 @@ namespace Edux.Shared.Infrastructure.Services
             foreach (var dbContextType in dbContextTypes)
             {
                 var dbContext = scope.ServiceProvider.GetService(dbContextType) as DbContext;
-                if (dbContext is null)
+                if (dbContext is null || dbContext.GetType().Name.Contains("Read")) // Convention
                 {
                     continue;
                 }
-
-                var x = scope.ServiceProvider.GetService<IConfiguration>();
-                var y = x.GetOptions<SqlServerOptions>("sqlServer");
 
                 await dbContext.Database.MigrateAsync(cancellationToken);
             }

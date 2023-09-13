@@ -15,7 +15,7 @@ namespace Edux.Modules.Users.Core.Entities
         {
         }
 
-        public RefreshToken(AggregateId id, AggregateId userId, string token, DateTime createdAt,
+        public RefreshToken(Guid id, AggregateId userId, string token, DateTime createdAt,
             DateTime? revokedAt = null)
         {
             if (string.IsNullOrWhiteSpace(token))

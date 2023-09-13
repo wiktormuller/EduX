@@ -16,6 +16,8 @@ namespace Edux.Modules.Users.Infrastructure.EF.Configurations
 
         public void Configure(EntityTypeBuilder<User> builder)
         {
+            builder.ToTable("Users");
+
             builder.HasKey(u => u.Id);
 
             builder.Property(u => u.Id)
@@ -53,15 +55,15 @@ namespace Edux.Modules.Users.Infrastructure.EF.Configurations
             builder.Property(u => u.UpdatedAt)
                 .IsRequired();
 
+            builder.HasMany<RefreshToken>()
+                .WithOne()
+                .HasForeignKey(rt => rt.UserId)
+                .IsRequired();
+
             builder.HasIndex(u => u.Email)
                 .IsUnique();
 
             builder.HasIndex(u => u.Id);
-
-            builder.HasMany<RefreshToken>()
-                .WithOne()
-                .HasForeignKey(e => e.UserId)
-                .IsRequired();
         }
     }
 }

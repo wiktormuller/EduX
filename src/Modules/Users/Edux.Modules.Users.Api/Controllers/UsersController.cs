@@ -103,6 +103,7 @@ namespace Edux.Modules.Users.Api.Controllers
             return Ok(jwt);
         }
 
-        // TODO: Implement access-tokens/revoke based on distributed cache
+        // TODO: Implement access-tokens/revoke based on distributed cache in Pacco
+        // TODO: Implement /users
     }
 }
