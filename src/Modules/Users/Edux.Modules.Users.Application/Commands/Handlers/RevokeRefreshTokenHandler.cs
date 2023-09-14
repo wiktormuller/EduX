@@ -29,7 +29,6 @@ namespace Edux.Modules.Users.Application.Commands.Handlers
             refreshToken.Revoke(_clock.CurrentDate());
 
             await _refreshTokenRepository.UpdateAsync(refreshToken);
-            await _refreshTokenRepository.SaveChangesAsync();
         }
     }
 }

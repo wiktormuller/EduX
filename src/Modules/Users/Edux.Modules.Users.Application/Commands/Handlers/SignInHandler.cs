@@ -65,7 +65,6 @@ namespace Edux.Modules.Users.Application.Commands.Handlers
             var token = _rng.Generate(30, true);
             var refreshToken = new RefreshToken(Guid.NewGuid(), user.Id, token, _clock.CurrentDate());
             await _refreshTokenRepository.AddAsync(refreshToken);
-            await _refreshTokenRepository.SaveChangesAsync();
 
             jwt.RefreshToken = token;
 

@@ -19,7 +19,6 @@ namespace Edux.Modules.Users.Infrastructure
 
             services.AddMsSqlServer<UsersReadDbContext>();
             services.AddMsSqlServer<UsersWriteDbContext>();
-            services.AddMsSqlServer<RefreshTokensDbContext>();
 
             services.AddUnitOfWork<UsersUnitOfWork>();
 

@@ -20,7 +20,7 @@ namespace Edux.Bootstrapper
             // All dlls that aren't associated with Bootstrapper AppDomain (the dlls of our modules are here and much more)
             var dllFilesNames = Directory.GetFiles(AppDomain.CurrentDomain.BaseDirectory, "*.dll")
                 .Where(fileName => !locationsOfAssemblies.Contains(fileName, StringComparer.InvariantCultureIgnoreCase))
-                .ToList(); // TODO: Why !locationsOfAssemblies
+                .ToList();
 
             var dllFilesOfDisabledModules = new List<string>();
             foreach (var dllFileName in dllFilesNames)

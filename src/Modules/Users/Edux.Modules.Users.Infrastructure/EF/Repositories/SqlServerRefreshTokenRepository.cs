@@ -7,10 +7,10 @@ namespace Edux.Modules.Users.Infrastructure.EF.Repositories
 {
     internal class SqlServerRefreshTokenRepository : IRefreshTokenRepository
     {
-        private readonly RefreshTokensDbContext _dbContext;
+        private readonly UsersWriteDbContext _dbContext;
         private readonly DbSet<RefreshToken> _refreshTokens;
 
-        public SqlServerRefreshTokenRepository(RefreshTokensDbContext dbContext)
+        public SqlServerRefreshTokenRepository(UsersWriteDbContext dbContext)
         {
             _dbContext = dbContext;
             _refreshTokens = _dbContext.RefreshTokens;

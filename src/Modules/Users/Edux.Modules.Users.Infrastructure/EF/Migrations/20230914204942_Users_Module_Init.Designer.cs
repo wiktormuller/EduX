@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Edux.Modules.Users.Infrastructure.EF.Migrations
 {
     [DbContext(typeof(UsersWriteDbContext))]
-    [Migration("20230913194359_Users_Module_Init_For_Users")]
-    partial class Users_Module_Init_For_Users
+    [Migration("20230914204942_Users_Module_Init")]
+    partial class Users_Module_Init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

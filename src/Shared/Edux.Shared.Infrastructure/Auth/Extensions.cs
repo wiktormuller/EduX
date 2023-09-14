@@ -59,6 +59,8 @@ namespace Edux.Shared.Infrastructure.Auth
                 {
                     authOptions.AddPolicy(policy, x => x.RequireClaim("permissions", policy));
                 }
+
+                authOptions.AddPolicy("is-admin", x => x.RequireRole("admin"));
             });
 
             return services;

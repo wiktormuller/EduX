@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Edux.Modules.Users.Infrastructure.EF.Migrations
 {
     /// <inheritdoc />
-    public partial class Users_Module_Init_For_Users : Migration
+    public partial class Users_Module_Init : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

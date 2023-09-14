@@ -16,15 +16,18 @@ namespace Edux.Shared.Infrastructure.SqlServer
             return services;
         }
 
-        public static IServiceCollection AddMsSqlServer<T>(this IServiceCollection services) where T : DbContext
+        public static IServiceCollection AddMsSqlServer<T>(this IServiceCollection services) 
+            where T : DbContext
         {
             var options = services.GetOptions<SqlServerOptions>("sqlserver");
-            services.AddDbContext<T>(dbContextOptionsBuilder => dbContextOptionsBuilder.UseSqlServer(options.ConnectionString));
+            services.AddDbContext<T>(dbContextOptionsBuilder => 
+                dbContextOptionsBuilder.UseSqlServer(options.ConnectionString));
 
             return services;
         }
 
-        public static IServiceCollection AddUnitOfWork<T>(this IServiceCollection services) where T : class, IUnitOfWork
+        public static IServiceCollection AddUnitOfWork<T>(this IServiceCollection services) 
+            where T : class, IUnitOfWork
         {
             services.AddScoped<IUnitOfWork, T>();
             services.AddScoped<T>();
