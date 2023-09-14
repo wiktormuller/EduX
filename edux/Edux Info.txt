@@ -3,10 +3,10 @@ TODO List:
   [x] Add Dockerfile for app
   [x] Implement Outbox Processor
   [x] Add UoW registry
+  [x] Clean up Shared Infrastructure project
   [ ] Implement Inbox Pattern
   [ ] Use ThreadLocal instead of ConcurrencyDictionary for storing the RabbitMQ Channels
   [ ] Add RabbitMqContainers for E2E testing
-  [ ] Clean up Shared Infrastructure project
   [ ] Learn about Domain Event Handlers
   [ ] Add Seq for logging
   [ ] Create documentation about Swagger/Available Modules/RabbitUI etc.
@@ -36,7 +36,7 @@ TODO List:
 
 EF Core:
 
-  dotnet ef migrations add Users_Module_Init_Users --startup-project ..\..\..\Bootstrapper\Edux.Bootstrapper\ -o ./EF/Migrations --context UsersWriteDbContext
+  dotnet ef migrations add Users_Module_Init --startup-project ..\..\..\Bootstrapper\Edux.Bootstrapper\ -o ./EF/Migrations --context UsersWriteDbContext
 
   dotnet ef database update --startup-project ..\..\..\Bootstrapper\Edux.Bootstrapper\ --context UsersWriteDbContext
 

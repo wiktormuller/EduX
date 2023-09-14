@@ -1,7 +1,6 @@
 ﻿using Edux.Shared.Abstractions.Commands;
-using Edux.Shared.Abstractions.SqlServer;
+using Edux.Shared.Abstractions.Transactions;
 using Edux.Shared.Infrastructure.Decorator;
-using Edux.Shared.Infrastructure.SqlServer;
 using Humanizer;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;

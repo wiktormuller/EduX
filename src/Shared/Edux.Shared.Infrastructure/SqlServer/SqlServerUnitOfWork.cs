@@ -1,4 +1,4 @@
-﻿using Edux.Shared.Abstractions.SqlServer;
+﻿using Edux.Shared.Abstractions.Transactions;
 using Microsoft.EntityFrameworkCore;
 
 namespace Edux.Shared.Infrastructure.SqlServer

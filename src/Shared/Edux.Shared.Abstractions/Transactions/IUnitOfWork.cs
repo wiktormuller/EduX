@@ -1,4 +1,4 @@
-﻿namespace Edux.Shared.Abstractions.SqlServer
+﻿namespace Edux.Shared.Abstractions.Transactions
 {
     public interface IUnitOfWork
     {

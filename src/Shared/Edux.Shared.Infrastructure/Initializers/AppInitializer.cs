@@ -1,11 +1,9 @@
-﻿using Edux.Shared.Infrastructure.SqlServer;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
-namespace Edux.Shared.Infrastructure.Services
+namespace Edux.Shared.Infrastructure.Initializers
 {
     internal class AppInitializer : IHostedService
     {
