@@ -1,0 +1,108 @@
+Hello World:
+
+	RabbitMQ is a post box, a post office and a letter carrier at once. (exchange, storage, queue).
+
+	Messages are binary blobs of data.
+
+	Producing means sending messages. It's done by producer apps.
+
+	Queue is the post box in RabbitMQ. All messages are stored inside a queue. It's message buffer. Many producers can send messages to one queue, and many consumers can try to receive data from one queue.
+
+	Consuming means receiving a messages. It's done by consumer apps.
+
+	An application can be both a producer and consumer, too.
+
+	Sending:
+		The connection abstracts the socket connection, and takes care of protocol version negotiation and authentication and so on for us.
+
+		A channel, which is where most of the API for getting things done resides.
+
+		To send, we must declare a queue for us to send to; then we can publish a message to the queue:
+
+			var factory = new ConnectionFactory { HostName = "localhost" };
+			using var connection = factory.CreateConnection();
+			using var channel = connection.CreateModel();
+
+			channel.QueueDeclare(queue: "hello",
+			                     durable: false,
+			                     exclusive: false,
+			                     autoDelete: false,
+			                     arguments: null);
+
+			const string message = "Hello World!";
+			var body = Encoding.UTF8.GetBytes(message);
+
+			channel.BasicPublish(exchange: string.Empty,
+			                     routingKey: "hello",
+			                     basicProperties: null,
+			                     body: body);
+
+		Declaring a queue is idempotent - it will only be created if it doesn't exist already. The message content is a byte array, so you can encode whatever you like there.
+
+		When the code above finishes running, the channel and the connection will be disposed.
+
+	Receiving:
+		So unlike the publisher which publishes a single message, we'll keep the consumer running continuously to listen for messages and print them out.
+
+		Setting up is the same as the publisher; we open a connection and a channel, and declare the queue from which we're going to consume.
+
+		Note that we declare the queue here as well. Because we might start the consumer before the publisher, we want to make sure the queue exists before we try to consume messages from it.
+
+			var factory = new ConnectionFactory { HostName = "localhost" };
+			using var connection = factory.CreateConnection();
+			using var channel = connection.CreateModel();
+
+			channel.QueueDeclare(queue: "hello",
+			                     durable: false,
+			                     exclusive: false,
+			                     autoDelete: false,
+			                     arguments: null);
+
+			Console.WriteLine(" [*] Waiting for messages.");
+
+			var consumer = new EventingBasicConsumer(channel);
+			consumer.Received += (model, ea) =>
+			{
+			    var body = ea.Body.ToArray();
+			    var message = Encoding.UTF8.GetString(body);
+			    Console.WriteLine($" [x] Received {message}");
+			};
+			channel.BasicConsume(queue: "hello",
+			                     autoAck: true,
+			                     consumer: consumer);
+
+Work Queues:
+	The main idea behind Work Queues (aka: Task Queues) is to avoid doing a resource-intensive task immediately and having to wait for it to complete. Instead we schedule the task to be done later. We encapsulate a task as a message and send it to a queue. A worker process running in the background will pop the tasks and eventually execute the job. When you run many workers the tasks will be shared between them.
+
+	This concept is especially useful in web applications where it's impossible to handle a complex task during a short HTTP request window.
+
+	Round-robin dispatching:
+		One of the advantages of using a Task Queue is the ability to easily parallelise work. If we are building up a backlog of work, we can just add more workers and that way, scale easily.
+
+		First, let's try to run two Worker instances at the same time. They will both get messages from the queue, but how exactly?
+
+		By default, RabbitMQ will send each message to the next consumer, in sequence. On average every consumer will get the same number of messages. This way of distributing messages is called round-robin.
+
+	Message ACK:
+		Doing a task can take a few seconds. You may wonder what happens if one of the consumers starts a long task and dies with it only partly done. With our current code, once RabbitMQ delivers a message to the consumer it immediately marks it for deletion. In this case, if you terminate a worker we will lose the message it was just processing. We'll also lose all the messages that were dispatched to this particular worker but were not yet handled.
+
+		But we don't want to lose any tasks. If a worker dies, we'd like the task to be delivered to another worker.
+
+		The timeout for ACK is by default 30 minutes.
+
+		Manual message acknowledgments are turned on by default. In previous examples we explicitly turned them off by setting the autoAck ("automatic acknowledgement mode") parameter to true. It's time to remove this flag and manually send a proper acknowledgment from the worker, once we're done with a task.
+
+			Console.WriteLine(" [x] Done");
+
+	    	// here channel could also be accessed as ((EventingBasicConsumer)sender).Model
+	    	channel.BasicAck(deliveryTag: ea.DeliveryTag, multiple: false);
+
+			channel.BasicConsume(queue: "hello",
+	                     autoAck: false,
+	                     consumer: consumer);
+
+	    Using this code, you can ensure that even if you terminate a worker node using CTRL+C while it was processing a message, nothing is lost. Soon after the worker node is terminated, all unacknowledged messages will be redelivered.
+
+		Acknowledgement must be sent on the same channel that received the delivery. Attempts to acknowledge using a different channel will result in a channel-level protocol exception.
+
+		
