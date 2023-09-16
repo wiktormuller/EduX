@@ -15,7 +15,7 @@ namespace Edux.Shared.Infrastructure.RabbitMQ.Messaging.Clients
         private readonly IConnection _connection;
         private readonly ILogger<RabbitMqClient> _logger;
         private readonly IRabbitMqSerializer _serializer;
-        private readonly IContextProvider _contextProvider;
+        private readonly IMessageContextProvider _contextProvider;
 
         private readonly bool _loggerEnabled;
         private readonly bool _persistMessages;
@@ -29,7 +29,7 @@ namespace Edux.Shared.Infrastructure.RabbitMQ.Messaging.Clients
             ProducerConnection connection,
             ILogger<RabbitMqClient> logger,
             IRabbitMqSerializer serializer,
-            IContextProvider contextProvider)
+            IMessageContextProvider contextProvider)
         {
             _connection = connection.Connection;
             _loggerEnabled = options.Logger?.Enabled ?? false;

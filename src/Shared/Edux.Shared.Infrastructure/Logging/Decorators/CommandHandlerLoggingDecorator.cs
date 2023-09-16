@@ -1,9 +1,8 @@
 ﻿using Edux.Shared.Abstractions.Commands;
-using Edux.Shared.Abstractions.Logging;
+using Edux.Shared.Abstractions.Contexts;
 using Edux.Shared.Infrastructure.Decorator;
-using Microsoft.Extensions.DependencyInjection;
+using Humanizer;
 using Microsoft.Extensions.Logging;
-using SmartFormat;
 
 namespace Edux.Shared.Infrastructure.Logging.Decorators
 {
@@ -13,63 +12,48 @@ namespace Edux.Shared.Infrastructure.Logging.Decorators
     {
         private readonly ILogger<CommandHandlerLoggingDecorator<TCommand>> _logger;
         private readonly ICommandHandler<TCommand> _commandHandler;
-        private readonly IMessageToLogTemplateMapper _mapper;
+        private readonly ICorrelationContext _context;
 
-        public CommandHandlerLoggingDecorator(ILogger<CommandHandlerLoggingDecorator<TCommand>> logger, 
+        public CommandHandlerLoggingDecorator(ILogger<CommandHandlerLoggingDecorator<TCommand>> logger,
             ICommandHandler<TCommand> commandHandler,
-            IServiceProvider serviceProvider)
+            ICorrelationContext context)
         {
             _logger = logger;
             _commandHandler = commandHandler;
-            _mapper = serviceProvider.GetService<IMessageToLogTemplateMapper>() 
-                ?? new EmptyMessageToLogTemplateMapper();
+            _context = context;
         }
 
         public async Task HandleAsync(TCommand command, CancellationToken cancellationToken)
         {
-            var template = _mapper.Map(command);
+            // We can use template mechanism here with some global registry or implement simple loggin with predefined data
 
-            if (template is null)
-            {
-                await _commandHandler.HandleAsync(command, cancellationToken);
-                return;
-            }
+            var module = command.GetModuleName();
+            var name = command.GetType().Name.Underscore();
+            var requestId = _context.RequestId;
+            var traceId = _context.TraceId;
+            var userId = _context.Identity?.Id;
+            // TODO: Implement MessageId and CorrelationId
 
             try
             {
-                Log(command, template.Before);
+                _logger.LogInformation($"Handling a command: {name} ({module}) " +
+                    $"[Request ID: {requestId}, " +
+                    $"Trace ID: '{traceId}', User ID: '{userId}]'...");
+                
                 await _commandHandler.HandleAsync(command, cancellationToken);
-                Log(command, template.After);
+                
+                _logger.LogInformation($"Handled a command: {name} ({module}) " +
+                    $"[Request ID: {requestId}, " +
+                    $"Trace ID: '{traceId}', User ID: '{userId}']");
             }
             catch (Exception ex)
             {
-                var exceptionTemplate = template.GetExceptionTemplate(ex);
+                _logger.LogError($"There was an ERROR while handling a command: {name} ({module}) " +
+                    $"[Request ID: {requestId}, " +
+                    $"Trace ID: '{traceId}', User ID: '{userId}]'. Exception message: {ex.Message}");
 
-                Log(command, exceptionTemplate, isError: true);
                 throw;
             }
-        }
-
-        private void Log(TCommand command, string message, bool isError = false)
-        {
-            if (string.IsNullOrEmpty(message))
-            {
-                return;
-            }
-
-            if (isError)
-            {
-                _logger.LogError(Smart.Format(message, command));
-            }
-            else
-            {
-                _logger.LogInformation(Smart.Format(message, command));
-            }
-        }
-
-        private class EmptyMessageToLogTemplateMapper : IMessageToLogTemplateMapper
-        {
-            public HandlerLogTemplate Map<TMessage>(TMessage message) where TMessage : class => null;
         }
     }
 }

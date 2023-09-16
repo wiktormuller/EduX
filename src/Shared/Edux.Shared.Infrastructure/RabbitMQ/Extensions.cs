@@ -30,11 +30,13 @@ namespace Edux.Shared.Infrastructure.RabbitMQ
                 throw new ArgumentException("RabbitMQ hostnames are not specified.", nameof(options.HostNames));
             }
 
-            services.AddSingleton<IContextProvider, ContextProvider>();
-            services.AddSingleton<ICorrelationContextAccessor>(new CorrelationContextAccessor());
+            services.AddSingleton<IMessageContextProvider, MessageContextProvider>();
             services.AddSingleton<IRabbitMqClient, RabbitMqClient>();
             services.AddSingleton<IBusPublisher, RabbitMqPublisher>();
             services.AddSingleton<IRabbitMqSerializer, SystemTextJsonRabbitMqSerializer>();
+
+
+            services.AddSingleton<ICorrelationContextAccessor>(new CorrelationContextAccessor());
 
             services.AddSingleton<IConventionsBuilder, ConventionsBuilder>();
             services.AddSingleton<IConventionsProvider, ConventionsProvider>();

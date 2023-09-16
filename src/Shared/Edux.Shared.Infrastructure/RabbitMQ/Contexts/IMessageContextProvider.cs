@@ -1,6 +1,6 @@
 ﻿namespace Edux.Shared.Infrastructure.RabbitMQ.Contexts
 {
-    internal interface IContextProvider
+    internal interface IMessageContextProvider
     {
         string HeaderName { get; }
         object Get(IDictionary<string, object> headers);

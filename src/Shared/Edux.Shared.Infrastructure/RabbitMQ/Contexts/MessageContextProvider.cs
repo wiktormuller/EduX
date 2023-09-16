@@ -2,13 +2,13 @@
 
 namespace Edux.Shared.Infrastructure.RabbitMQ.Contexts
 {
-    internal sealed class ContextProvider : IContextProvider
+    internal sealed class MessageContextProvider : IMessageContextProvider
     {
         public string HeaderName { get; }
 
         private readonly IRabbitMqSerializer _serializer;
 
-        public ContextProvider(IRabbitMqSerializer serializer, RabbitMqOptions options)
+        public MessageContextProvider(IRabbitMqSerializer serializer, RabbitMqOptions options)
         {
             _serializer = serializer;
             HeaderName = string.IsNullOrWhiteSpace(options?.Context?.Header)

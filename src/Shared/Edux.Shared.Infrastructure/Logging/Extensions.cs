@@ -1,8 +1,13 @@
 ﻿using Edux.Shared.Abstractions.Commands;
+using Edux.Shared.Abstractions.Contexts;
 using Edux.Shared.Infrastructure.Logging.Decorators;
 using Edux.Shared.Infrastructure.Logging.Options;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using Serilog;
 using Serilog.Core;
 using Serilog.Events;
@@ -20,6 +25,8 @@ namespace Edux.Shared.Infrastructure.Logging
         private const string AppSectionName = "app";
         private const string LoggerSectionName = "logger";
 
+        internal static LoggingLevelSwitch LoggingLevelSwitch = new();
+
         public static IServiceCollection AddCommandHandlersLoggingDecorators(this IServiceCollection services)
         {
             services.TryDecorate(typeof(ICommandHandler<>), typeof(CommandHandlerLoggingDecorator<>));
@@ -28,9 +35,10 @@ namespace Edux.Shared.Infrastructure.Logging
             return services;
         }
 
-        public static IHostBuilder UseLogging(this IHostBuilder hostBuilder)
+        public static IHostBuilder InstallLogging(this IHostBuilder hostBuilder)
         {
             return hostBuilder
+                .ConfigureServices(services => services.AddSingleton<ILoggingService, LoggingService>())
                 .UseSerilog((context, loggerConfiguration) =>
                 {
                     var loggerOptions = context.Configuration.GetOptions<LoggerOptions>(LoggerSectionName);
@@ -40,12 +48,51 @@ namespace Edux.Shared.Infrastructure.Logging
                 });
         }
 
+        public static IApplicationBuilder UseCorrelationContextLogging(this IApplicationBuilder app)
+        {
+            app.Use(async (httpContext, next) =>
+            {
+                var logger = httpContext.RequestServices.GetRequiredService<ILogger<ICorrelationContextAccessor>>();
+                var context = httpContext.RequestServices.GetRequiredService<ICorrelationContextAccessor>().CorrelationContext;
+
+                var userId = context.Identity.IsAuthenticated 
+                    ? context.Identity.Id.ToString("N")
+                    : string.Empty;
+
+                logger.LogInformation($"Started processing a request " +
+                    $"[Request ID: '{context.RequestId}', Correlation ID: '{context.CorrelationId}', " +
+                    $"Trace ID: '{context.TraceId}', User ID: '{userId}']...");
+
+                await next();
+
+                logger.LogInformation($"Finished processing a request with status code: {httpContext.Response.StatusCode} " +
+                    $"[Request ID: '{context.RequestId}', Correlation ID: '{context.CorrelationId}', " +
+                    $"Trace ID: '{context.TraceId}', User ID: '{userId}']");
+            });
+
+            return app;
+        }
+
+        public static IEndpointConventionBuilder MapLogLevelEndpoint(this IEndpointRouteBuilder builder, 
+            string endpointRoute = "~/logging/level")
+        {
+            return builder.MapPost(endpointRoute, SwitchLoggingLevel);
+        }
+
+        public static LogEventLevel GetLogEventLevel(string level)
+        {
+            return Enum.TryParse<LogEventLevel>(level, true, out var logLevel)
+                ? logLevel
+                : LogEventLevel.Information;
+        }
+
         private static void Configure(LoggerOptions loggerOptions, AppOptions appOptions, 
             LoggerConfiguration loggerConfiguration, string environmentName)
         {
-            var level = GetLogEventLevel(loggerOptions.Level);
+            LoggingLevelSwitch.MinimumLevel = GetLogEventLevel(loggerOptions.Level);
 
             loggerConfiguration.Enrich.FromLogContext()
+                .MinimumLevel.ControlledBy(LoggingLevelSwitch)
                 .Enrich.WithProperty("Environment", environmentName)
                 .Enrich.WithProperty("Application", appOptions.Name)
                 .Enrich.WithProperty("Instance", appOptions.Instance)
@@ -79,10 +126,6 @@ namespace Edux.Shared.Infrastructure.Logging
             var seqOptions = options.Seq ?? new SeqOptions();
             var lokiOptions = options.Loki ?? new LokiOptions();
 
-            var loggingLevelSwitch = new LoggingLevelSwitch();
-            loggingLevelSwitch.MinimumLevel = GetLogEventLevel(options.Level);
-
-
             if (consoleOptions.Enabled)
             {
                 loggerConfiguration.WriteTo.Console(outputTemplate: ConsoleOutputTemplate);
@@ -112,7 +155,7 @@ namespace Edux.Shared.Infrastructure.Logging
                         elkOptions.BasicAuthEnabled
                             ? connectionConfiguration.BasicAuthentication(elkOptions.Username, elkOptions.Password)
                             : connectionConfiguration
-                }).MinimumLevel.ControlledBy(loggingLevelSwitch);
+                }).MinimumLevel.ControlledBy(LoggingLevelSwitch);
             }
 
             if (lokiOptions.Enabled)
@@ -130,7 +173,7 @@ namespace Edux.Shared.Infrastructure.Logging
                         credentials: auth,
                         batchPostingLimit: lokiOptions.BatchPostingLimit ?? 1000,
                         queueLimit: lokiOptions.QueueLimit,
-                        period: lokiOptions.Period).MinimumLevel.ControlledBy(loggingLevelSwitch);
+                        period: lokiOptions.Period).MinimumLevel.ControlledBy(LoggingLevelSwitch);
                 }
                 else
                 {
@@ -138,7 +181,7 @@ namespace Edux.Shared.Infrastructure.Logging
                         lokiOptions.Url,
                         batchPostingLimit: lokiOptions.BatchPostingLimit ?? 1000,
                         queueLimit: lokiOptions.QueueLimit,
-                        period: lokiOptions.Period).MinimumLevel.ControlledBy(loggingLevelSwitch);
+                        period: lokiOptions.Period).MinimumLevel.ControlledBy(LoggingLevelSwitch);
                 }
             }
 
@@ -148,11 +191,28 @@ namespace Edux.Shared.Infrastructure.Logging
             }
         }
 
-        private static LogEventLevel GetLogEventLevel(string level)
+        private static async Task SwitchLoggingLevel(HttpContext context)
         {
-            return Enum.TryParse<LogEventLevel>(level, true, out var logLevel)
-                ? logLevel
-                : LogEventLevel.Information;
+            var service = context.RequestServices.GetService<ILoggingService>();
+            if (service is null)
+            {
+                context.Response.StatusCode = StatusCodes.Status400BadRequest;
+                await context.Response.WriteAsync("ILoggingService is not registered. Add UseLogging() to your Program.cs.");
+                return;
+            }
+
+            var level = context.Request.Query["level"].ToString();
+
+            if (string.IsNullOrWhiteSpace(level))
+            {
+                context.Response.StatusCode = StatusCodes.Status400BadRequest;
+                await context.Response.WriteAsync("Invalid value for logging level.");
+                return;
+            }
+
+            service.SetLoggingLevel(level);
+
+            context.Response.StatusCode = StatusCodes.Status200OK;
         }
     }
 }

@@ -1,6 +1,8 @@
 using Edux.Bootstrapper;
 using Edux.Shared.Infrastructure;
 using Edux.Shared.Infrastructure.Modules;
+using Edux.Shared.Infrastructure.Logging;
+using Edux.Shared.Infrastructure.Logging;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,6 +16,9 @@ foreach (var module in _modules)
     module.Register(builder.Services);
 }
 
+// Custom logging
+builder.Host.InstallLogging();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -22,6 +27,9 @@ foreach (var module in _modules)
 {
     module.Use(app);
 }
+
+// Logging
+app.UseCorrelationContextLogging();
 
 var logger = app.Services.GetService<ILogger<Program>>();
 logger.LogInformation($"Modules: {string.Join(", ", _modules.Select(x => x.Name))}");
@@ -35,6 +43,7 @@ app.UseEndpoints(endpointRouteBuilder =>
     endpointRouteBuilder.MapControllers();
     endpointRouteBuilder.MapGet("/", () => "Edux API!");
     endpointRouteBuilder.MapModuleInfo();
+    endpointRouteBuilder.MapLogLevelEndpoint("~/logging/level");
 });
 
 _assemblies.Clear();

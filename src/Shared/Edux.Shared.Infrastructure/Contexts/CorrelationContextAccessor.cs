@@ -6,7 +6,7 @@ namespace Edux.Shared.Infrastructure.Contexts
     {
         private static readonly AsyncLocal<CorrelationContextHolder> Holder = new();
 
-        public object CorrelationContext
+        public ICorrelationContext CorrelationContext
         {
             get => Holder.Value?.Context;
             set
@@ -29,7 +29,7 @@ namespace Edux.Shared.Infrastructure.Contexts
 
         private class CorrelationContextHolder
         {
-            public object Context;
+            public ICorrelationContext Context;
         }
     }
 }

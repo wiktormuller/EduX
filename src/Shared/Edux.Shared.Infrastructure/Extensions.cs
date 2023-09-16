@@ -5,10 +5,12 @@ using Edux.Shared.Abstractions.Time;
 using Edux.Shared.Infrastructure.Api;
 using Edux.Shared.Infrastructure.Auth;
 using Edux.Shared.Infrastructure.Commands;
+using Edux.Shared.Infrastructure.Contexts;
 using Edux.Shared.Infrastructure.Crypto;
 using Edux.Shared.Infrastructure.Events;
 using Edux.Shared.Infrastructure.Exceptions;
 using Edux.Shared.Infrastructure.Initializers;
+using Edux.Shared.Infrastructure.Logging;
 using Edux.Shared.Infrastructure.Messaging;
 using Edux.Shared.Infrastructure.Modules;
 using Edux.Shared.Infrastructure.Queries;
@@ -19,6 +21,7 @@ using Edux.Shared.Infrastructure.SqlServer;
 using Edux.Shared.Infrastructure.Time;
 using Edux.Shared.Infrastructure.Transactions;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
@@ -49,7 +52,10 @@ namespace Edux.Shared.Infrastructure
 
             services.AddHostedService<AppInitializer>();
 
+            services.AddContext();
+
             services.AddTransactionalDecorators();
+            services.AddCommandHandlersLoggingDecorators();
 
             services.AddOutbox();
             services.AddMsSqlServer();
@@ -62,6 +68,7 @@ namespace Edux.Shared.Infrastructure
 
         public static IApplicationBuilder UseInfrastructure(this IApplicationBuilder app)
         {
+            app.UseContext();
             app.UseInitializers();
             app.UseCors("cors");
             app.UseErrorHandling();
@@ -117,5 +124,28 @@ namespace Edux.Shared.Infrastructure
                 ? type.Namespace.Split(".")[splitIndex].ToLowerInvariant()
                 : string.Empty;
         }
+
+        public static string GetUserIpAddress(this HttpContext httpContext)
+        {
+            if (httpContext is null)
+            {
+                return string.Empty;
+            }
+
+            var ipAddress = httpContext.Connection.RemoteIpAddress?.ToString();
+            if (httpContext.Request.Headers.TryGetValue("x-forwarded-for", out var forwardedFor))
+            {
+                var ipAddresses = forwardedFor.ToString().Split(",", StringSplitOptions.RemoveEmptyEntries);
+                if (ipAddresses.Any())
+                {
+                    ipAddress = ipAddresses[0];
+                }
+            }
+
+            return ipAddress ?? string.Empty;
+        }
+
+        public static Guid? TryGetCorrelationId(this HttpContext context)
+            => context.Items.TryGetValue("correlation-id", out var id) ? (Guid)id : null;
     }
 }

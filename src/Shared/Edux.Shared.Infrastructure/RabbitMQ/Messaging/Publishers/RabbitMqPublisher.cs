@@ -21,7 +21,7 @@ namespace Edux.Shared.Infrastructure.RabbitMQ.Messaging.Publishers
                 where T : class
         {
             var conventions = _conventionsProvider.Get(message.GetType());
-            _rabbitMqClient.Send(message, conventions, messageId, correlationId, spanContext, headers);
+            _rabbitMqClient.Send(message, conventions, messageId, correlationId, spanContext, messageContext, headers);
 
             return Task.CompletedTask;
         }
