@@ -24,6 +24,17 @@ services:
     volumes:
       - rabbitmq:/var/lib/rabbitmq
 
+  seq:
+    image: datalust/seq:2023.4
+    container_name: seq
+    restart: unless-stopped
+    environment:
+      ACCEPT_EULA: "Y"
+    ports:
+      - 5341:80
+    volumes: 
+      - seq:/data
+
   edux:
     image: edux:latest
     ports:
@@ -36,4 +47,6 @@ volumes:
   sqlserver:
     driver: local
   rabbitmq:
+    driver: local
+  seq:
     driver: local
