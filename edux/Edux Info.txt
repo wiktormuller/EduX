@@ -6,23 +6,23 @@ TODO List:
   [x] Clean up Shared Infrastructure project
   [x] Add Seq for logging
   [x] Add Serilog as a default logger
-  [ ] Implement Inbox Pattern
-  [ ] Use ThreadLocal instead of ConcurrencyDictionary for storing the RabbitMQ Channels
-  [ ] Add RabbitMqContainers for E2E testing
-  [ ] Learn about Domain Event Handlers
-  [ ] Create documentation about Swagger/Available Modules/RabbitUI etc.
-  [ ] Add first ADRs
-  [ ] Extend Message Broker to handle some type of Envelope
-  [ ] Extend Message Broker to handle many messages
-  [ ] Implement components for consuming Integration Messages
-  [ ] Mapping domain events to integration events
+  [ ] Performance tests with Nbomber
   [ ] Implement in-memory communication between modules based on local contracts (or shared ones)
   [ ] Add unit and integration tests (also for refresh tokens)
+  [ ] Mapping domain events to integration events
+  [ ] Extend Message Broker to handle some type of Envelope
+  [ ] Extend Message Broker to handle many messages
+  [ ] Add RabbitMqContainers for E2E testing
+  [ ] Learn about Domain Event Handlers
+  [ ] Implement Inbox Pattern
+  [ ] Add first ADRs
+  [ ] Use ThreadLocal instead of ConcurrencyDictionary for storing the RabbitMQ Channels
+  [ ] Create documentation about Swagger/Available Modules/RabbitUI etc.
+  [ ] Implement components for consuming Integration Messages
   [ ] Implement some Saga via _Chronicle project
   [ ] Add API Gateway
   [ ] Implement asynchronous action in API with some type of Webhook or SignalR backchannel to client after adding API Gateway (maybe some hybrid action?)
   [ ] Microservices registry with Consul and Fabio after distilling some part as a microservice
-  [ ] Performance tests with Nbomber
   [ ] Contracts tests with PACT.NET and PactBroker
   [ ] Use Vault for safe app configuration
   [ ] Define metrics and add monitoring with AppMetrics -> Prometheus -> Grafana
@@ -48,3 +48,8 @@ Docker:
 
   docker compose -f infrastructure.yml up -d
   docker compose -f infrastructure.yml down
+
+NBomber:
+  dotnet run -c Release (Bootstrapper)
+  dotnet test
+  EduX\tests\Modules\Users\Edux.Modules.Users.Tests.Performance\bin\Debug\net7.0\reports

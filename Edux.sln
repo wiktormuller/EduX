@@ -31,11 +31,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Edux.Modules.Users.Infrastr
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Edux.Bootstrapper", "src\Bootstrapper\Edux.Bootstrapper\Edux.Bootstrapper.csproj", "{45E224E1-0F66-4D11-8ED3-255FBBA1251F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Edux.Modules.Users.Tests.Integration", "tests\Modules\Users\Edux.Modules.Users.Tests.Integration\Edux.Modules.Users.Tests.Integration.csproj", "{DBD0B37D-B6CC-4102-A39F-3431BCA3CEB3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Edux.Modules.Users.Tests.Integration", "tests\Modules\Users\Edux.Modules.Users.Tests.Integration\Edux.Modules.Users.Tests.Integration.csproj", "{DBD0B37D-B6CC-4102-A39F-3431BCA3CEB3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Edux.Modules.Users.Tests.Unit", "tests\Modules\Users\Edux.Modules.Users.Tests.Unit\Edux.Modules.Users.Tests.Unit.csproj", "{6CD946DF-3121-457A-93F3-751C55E41DEC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Edux.Modules.Users.Tests.Unit", "tests\Modules\Users\Edux.Modules.Users.Tests.Unit\Edux.Modules.Users.Tests.Unit.csproj", "{6CD946DF-3121-457A-93F3-751C55E41DEC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Edux.Modules.Users.Tests.EndToEnd", "tests\Modules\Users\Edux.Modules.Users.Tests.EndToEnd\Edux.Modules.Users.Tests.EndToEnd.csproj", "{BED751FA-854D-4FC4-833F-96BCC84F58CB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Edux.Modules.Users.Tests.EndToEnd", "tests\Modules\Users\Edux.Modules.Users.Tests.EndToEnd\Edux.Modules.Users.Tests.EndToEnd.csproj", "{BED751FA-854D-4FC4-833F-96BCC84F58CB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Edux.Modules.Users.Tests.Performance", "tests\Modules\Users\Edux.Modules.Users.Tests.Performance\Edux.Modules.Users.Tests.Performance.csproj", "{A71E77F2-F377-4118-8B47-23286F6A1F2D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -87,6 +89,10 @@ Global
 		{BED751FA-854D-4FC4-833F-96BCC84F58CB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BED751FA-854D-4FC4-833F-96BCC84F58CB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BED751FA-854D-4FC4-833F-96BCC84F58CB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A71E77F2-F377-4118-8B47-23286F6A1F2D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A71E77F2-F377-4118-8B47-23286F6A1F2D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A71E77F2-F377-4118-8B47-23286F6A1F2D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A71E77F2-F377-4118-8B47-23286F6A1F2D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -107,6 +113,7 @@ Global
 		{DBD0B37D-B6CC-4102-A39F-3431BCA3CEB3} = {9CF19716-AF3B-4AA7-A156-F349513668D1}
 		{6CD946DF-3121-457A-93F3-751C55E41DEC} = {9CF19716-AF3B-4AA7-A156-F349513668D1}
 		{BED751FA-854D-4FC4-833F-96BCC84F58CB} = {9CF19716-AF3B-4AA7-A156-F349513668D1}
+		{A71E77F2-F377-4118-8B47-23286F6A1F2D} = {9CF19716-AF3B-4AA7-A156-F349513668D1}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {51C71476-2300-4E0F-B132-2DC45395862F}
