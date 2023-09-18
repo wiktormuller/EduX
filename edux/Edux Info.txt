@@ -6,7 +6,7 @@ TODO List:
   [x] Clean up Shared Infrastructure project
   [x] Add Seq for logging
   [x] Add Serilog as a default logger
-  [ ] Performance tests with Nbomber
+  [x] Performance tests with Nbomber
   [ ] Implement in-memory communication between modules based on local contracts (or shared ones)
   [ ] Add unit and integration tests (also for refresh tokens)
   [ ] Mapping domain events to integration events
