@@ -19,6 +19,20 @@ namespace Edux.Modules.Users.Infrastructure.EF.Queries
             };
         }
 
+        public static UserDetailsResponse AsUserDetailsResponse(this UserReadModel userReadModel)
+        {
+            return new()
+            {
+                Id = userReadModel.Id,
+                Email = userReadModel.Email,
+                Role = userReadModel.Role,
+                IsActive = userReadModel.IsActive,
+                CreatedAt = userReadModel.CreatedAt,
+                UpdatedAt = userReadModel.UpdatedAt,
+                Claims = userReadModel.Claims
+            };
+        }
+
         public static UserMeResponse AsUserMeResponse(this UserReadModel userReadModel)
         {
             return new UserMeResponse()

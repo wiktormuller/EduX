@@ -7,7 +7,7 @@ TODO List:
   [x] Add Seq for logging
   [x] Add Serilog as a default logger
   [x] Performance tests with Nbomber
-  [ ] Implement in-memory communication between modules based on local contracts (or shared ones)
+  [x] Implement in-memory communication between modules based on local contracts (or shared ones)
   [ ] Add unit and integration tests (also for refresh tokens)
   [ ] Mapping domain events to integration events
   [ ] Extend Message Broker to handle some type of Envelope

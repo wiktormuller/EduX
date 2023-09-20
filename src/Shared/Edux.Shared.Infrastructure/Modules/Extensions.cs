@@ -1,4 +1,4 @@
-﻿using Edux.Shared.Abstractions.Commands;
+﻿using Edux.Shared.Abstractions.Events;
 using Edux.Shared.Abstractions.Modules;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
@@ -6,12 +6,16 @@ using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using System.Data;
 using System.Reflection;
 
 namespace Edux.Shared.Infrastructure.Modules
 {
     public static class Extensions
     {
+        public static IModuleSubscriber UseModuleRequests(this IApplicationBuilder app)
+            => app.ApplicationServices.GetRequiredService<IModuleSubscriber>();
+
         internal static IHostBuilder LoadModuleSettings(this IHostBuilder hostBuilder)
         {
             return hostBuilder.ConfigureAppConfiguration((context, config) =>
@@ -75,21 +79,21 @@ namespace Edux.Shared.Infrastructure.Modules
                 .SelectMany(a => a.GetTypes())
                 .ToArray();
 
-            var commandTypes = types
-                .Where(t => t.IsClass && typeof(Abstractions.Commands.ICommand).IsAssignableFrom(t))
+            var eventTypes = types // If we want to process integration events synchronously (not possible when migrate some module to microservices)
+                .Where(t => t.IsClass && typeof(IEvent).IsAssignableFrom(t))
                 .ToArray();
 
             services.AddSingleton<IModuleRegistry>(sp =>
             {
-                var commandDispatcher = sp.GetRequiredService<ICommandDispatcher>();
-                var commandDispatcherType = commandDispatcher.GetType();
+                var eventDispatcher = sp.GetRequiredService<IEventDispatcher>();
+                var eventDispatcherType = eventDispatcher.GetType();
 
-                foreach (var type in commandTypes)
+                foreach (var type in eventTypes)
                 {
-                    registry.AddRequestAction(type, (command, cancellationToken) => 
-                        (Task)commandDispatcherType.GetMethod(nameof(commandDispatcher.SendAsync))
-                            ?.MakeGenericMethod(type)
-                            .Invoke(commandDispatcher, new[] { command, cancellationToken }));
+                    registry.AddBroadcastAction(type, (@event) =>
+                        (Task)eventDispatcherType.GetMethod(nameof(eventDispatcher.PublishAsync))
+                    ?.MakeGenericMethod(type)
+                            .Invoke(eventDispatcher, new[] { @event }));
                 }
 
                 return registry;

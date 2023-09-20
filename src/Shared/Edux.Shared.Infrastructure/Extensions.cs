@@ -61,6 +61,7 @@ namespace Edux.Shared.Infrastructure
             services.AddMsSqlServer();
 
             services.AddModuleInfo(modules);
+            services.AddModuleRequests(assemblies);
             services.AddControllersWithOpenApi();
 
             return services;

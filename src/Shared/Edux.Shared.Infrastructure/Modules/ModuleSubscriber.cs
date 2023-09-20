@@ -15,9 +15,10 @@ namespace Edux.Shared.Infrastructure.Modules
             _serviceProvider = serviceProvider;
         }
 
-        public IModuleSubscriber Subscribe<TRequest, TResponse>(string path, Func<TRequest, IServiceProvider, CancellationToken, Task<TResponse>> action)
-            where TRequest : class
-            where TResponse : class
+        public IModuleSubscriber RegisterAction<TRequest, TResponse>(string path, Func<TRequest, IServiceProvider, 
+            CancellationToken, Task<TResponse>> action)
+                where TRequest : class
+                where TResponse : class
         {
             _moduleRegistry.AddRequestAction(path, typeof(TRequest), typeof(TResponse),
                 async (request, cancellationToken) =>

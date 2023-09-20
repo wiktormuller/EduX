@@ -14,6 +14,23 @@ namespace Edux.Shared.Infrastructure.Modules
             _moduleSerializer = moduleSerializer;
         }
 
+        public async Task PublishAsync(object message)
+        {
+            var key = message.GetType().Name;
+            var registrations = _moduleRegistry.GetBroadcastRegistrations(key);
+
+            var tasks = new List<Task>();
+
+            foreach (var registration in registrations)
+            {
+                var translatedMessageForReceiver = TranslateType(message, registration.ReceiverType);
+                var action = registration.Action;
+                tasks.Add(action(translatedMessageForReceiver));
+            }
+
+            Task.WhenAll(tasks); // It's fully synchronous operation
+        }
+
         public Task SendAsync(string path, object request, CancellationToken cancellationToken = default)
         {
             return SendAsync<object>(path, request, cancellationToken);
