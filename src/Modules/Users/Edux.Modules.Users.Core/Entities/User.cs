@@ -1,4 +1,5 @@
-﻿using Edux.Modules.Users.Core.ValueObjects;
+﻿using Edux.Modules.Users.Core.Events;
+using Edux.Modules.Users.Core.ValueObjects;
 using Edux.Shared.Abstractions.Kernel.Types;
 
 namespace Edux.Modules.Users.Core.Entities
@@ -31,6 +32,26 @@ namespace Edux.Modules.Users.Core.Entities
             UpdatedAt = updatedAt;
             IsActive = isActive;
             Claims = claims ?? new Dictionary<string, IEnumerable<string>>();
+        }
+
+        public void Activate(DateTime occuredAt)
+        {
+            if (!IsActive)
+            {
+                IsActive = true;
+                UpdatedAt = occuredAt;
+                AddEvent(new UserActivated(this, occuredAt));
+            }
+        }
+
+        public void Deactivate(DateTime occuredAt)
+        {
+            if (IsActive)
+            {
+                IsActive = false;
+                UpdatedAt = occuredAt;
+                AddEvent(new UserDeactivated(this, occuredAt));
+            }
         }
     }
 }

@@ -8,12 +8,12 @@ TODO List:
   [x] Add Serilog as a default logger
   [x] Performance tests with Nbomber
   [x] Implement in-memory communication between modules based on local contracts (or shared ones)
+  [x] Learn about Domain Event Handlers
+  [x] Mapping domain events to integration events
   [ ] Add RabbitMqContainers for E2E testing
   [ ] Add unit and integration tests (also for refresh tokens)
-  [ ] Mapping domain events to integration events
   [ ] Extend Message Broker to handle some type of Envelope
   [ ] Extend Message Broker to handle many messages
-  [ ] Learn about Domain Event Handlers
   [ ] Implement Inbox Pattern
   [ ] Add first ADRs
   [ ] Use ThreadLocal instead of ConcurrencyDictionary for storing the RabbitMQ Channels

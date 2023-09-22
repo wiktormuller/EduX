@@ -5,7 +5,6 @@ using Edux.Modules.Users.Core.Repositories;
 using Edux.Shared.Abstractions.Auth;
 using Edux.Shared.Abstractions.Commands;
 using Edux.Shared.Abstractions.Crypto;
-using Edux.Shared.Abstractions.Kernel.Types;
 using Edux.Shared.Abstractions.Messaging;
 using Edux.Shared.Abstractions.Time;
 
