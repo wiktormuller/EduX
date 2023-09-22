@@ -43,6 +43,7 @@ namespace Edux.Shared.Infrastructure
             services.AddQueries(assemblies);
             services.AddCommands(assemblies);
             services.AddEvents(assemblies);
+            services.AddDomainEvents(assemblies);
             services.AddMessaging();
             services.AddSingleton<IRandomNumberGenerator, RandomNumberGenerator>();
             services.AddHttpContextAccessor();
