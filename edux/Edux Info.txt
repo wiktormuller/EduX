@@ -10,7 +10,7 @@ TODO List:
   [x] Implement in-memory communication between modules based on local contracts (or shared ones)
   [x] Learn about Domain Event Handlers
   [x] Mapping domain events to integration events
-  [ ] Add API Gateway
+  [x] Add API Gateway
   [ ] Add RabbitMqContainers for E2E testing
   [ ] Use Vault for safe app configuration
   [ ] Add unit and integration tests (also for refresh tokens)

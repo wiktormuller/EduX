@@ -10,4 +10,8 @@
     <ProjectReference Include="..\Edux.Modules.Users.Core\Edux.Modules.Users.Core.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Events\External\" />
+  </ItemGroup>
+
 </Project>

@@ -39,6 +39,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Edux.Modules.Users.Tests.En
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Edux.Modules.Users.Tests.Performance", "tests\Modules\Users\Edux.Modules.Users.Tests.Performance\Edux.Modules.Users.Tests.Performance.csproj", "{A71E77F2-F377-4118-8B47-23286F6A1F2D}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "APIGateway", "APIGateway", "{FFCB3F47-17EB-40D5-9F28-E7F7E48E82A2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Edux.APIGateway", "src\APIGateway\Edux.APIGateway\Edux.APIGateway.csproj", "{EACCF4B1-BAA7-4C41-9812-99339127450C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -93,6 +97,10 @@ Global
 		{A71E77F2-F377-4118-8B47-23286F6A1F2D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A71E77F2-F377-4118-8B47-23286F6A1F2D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A71E77F2-F377-4118-8B47-23286F6A1F2D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EACCF4B1-BAA7-4C41-9812-99339127450C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EACCF4B1-BAA7-4C41-9812-99339127450C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EACCF4B1-BAA7-4C41-9812-99339127450C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EACCF4B1-BAA7-4C41-9812-99339127450C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -114,6 +122,8 @@ Global
 		{6CD946DF-3121-457A-93F3-751C55E41DEC} = {9CF19716-AF3B-4AA7-A156-F349513668D1}
 		{BED751FA-854D-4FC4-833F-96BCC84F58CB} = {9CF19716-AF3B-4AA7-A156-F349513668D1}
 		{A71E77F2-F377-4118-8B47-23286F6A1F2D} = {9CF19716-AF3B-4AA7-A156-F349513668D1}
+		{FFCB3F47-17EB-40D5-9F28-E7F7E48E82A2} = {4415BA22-AB04-4B40-9556-9BEEC52B7680}
+		{EACCF4B1-BAA7-4C41-9812-99339127450C} = {FFCB3F47-17EB-40D5-9F28-E7F7E48E82A2}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {51C71476-2300-4E0F-B132-2DC45395862F}
