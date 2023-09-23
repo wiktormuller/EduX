@@ -15,7 +15,7 @@ namespace Edux.Shared.Infrastructure.Modules
             _serviceProvider = serviceProvider;
         }
 
-        public IModuleSubscriber RegisterAction<TRequest, TResponse>(string path, Func<TRequest, IServiceProvider, 
+        public IModuleSubscriber RegisterEntryPoint<TRequest, TResponse>(string path, Func<TRequest, IServiceProvider, 
             CancellationToken, Task<TResponse>> action)
                 where TRequest : class
                 where TResponse : class

@@ -1,4 +1,5 @@
 ﻿using Edux.Modules.Users.Application;
+using Edux.Modules.Users.Application.Contracts.Requests;
 using Edux.Modules.Users.Application.Contracts.Responses;
 using Edux.Modules.Users.Application.Queries;
 using Edux.Modules.Users.Core;
@@ -29,11 +30,11 @@ namespace Edux.Modules.Users.Api
 
         public void Use(IApplicationBuilder app)
         {
-            app.UseModuleRequests()
-                .RegisterAction<GetUserDetails, UserDetailsResponse>("users/get",
-                    (query, serviceProvider, cancellationToken)
+            app.UseModuleRequests() // We register her another entry point, similarly like event handlers or controllers
+                .RegisterEntryPoint<GetUserDetailsRequest, UserDetailsResponse>("users/get",
+                    (request, serviceProvider, cancellationToken)
                         => serviceProvider.GetRequiredService<IQueryDispatcher>()
-                            .QueryAsync(query, cancellationToken));
+                            .QueryAsync(new GetUserDetails { UserId = request.UserId }, cancellationToken));
         }
     }
 }
