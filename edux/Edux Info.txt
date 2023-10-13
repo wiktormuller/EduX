@@ -11,7 +11,8 @@ TODO List:
   [x] Learn about Domain Event Handlers
   [x] Mapping domain events to integration events
   [x] Add API Gateway
-  [ ] Add RabbitMqContainers for E2E testing
+  [x] Add RabbitMqContainers for E2E testing
+  [ ] Add HttpClient extension method
   [ ] Use Vault for safe app configuration
   [ ] Add unit and integration tests (also for refresh tokens)
   [ ] Implement missing actions for users module
