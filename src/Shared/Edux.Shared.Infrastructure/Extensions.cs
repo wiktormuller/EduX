@@ -25,6 +25,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using System.Net.Http.Headers;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 
@@ -127,28 +128,5 @@ namespace Edux.Shared.Infrastructure
                 ? type.Namespace.Split(".")[splitIndex].ToLowerInvariant()
                 : string.Empty;
         }
-
-        public static string GetUserIpAddress(this HttpContext httpContext)
-        {
-            if (httpContext is null)
-            {
-                return string.Empty;
-            }
-
-            var ipAddress = httpContext.Connection.RemoteIpAddress?.ToString();
-            if (httpContext.Request.Headers.TryGetValue("x-forwarded-for", out var forwardedFor))
-            {
-                var ipAddresses = forwardedFor.ToString().Split(",", StringSplitOptions.RemoveEmptyEntries);
-                if (ipAddresses.Any())
-                {
-                    ipAddress = ipAddresses[0];
-                }
-            }
-
-            return ipAddress ?? string.Empty;
-        }
-
-        public static Guid? TryGetCorrelationId(this HttpContext context)
-            => context.Items.TryGetValue("correlation-id", out var id) ? (Guid)id : null;
     }
 }
