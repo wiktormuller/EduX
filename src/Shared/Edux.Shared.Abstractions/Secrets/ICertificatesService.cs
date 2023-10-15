@@ -1,0 +1,11 @@
+﻿using System.Security.Cryptography.X509Certificates;
+
+namespace Edux.Shared.Abstractions.Secrets
+{
+    public interface ICertificatesService
+    {
+        IReadOnlyDictionary<string, X509Certificate2> All { get; }
+        X509Certificate2 Get(string name);
+        void Set(string name, X509Certificate2 certificate);
+    }
+}
