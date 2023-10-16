@@ -9,15 +9,12 @@ namespace Edux.Shared.Infrastructure.Secrets.Vault
     {
         private readonly IVaultClient _client;
         private readonly VaultOptions _options;
-        private readonly IJsonSerializer _jsonSerializer;
 
         public KeyValueSecrets(IVaultClient client, 
-            VaultOptions options,
-            IJsonSerializer jsonSerializer)
+            VaultOptions options)
         {
             _client = client;
             _options = options;
-            _jsonSerializer = jsonSerializer;
         }
 
         public async Task<T> GetAsync<T>(string path)
@@ -43,7 +40,7 @@ namespace Edux.Shared.Infrastructure.Secrets.Vault
                             _options.KV.Version, _options.KV.MountPoint);
                         return secretV2.Data.Data;
                     default:
-                        throw new ArgumentException($"Invalid KV engine version: {_options.Kv.EngineVersion}.");
+                        throw new ArgumentException($"Invalid KV engine version: {_options.KV.EngineVersion}.");
                 }
             }
             catch (Exception exception)

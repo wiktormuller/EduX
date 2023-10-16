@@ -7,6 +7,9 @@ using VaultSharp.V1.AuthMethods.UserPass;
 using VaultSharp;
 using Edux.Shared.Abstractions.Secrets;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Configuration.Memory;
+using Newtonsoft.Json;
+using VaultSharp.V1.SecretsEngines;
 
 namespace Edux.Shared.Infrastructure.Secrets
 {
@@ -55,9 +58,139 @@ namespace Edux.Shared.Infrastructure.Secrets
             return services;
         }
 
-        private static async Task AddVaultAsync(this IConfigurationBuilder builder, VaultOptions options, string keyValuePath)
+        private static async Task AddVaultAsync(this IConfigurationBuilder builder, VaultOptions options)
         {
-            // TODO: Implement
+            var (client, _) = GetClientAndSettings(options);
+            if (options.KV.Enabled)
+            {
+                var kvPath = options.KV.Path;
+                var mountPoint = options.KV.MountPoint;
+                if (string.IsNullOrWhiteSpace(kvPath))
+                {
+                    throw new ArgumentException("KV path is missing.");
+                }
+
+                if (string.IsNullOrWhiteSpace(mountPoint))
+                {
+                    throw new ArgumentException("KV mount point is missing.");
+                }
+
+                Console.WriteLine($"Loading settings from Vault: '{options.Url}', KV path: '{kvPath}'.");
+                var keyValueSecrets = new KeyValueSecrets(client, options);
+                var secret = await keyValueSecrets.GetAsync(kvPath);
+                var parser = new JsonParser();
+                var json = JsonConvert.SerializeObject(secret);
+                var data = parser.Parse(json);
+                var source = new MemoryConfigurationSource { InitialData = data };
+                builder.Add(source);
+            }
+
+            if (options.PKI is not null && options.PKI.Enabled)
+            {
+                Console.WriteLine("Initializing Vault PKI.");
+                await SetPkiSecretsAsync(client, options);
+            }
+
+            if (options.Lease is null || !options.Lease.Any())
+            {
+                return;
+            }
+
+            var configuration = new Dictionary<string, string>();
+            foreach (var (key, lease) in options.Lease)
+            {
+                if (!lease.Enabled || string.IsNullOrWhiteSpace(lease.Type))
+                {
+                    continue;
+                }
+
+                Console.WriteLine($"Initializing Vault lease for: '{key}', type: '{lease.Type}'.");
+                await InitLeaseAsync(key, client, lease, configuration);
+            }
+
+            if (configuration.Any())
+            {
+                var source = new MemoryConfigurationSource { InitialData = configuration };
+                builder.Add(source);
+            }
+        }
+
+        private static async Task SetPkiSecretsAsync(IVaultClient client, VaultOptions options)
+        {
+            var issuer = new CertificatesIssuer(client, options);
+            var certificate = await issuer.IssueAsync();
+            CertificatesService.Set(options.PKI.RoleName, certificate);
+        }
+
+        private static Task InitLeaseAsync(string key, IVaultClient client, VaultOptions.LeaseOptions options,
+        IDictionary<string, string> configuration)
+            => options.Type.ToLowerInvariant() switch
+            {
+                "database" => SetDatabaseSecretsAsync(key, client, options, configuration),
+                "rabbitmq" => SetRabbitMqSecretsAsync(key, client, options, configuration),
+                _ => Task.CompletedTask
+            };
+
+        private static async Task SetDatabaseSecretsAsync(string key, IVaultClient client,
+            VaultOptions.LeaseOptions options,
+            IDictionary<string, string> configuration)
+        {
+            const string name = SecretsEngineMountPoints.Defaults.Database;
+            var mountPoint = string.IsNullOrWhiteSpace(options.MountPoint) ? name : options.MountPoint;
+            var credentials =
+                await client.V1.Secrets.Database.GetCredentialsAsync(options.RoleName, mountPoint);
+            SetSecrets(key, options, configuration, name, () => (credentials, new Dictionary<string, string>
+            {
+                ["username"] = credentials.Data.Username,
+                ["password"] = credentials.Data.Password
+            }, credentials.LeaseId, credentials.LeaseDurationSeconds, credentials.Renewable));
+        }
+
+        private static async Task SetRabbitMqSecretsAsync(string key, IVaultClient client,
+            VaultOptions.LeaseOptions options,
+            IDictionary<string, string> configuration)
+        {
+            const string name = SecretsEngineMountPoints.Defaults.RabbitMQ;
+            var mountPoint = string.IsNullOrWhiteSpace(options.MountPoint) ? name : options.MountPoint;
+            var credentials =
+                await client.V1.Secrets.RabbitMQ.GetCredentialsAsync(options.RoleName, mountPoint);
+            SetSecrets(key, options, configuration, name, () => (credentials, new Dictionary<string, string>
+            {
+                ["username"] = credentials.Data.Username,
+                ["password"] = credentials.Data.Password
+            }, credentials.LeaseId, credentials.LeaseDurationSeconds, credentials.Renewable));
+        }
+        private static void SetSecrets(string key, VaultOptions.LeaseOptions options,
+            IDictionary<string, string> configuration, string name,
+            Func<(object, Dictionary<string, string>, string, int, bool)> lease)
+        {
+            var createdAt = DateTime.UtcNow;
+            var (credentials, values, leaseId, duration, renewable) = lease();
+            SetTemplates(key, options, configuration, values);
+            var leaseData = new LeaseData(name, leaseId, duration, renewable, createdAt, credentials);
+            LeaseService.Set(key, leaseData);
+        }
+
+        private static void SetTemplates(string key, VaultOptions.LeaseOptions lease,
+            IDictionary<string, string> configuration, IDictionary<string, string> values)
+        {
+            if (lease.Templates is null || !lease.Templates.Any())
+            {
+                return;
+            }
+
+            foreach (var (property, template) in lease.Templates)
+            {
+                if (string.IsNullOrWhiteSpace(property) || string.IsNullOrWhiteSpace(template))
+                {
+                    continue;
+                }
+
+                var templateValue = $"{template}";
+                templateValue = values.Aggregate(templateValue,
+                    (current, value) => current.Replace($"{{{{{value.Key}}}}}", value.Value));
+                configuration.Add($"{key}:{property}", templateValue);
+            }
         }
 
         private static (IVaultClient client, VaultClientSettings settings) GetClientAndSettings(VaultOptions options)
