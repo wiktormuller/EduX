@@ -35,6 +35,20 @@ services:
     volumes: 
       - seq:/data
 
+  vault:
+    image: vault
+    container_name: vault
+    restart: unless-stopped
+    environment:
+      - VAULT_ADDR=http://127.0.0.1:8200
+      - VAULT_DEV_ROOT_TOKEN_ID=secret
+    ports:
+      - 8200:8200
+    volumes:
+      - vault:/data
+    cap_add:
+      - IPC_LOCK
+
   edux:
     image: edux:latest
     ports:
@@ -49,4 +63,6 @@ volumes:
   rabbitmq:
     driver: local
   seq:
+    driver: local
+  vault:
     driver: local
