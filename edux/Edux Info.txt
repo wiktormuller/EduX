@@ -13,27 +13,29 @@ TODO List:
   [x] Add API Gateway
   [x] Add RabbitMqContainers for E2E testing
   [x] Add HttpClient extension method
-  [ ] Use Vault for safe app configuration
-  [ ] Add unit and integration tests (also for refresh tokens)
-  [ ] Implement missing actions for users module
+  [x] Use Vault for safe app configuration
+  [x] Implement Credential Lease for dynamically generated access to services as an alternative to centralized password storage (Vault)
+  [] Implement missing actions for users module
   [ ] Use ThreadLocal instead of ConcurrencyDictionary for storing the RabbitMQ Channels
-  [ ] Create documentation about Swagger/Available Modules/RabbitUI etc.
+  [ ] Add Redis Integration
   [ ] Add feature flags
+  [ ] Define metrics and add monitoring with AppMetrics -> Prometheus -> Grafana
+  [ ] Add unit and integration tests (also for refresh tokens)
   [ ] Extend Message Broker to handle some type of Envelope
   [ ] Extend Message Broker to handle many messages
   [ ] Implement Inbox Pattern
-  [ ] Add first ADRs
-  [ ] Define metrics and add monitoring with AppMetrics -> Prometheus -> Grafana
-  [ ] Implement distributed tracing with Jaeger
   [ ] Implement components for consuming Integration Messages
-  [ ] Implement some Saga via _Chronicle project
   [ ] Implement asynchronous action in API with some type of Webhook or SignalR backchannel to client after adding API Gateway (maybe some hybrid action?)
+
+  [ ] Create documentation about Swagger/Available Modules/RabbitUI etc.
+  [ ] Add first ADRs
+  [ ] Implement distributed tracing with Jaeger
+  [ ] Implement some Saga via _Chronicle project
   [ ] Microservices registry with Consul and Fabio after distilling some part as a microservice
   [ ] Contracts tests with PACT.NET and PactBroker
   [ ] Use portainer to manage services based on Docker
   [ ] Use K8S with some Sidecars
   [ ] Use Rancher to manage K8S cluster and implement some Service Meshes with Istio
-  [ ] Implement Credential Lease for dynamically generated access to services as an alternative to centralized password storage (Vault)
 
 
 EF Core:

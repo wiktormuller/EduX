@@ -9,11 +9,11 @@ namespace Edux.Modules.Users.Application.Services
         {
             return @event switch
             {
-                Edux.Modules.Users.Core.Events.UserActivated e
-                    => new Edux.Modules.Users.Application.Events.UserActivated(e.User.Id, e.User.Email, e.OccuredAt),
+                Core.Events.UserActivated e
+                    => new Events.UserActivated(e.User.Id, e.User.Email, e.OccurredAt),
 
-                Edux.Modules.Users.Core.Events.UserDeactivated e
-                    => new Edux.Modules.Users.Application.Events.UserDeactivated(e.User.Id, e.User.Email, e.OccuredAt),
+                Core.Events.UserDeactivated e
+                    => new Events.UserDeactivated(e.User.Id, e.User.Email, e.OccurredAt),
             };
         }
 

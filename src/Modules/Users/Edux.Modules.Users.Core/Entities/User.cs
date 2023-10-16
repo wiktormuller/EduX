@@ -34,24 +34,92 @@ namespace Edux.Modules.Users.Core.Entities
             Claims = claims ?? new Dictionary<string, IEnumerable<string>>();
         }
 
-        public void Activate(DateTime occuredAt)
+        public void ChangeRole(Role role, DateTime occurredAt)
+        {
+            if (Role.Value == role.Value) // Idempotent
+            {
+                return;
+            }
+
+            Role = role;
+            UpdatedAt = occurredAt;
+            AddEvent(new UserRoleHasChanged(this, occurredAt));
+        }
+
+        public void ChangeClaims(Dictionary<string, IEnumerable<string>> claims, DateTime occurredAt)
+        {
+            if (AreClaimsEqual(Claims, claims)) // Idempotent
+            {
+                return;
+            }
+
+            Claims = claims;
+            UpdatedAt = occurredAt;
+            AddEvent(new UserClaimsHaveChanged(this, occurredAt));
+        }
+
+        public void UpdateActivity(bool isActive, DateTime occurredAt)
+        {
+            if (IsActive == isActive) // Idempotent
+            {
+                return;
+            }
+
+            if (isActive)
+            {
+                Activate(occurredAt);
+            }
+            else
+            {
+                Deactivate(occurredAt);
+            }
+        }
+
+        private void Activate(DateTime occurredAt)
         {
             if (!IsActive)
             {
                 IsActive = true;
-                UpdatedAt = occuredAt;
-                AddEvent(new UserActivated(this, occuredAt));
+                UpdatedAt = occurredAt;
+                AddEvent(new UserActivated(this, occurredAt));
             }
         }
 
-        public void Deactivate(DateTime occuredAt)
+        private void Deactivate(DateTime occurredAt)
         {
             if (IsActive)
             {
                 IsActive = false;
-                UpdatedAt = occuredAt;
-                AddEvent(new UserDeactivated(this, occuredAt));
+                UpdatedAt = occurredAt;
+                AddEvent(new UserDeactivated(this, occurredAt));
             }
+        }
+
+        private bool AreClaimsEqual(Dictionary<string, IEnumerable<string>> first,
+            Dictionary<string, IEnumerable<string>> second)
+        {
+            // Check if the number of elements is the same
+            if (first.Count != second.Count)
+            {
+                return false;
+            }
+
+            // Check if all keys in first are present in second
+            if (!first.Keys.All(key => second.ContainsKey(key)))
+            {
+                return false;
+            }
+
+            // Check if the values for corresponding keys are equal
+            foreach (var kvp in first)
+            {
+                if (!second.TryGetValue(kvp.Key, out IEnumerable<string> value) || !kvp.Value.SequenceEqual(value))
+                {
+                    return false;
+                }
+            }
+
+            return true;
         }
     }
 }

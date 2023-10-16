@@ -44,7 +44,7 @@ namespace Edux.Modules.Users.Api.Controllers
             return Ok(user);
         }
 
-        [Authorize(Policy = "is-admin")] // TODO: Implement policies
+        [Authorize(Policy = "is-admin")]
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
@@ -103,7 +103,20 @@ namespace Edux.Modules.Users.Api.Controllers
             return Ok(jwt);
         }
 
-        // TODO: Implement access-tokens/revoke based on distributed cache in Pacco
-        // TODO: Implement /users
+        [HttpPut("{id:guid}")]
+        [Authorize(Policy = "is-admin")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<ActionResult> Put([FromRoute] Guid id, UpdateUserRequest request, CancellationToken cancellationToken)
+        {
+            var command = new UpdateUser(id, request.Role, request.IsActive, request.Claims);
+            await _commandDispatcher.SendAsync(command, cancellationToken);
+
+            return NoContent();
+        }
+
+        // TODO: Implement attatching user logo image to it's account
+        // TODO: Implement resetting password by user
+        // TODO: Implement activating account by user
     }
 }
