@@ -19,6 +19,7 @@ using Edux.Shared.Infrastructure.RabbitMQ;
 using Edux.Shared.Infrastructure.RabbitMQ.Initializers;
 using Edux.Shared.Infrastructure.Serializers;
 using Edux.Shared.Infrastructure.SqlServer;
+using Edux.Shared.Infrastructure.Storage;
 using Edux.Shared.Infrastructure.Time;
 using Edux.Shared.Infrastructure.Transactions;
 using Microsoft.AspNetCore.Builder;
@@ -60,6 +61,8 @@ namespace Edux.Shared.Infrastructure
 
             services.AddOutbox();
             services.AddMsSqlServer();
+
+            services.AddRedis();
 
             services.AddModuleInfo(modules);
             services.AddModuleRequests(assemblies);

@@ -1,11 +1,10 @@
 ﻿using Edux.Shared.Abstractions.Secrets;
-using Edux.Shared.Abstractions.Serializers;
 using System.Text.Json;
 using VaultSharp;
 
 namespace Edux.Shared.Infrastructure.Secrets.Vault
 {
-    internal sealed class KeyValueSecrets : IKeyValueSecrets
+    internal sealed class KeyValueSecrets : IKeyValueSecrets // We are calling Vault API for our settings
     {
         private readonly IVaultClient _client;
         private readonly VaultOptions _options;

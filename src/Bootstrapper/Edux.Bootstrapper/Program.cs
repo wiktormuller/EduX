@@ -2,7 +2,7 @@ using Edux.Bootstrapper;
 using Edux.Shared.Infrastructure;
 using Edux.Shared.Infrastructure.Modules;
 using Edux.Shared.Infrastructure.Logging;
-using Edux.Shared.Infrastructure.Logging;
+using Edux.Shared.Infrastructure.Secrets;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -18,6 +18,9 @@ foreach (var module in _modules)
 
 // Custom logging
 builder.Host.InstallLogging();
+
+// Vault integration
+builder.InstallVault();
 
 var app = builder.Build();
 

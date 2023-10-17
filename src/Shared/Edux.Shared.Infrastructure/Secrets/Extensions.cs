@@ -13,7 +13,7 @@ using VaultSharp.V1.SecretsEngines;
 
 namespace Edux.Shared.Infrastructure.Secrets
 {
-    internal static class Extensions
+    public static class Extensions
     {
         private const string SectionName = "vault";
 
@@ -77,11 +77,11 @@ namespace Edux.Shared.Infrastructure.Secrets
 
                 Console.WriteLine($"Loading settings from Vault: '{options.Url}', KV path: '{kvPath}'.");
                 var keyValueSecrets = new KeyValueSecrets(client, options);
-                var secret = await keyValueSecrets.GetAsync(kvPath);
-                var parser = new JsonParser();
+                var secret = await keyValueSecrets.GetAsync(kvPath); // Getting our secrets from Vault
+                var parser = new JsonParser(); // Used for mapping Dictionary<string, object> to JSON
                 var json = JsonConvert.SerializeObject(secret);
                 var data = parser.Parse(json);
-                var source = new MemoryConfigurationSource { InitialData = data };
+                var source = new MemoryConfigurationSource { InitialData = data }; // Adding new configuration that comes from Vault (which will overwrite our json settings)
                 builder.Add(source);
             }
 
