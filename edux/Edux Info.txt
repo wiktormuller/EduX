@@ -17,7 +17,7 @@ TODO List:
   [x] Implement Credential Lease for dynamically generated access to services as an alternative to centralized password storage (Vault)
   [] Implement missing actions for users module
   [ ] Use ThreadLocal instead of ConcurrencyDictionary for storing the RabbitMQ Channels
-  [ ] Add Redis Integration
+  [x] Add Redis Integration
   [ ] Add feature flags
   [ ] Define metrics and add monitoring with AppMetrics -> Prometheus -> Grafana
   [ ] Add unit and integration tests (also for refresh tokens)
