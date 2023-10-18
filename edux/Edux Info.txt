@@ -18,8 +18,8 @@ TODO List:
   [] Implement missing actions for users module
   [ ] Use ThreadLocal instead of ConcurrencyDictionary for storing the RabbitMQ Channels
   [x] Add Redis Integration
-  [ ] Add feature flags
-  [ ] Define metrics and add monitoring with AppMetrics -> Prometheus -> Grafana
+  [x] Add feature flags
+  [ ] Define metrics and add monitoring with AppMetrics -> Prometheus -> Grafana (maybe Sentry?)
   [ ] Add unit and integration tests (also for refresh tokens)
   [ ] Extend Message Broker to handle some type of Envelope
   [ ] Extend Message Broker to handle many messages

@@ -9,6 +9,7 @@ using Edux.Shared.Infrastructure.Contexts;
 using Edux.Shared.Infrastructure.Crypto;
 using Edux.Shared.Infrastructure.Events;
 using Edux.Shared.Infrastructure.Exceptions;
+using Edux.Shared.Infrastructure.Features;
 using Edux.Shared.Infrastructure.Initializers;
 using Edux.Shared.Infrastructure.Kernel;
 using Edux.Shared.Infrastructure.Logging;
@@ -63,6 +64,7 @@ namespace Edux.Shared.Infrastructure
             services.AddMsSqlServer();
 
             services.AddRedis();
+            services.AddFeatureFlags();
 
             services.AddModuleInfo(modules);
             services.AddModuleRequests(assemblies);
