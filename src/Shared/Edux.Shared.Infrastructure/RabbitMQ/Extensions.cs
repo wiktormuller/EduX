@@ -30,6 +30,9 @@ namespace Edux.Shared.Infrastructure.RabbitMQ
                 throw new ArgumentException("RabbitMQ hostnames are not specified.", nameof(options.HostNames));
             }
 
+            services.AddSingleton<ChannelAccessor>();
+            services.AddSingleton<IChannelFactory, ChannelFactory>();
+
             services.AddSingleton<IMessageContextProvider, MessageContextProvider>();
             services.AddSingleton<IRabbitMqClient, RabbitMqClient>();
             services.AddSingleton<IBusPublisher, RabbitMqPublisher>();

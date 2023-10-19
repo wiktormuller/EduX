@@ -4,7 +4,6 @@ using Edux.Shared.Infrastructure.RabbitMQ.Conventions;
 using Edux.Shared.Infrastructure.RabbitMQ.Serializers;
 using Microsoft.Extensions.Logging;
 using RabbitMQ.Client;
-using System.Collections.Concurrent;
 
 namespace Edux.Shared.Infrastructure.RabbitMQ.Messaging.Clients
 {
@@ -16,20 +15,19 @@ namespace Edux.Shared.Infrastructure.RabbitMQ.Messaging.Clients
         private readonly ILogger<RabbitMqClient> _logger;
         private readonly IRabbitMqSerializer _serializer;
         private readonly IMessageContextProvider _contextProvider;
+        private readonly IChannelFactory _channelFactory;
 
         private readonly bool _loggerEnabled;
         private readonly bool _persistMessages;
         private readonly bool _contextEnabled;
         private readonly string _spanContextHeader;
 
-        private readonly object _lockObject = new object();
-        private readonly ConcurrentDictionary<int, IModel> _availableChannels = new();
-
         public RabbitMqClient(RabbitMqOptions options,
             ProducerConnection connection,
             ILogger<RabbitMqClient> logger,
             IRabbitMqSerializer serializer,
-            IMessageContextProvider contextProvider)
+            IMessageContextProvider contextProvider,
+            IChannelFactory channelFactory)
         {
             _connection = connection.Connection;
             _loggerEnabled = options.Logger?.Enabled ?? false;
@@ -41,33 +39,13 @@ namespace Edux.Shared.Infrastructure.RabbitMQ.Messaging.Clients
             _spanContextHeader = string.IsNullOrWhiteSpace(options?.SpanContextHeader)
                 ? "span_context"
                 : options.SpanContextHeader;
+            _channelFactory = channelFactory;
         }
 
         public void Send(object message, IConventions conventions, string messageId = null, string correlationId = null, 
             string spanContext = null, object messageContext = null, IDictionary<string, object> headers = null)
         {
-            var currentThreadId = Thread.CurrentThread.ManagedThreadId; // Channels per thread
-
-            if (!_availableChannels.TryGetValue(currentThreadId, out var channel)) // Create new channel
-            {
-                lock(_lockObject)
-                {
-                    channel = _connection.CreateModel();
-                    _availableChannels.TryAdd(currentThreadId, channel);
-
-                    if (_loggerEnabled)
-                    {
-                        _logger.LogTrace($"Created a channel for thread: {currentThreadId}.");
-                    }
-                }
-            }
-            else // Use already existing channel
-            {
-                if (_loggerEnabled)
-                {
-                    _logger.LogTrace($"Reused a channel for thread: {currentThreadId}.");
-                }
-            }
+            var channel = _channelFactory.Create(_connection);
 
             var body = _serializer.Serialize(message);
 

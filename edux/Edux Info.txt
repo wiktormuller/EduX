@@ -16,7 +16,7 @@ TODO List:
   [x] Use Vault for safe app configuration
   [x] Implement Credential Lease for dynamically generated access to services as an alternative to centralized password storage (Vault)
   [] Implement missing actions for users module
-  [ ] Use ThreadLocal instead of ConcurrencyDictionary for storing the RabbitMQ Channels
+  [x] Use ThreadLocal instead of ConcurrencyDictionary for storing the RabbitMQ Channels
   [x] Add Redis Integration
   [x] Add feature flags
   [ ] Define metrics and add monitoring with AppMetrics -> Prometheus -> Grafana (maybe Sentry?)
@@ -26,6 +26,7 @@ TODO List:
   [ ] Implement Inbox Pattern
   [ ] Implement components for consuming Integration Messages
   [ ] Implement asynchronous action in API with some type of Webhook or SignalR backchannel to client after adding API Gateway (maybe some hybrid action?)
+  [ ] Add integration with Dapper
 
   [ ] Create documentation about Swagger/Available Modules/RabbitUI etc.
   [ ] Add first ADRs
