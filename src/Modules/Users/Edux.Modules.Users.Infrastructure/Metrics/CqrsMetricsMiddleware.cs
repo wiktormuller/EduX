@@ -1,7 +1,9 @@
 ﻿using Edux.Modules.Users.Application.Commands;
 using Edux.Modules.Users.Application.Queries;
 using Edux.Shared.Abstraction.Observability.Metrics;
+using Edux.Shared.Infrastructure.Observability.Metrics;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.DependencyInjection;
 using System.Diagnostics.Metrics;
 
 namespace Edux.Modules.Users.Infrastructure.Metrics
@@ -30,6 +32,11 @@ namespace Edux.Modules.Users.Infrastructure.Metrics
                 ["GET:/users/me"] = CreateTagsForQuery(typeof(GetUserMe).Name),
                 // ["GET:/users/id"] = CreateTagsForQuery(typeof(GetUserDetails).Name), // Entrypoint for ModuleClient (in-memory call)
             };
+
+        public CqrsMetricsMiddleware(MetricsOptions options)
+        {
+            _enabled = options.Enabled;
+        }
 
         public Task InvokeAsync(HttpContext context, RequestDelegate next)
         {

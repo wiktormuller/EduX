@@ -7,6 +7,8 @@ services:
     user: root
     ports:
       - "1433:1433"
+    networks:
+      - eduxnetwork
     environment:
       SA_PASSWORD: Password123
       ACCEPT_EULA: "Y"
@@ -17,6 +19,8 @@ services:
     image: rabbitmq:3-management
     container_name: rabbitmq
     restart: unless-stopped
+    networks:
+      - eduxnetwork
     ports:
       - 5672:5672
       - 15672:15672
@@ -32,6 +36,8 @@ services:
       ACCEPT_EULA: "Y"
     ports:
       - 5341:80
+    networks:
+      - eduxnetwork
     volumes: 
       - seq:/data
 
@@ -44,6 +50,8 @@ services:
       - VAULT_DEV_ROOT_TOKEN_ID=secret
     ports:
       - 8200:8200
+    networks:
+      - eduxnetwork
     volumes:
       - vault:/data
     cap_add:
@@ -53,18 +61,43 @@ services:
     image: redis
     container_name: redis
     restart: unless-stopped
+    networks:
+      - eduxnetwork
     ports:
       - 6379:6379
     volumes:
       - redis:/data
 
+  prometheus:
+    build: ./prometheus
+    container_name: prometheus
+    restart: unless-stopped
+    ports:
+      - 9090:9090
+    networks:
+      - eduxnetwork
+    volumes:
+      - prometheus:/prometheus
+
   edux:
     image: edux:latest
+    container_name: edux
     ports:
       - 4000:80
+    environment:
+      - ASPNETCORE_ENVIRONMENT=docker
+    networks:
+      - eduxnetwork
     depends_on:
+      - vault
       - rabbitmq
       - sql-server-db
+      - prometheus
+      - redis
+
+networks:
+  eduxnetwork:
+    name: edux-network
 
 volumes:
   sqlserver:
@@ -76,4 +109,6 @@ volumes:
   vault:
     driver: local
   redis:
+    driver: local
+  prometheus:
     driver: local

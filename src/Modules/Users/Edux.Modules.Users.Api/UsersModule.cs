@@ -30,6 +30,8 @@ namespace Edux.Modules.Users.Api
 
         public void Use(IApplicationBuilder app)
         {
+            app.UseInfrastructure();
+
             app.UseModuleRequests() // We register here another entry point, similarly like event handlers or controllers
                 .RegisterEntryPoint<GetUserDetailsRequest, UserDetailsResponse>("users/id",
                     (request, serviceProvider, cancellationToken)

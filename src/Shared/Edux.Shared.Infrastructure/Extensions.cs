@@ -15,6 +15,7 @@ using Edux.Shared.Infrastructure.Kernel;
 using Edux.Shared.Infrastructure.Logging;
 using Edux.Shared.Infrastructure.Messaging;
 using Edux.Shared.Infrastructure.Modules;
+using Edux.Shared.Infrastructure.Observability;
 using Edux.Shared.Infrastructure.Queries;
 using Edux.Shared.Infrastructure.RabbitMQ;
 using Edux.Shared.Infrastructure.RabbitMQ.Initializers;
@@ -65,6 +66,7 @@ namespace Edux.Shared.Infrastructure
 
             services.AddRedis();
             services.AddFeatureFlags();
+            services.AddObservability(assemblies);
 
             services.AddModuleInfo(modules);
             services.AddModuleRequests(assemblies);
@@ -78,6 +80,7 @@ namespace Edux.Shared.Infrastructure
             app.UseContext();
             app.UseInitializers();
             app.UseCors("cors");
+            app.UseObservability();
             app.UseErrorHandling();
             app.UseSwagger();
             app.UseSwaggerUI();

@@ -19,8 +19,8 @@ namespace Edux.Shared.Infrastructure.Features
             services
                 .AddFeatureManagement(configuration.GetSection("featureManagement")) // IFeatureManager is available
                 .AddFeatureFilter<PercentageFilter>()
-                .AddFeatureFilter<TimeWindowFilter>()
-                .AddFeatureFilter<TargetingFilter>();
+                .AddFeatureFilter<TimeWindowFilter>();
+                //.AddFeatureFilter<TargetingFilter>(); // Need to implement the 'ITargetingContextAccessor'
 
             return services;
         }

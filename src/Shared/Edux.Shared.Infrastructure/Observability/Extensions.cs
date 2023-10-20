@@ -8,9 +8,11 @@ namespace Edux.Shared.Infrastructure.Observability
 {
     internal static class Extensions
     {
-        public static IServiceCollection AddObservability(this IServiceCollection services, IConfiguration configuration,
-            IList<Assembly> assemblies)
+        public static IServiceCollection AddObservability(this IServiceCollection services, IList<Assembly> assemblies)
         {
+            using var serviceProvider = services.BuildServiceProvider();
+            var configuration = serviceProvider.GetRequiredService<IConfiguration>();
+
             services.AddOpenTelemetry()
                 .AddMetrics(services, configuration, assemblies);
                 //.AddTracing(services, configuration);
