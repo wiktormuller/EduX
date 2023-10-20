@@ -4,6 +4,7 @@ using Edux.Shared.Abstraction.Observability.Metrics;
 using Edux.Shared.Infrastructure.Observability.Metrics;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
 using System.Diagnostics.Metrics;
 
 namespace Edux.Modules.Users.Infrastructure.Metrics
@@ -14,28 +15,29 @@ namespace Edux.Modules.Users.Infrastructure.Metrics
         private static readonly Meter Meter = new("cqrs");
 
         private static readonly Counter<long> HandledUseCasesCounter =
-            Meter.CreateCounter<long>("handled_cqrs");
+            Meter.CreateCounter<long>("handled_use_cases");
 
         private readonly bool _enabled;
 
         private readonly IDictionary<string, KeyValuePair<string, object?>[]> _metrics = 
             new Dictionary<string, KeyValuePair<string, object?>[]>
             {
-                ["POST:/sign-in"] = CreateTagsForCommand(typeof(SignIn).Name),
-                ["POST:/sign-up"] = CreateTagsForCommand(typeof(SignUp).Name),
+                // POST:/users-module/users/sign-up
+                ["POST:/users-module/users/sign-in"] = CreateTagsForCommand(typeof(SignIn).Name),
+                ["POST:/users-module/users/sign-up"] = CreateTagsForCommand(typeof(SignUp).Name),
 
-                ["POST:/refresh-tokens/use"] = CreateTagsForCommand(typeof(UseRefreshToken).Name),
-                ["POST:/refresh-tokens/revoke"] = CreateTagsForCommand(typeof(RevokeRefreshToken).Name),
+                ["POST:/users-module/users/refresh-tokens/use"] = CreateTagsForCommand(typeof(UseRefreshToken).Name),
+                ["POST:/users-module/users/refresh-tokens/revoke"] = CreateTagsForCommand(typeof(RevokeRefreshToken).Name),
 
-                ["PUT:/users/{id}"] = CreateTagsForCommand(typeof(UpdateUser).Name),
-                ["GET:/users"] = CreateTagsForQuery(typeof(GetUsers).Name),
-                ["GET:/users/me"] = CreateTagsForQuery(typeof(GetUserMe).Name),
+                ["PUT:/users-module/users/users/{id}"] = CreateTagsForCommand(typeof(UpdateUser).Name),
+                ["GET:/users-module/users/users"] = CreateTagsForQuery(typeof(GetUsers).Name),
+                ["GET:/users-module/users/users/me"] = CreateTagsForQuery(typeof(GetUserMe).Name),
                 // ["GET:/users/id"] = CreateTagsForQuery(typeof(GetUserDetails).Name), // Entrypoint for ModuleClient (in-memory call)
             };
 
-        public CqrsMetricsMiddleware(MetricsOptions options)
+        public CqrsMetricsMiddleware(IOptions<MetricsOptions> options)
         {
-            _enabled = options.Enabled;
+            _enabled = options.Value.Enabled;
         }
 
         public Task InvokeAsync(HttpContext context, RequestDelegate next)

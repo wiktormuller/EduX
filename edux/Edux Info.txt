@@ -19,7 +19,8 @@ TODO List:
   [x] Use ThreadLocal instead of ConcurrencyDictionary for storing the RabbitMQ Channels
   [x] Add Redis Integration
   [x] Add feature flags
-  [ ] Define metrics and add monitoring with AppMetrics -> Prometheus -> Grafana (maybe Sentry?)
+  [x] Define metrics and add monitoring with OpenTracing -> Prometheus
+  [ ] Add Graphana as a consumer for Prometheus
   [ ] Add unit and integration tests (also for refresh tokens)
   [ ] Extend Message Broker to handle some type of Envelope
   [ ] Extend Message Broker to handle many messages
