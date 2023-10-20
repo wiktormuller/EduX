@@ -116,6 +116,12 @@ namespace Edux.Shared.Infrastructure
             configuration.GetSection(sectionName).Bind(options);
             return options;
         }
+        public static T BindOptions<T>(this IConfigurationSection section) where T : new()
+        {
+            var options = new T();
+            section.Bind(options);
+            return options;
+        }
 
         public static string GetModuleName(this object value)
             => value?.GetType().GetModuleName() ?? string.Empty;

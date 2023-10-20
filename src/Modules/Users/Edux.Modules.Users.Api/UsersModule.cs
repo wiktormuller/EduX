@@ -30,8 +30,8 @@ namespace Edux.Modules.Users.Api
 
         public void Use(IApplicationBuilder app)
         {
-            app.UseModuleRequests() // We register her another entry point, similarly like event handlers or controllers
-                .RegisterEntryPoint<GetUserDetailsRequest, UserDetailsResponse>("users/get",
+            app.UseModuleRequests() // We register here another entry point, similarly like event handlers or controllers
+                .RegisterEntryPoint<GetUserDetailsRequest, UserDetailsResponse>("users/id",
                     (request, serviceProvider, cancellationToken)
                         => serviceProvider.GetRequiredService<IQueryDispatcher>()
                             .QueryAsync(new GetUserDetails { UserId = request.UserId }, cancellationToken));
