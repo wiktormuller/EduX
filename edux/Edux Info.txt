@@ -20,7 +20,7 @@ TODO List:
   [x] Add Redis Integration
   [x] Add feature flags
   [x] Define metrics and add monitoring with OpenTracing -> Prometheus
-  [ ] Add Graphana as a consumer for Prometheus
+  [x] Add Graphana as a consumer for Prometheus
   [ ] Add unit and integration tests (also for refresh tokens)
   [ ] Extend Message Broker to handle some type of Envelope
   [ ] Extend Message Broker to handle many messages

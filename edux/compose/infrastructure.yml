@@ -16,7 +16,7 @@ services:
       - sqlserver:/var/opt/mssql/data
 
   rabbitmq:
-    image: rabbitmq:3-management
+    build: ./rabbitmq
     container_name: rabbitmq
     restart: unless-stopped
     networks:
@@ -79,6 +79,17 @@ services:
     volumes:
       - prometheus:/prometheus
 
+  grafana:
+    image: grafana/grafana
+    container_name: grafana
+    restart: unless-stopped
+    networks:
+      - eduxnetwork
+    ports:
+      - 3000:3000
+    volumes:
+      - grafana:/var/lib/grafana
+
   edux:
     image: edux:latest
     container_name: edux
@@ -111,4 +122,6 @@ volumes:
   redis:
     driver: local
   prometheus:
+    driver: local
+  grafana:
     driver: local
