@@ -19,8 +19,8 @@ From the root directory:
 
 ### Run/Stop App with Whole Infrastructure
 From the ./edux/compose directory:
-`docker compose -f infrastructure.yml up -d`
-`docker compose -f infrastructure.yml down`
+- `docker compose -f infrastructure.yml up -d`
+- `docker compose -f infrastructure.yml down`
 
 ## Manual Testing
 To test the REST API you can use the `EduX.http` file from the solution - `REST Client` in Visual Studio Code is required.
@@ -65,9 +65,10 @@ RabbitMQ UI - `http://localhost:15672`
 MSSQLServer Connection - `http://localhost:1433`
 
 ## Adding New DB Migrations
-* From module's directory level
-Creating Migration
+From module's directory level
+
+- Creating Migration
 `dotnet ef migrations add Users_Module_Init --startup-project ..\..\..\Bootstrapper\Edux.Bootstrapper\ -o ./EF/Migrations --context UsersWriteDbContext`
 
-Update Database
+- Update Database
 `dotnet ef database update --startup-project ..\..\..\Bootstrapper\Edux.Bootstrapper\ --context UsersWriteDbContext`
