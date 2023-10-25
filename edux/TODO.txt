@@ -24,7 +24,7 @@ TODO List:
 
   [x] Add Button in Swagger to Authentication
   [x] Add integration with Dapper - add factory for raw and open SqlConnection
-  [ ] Create documentation about Swagger/Available Modules/RabbitUI etc.
+  [x] Create documentation about Swagger/Available Modules/RabbitUI etc.
   [ ] Implement distributed tracing with Jaeger
   [ ] Use portainer to manage services based on Docker
   [ ] Add first ADRs
@@ -40,6 +40,8 @@ TODO List:
   [ ] Implement UI for users module with React
   [ ] Implement asynchronous action in API with some type of Webhook or SignalR backchannel to client after adding API Gateway (maybe some hybrid action?)
   [ ] Clean up shared projects structure
+  [ ] Add Validation for requests
+  [ ] Forward all requests via Gateway and hide modules
 
   [ ] Implement components for consuming Integration Messages
   [ ] Implement some Saga via _Chronicle project
@@ -47,24 +49,3 @@ TODO List:
   [ ] Contracts tests with PACT.NET and PactBroker
   [ ] Use K8S with some Sidecars
   [ ] Use Rancher to manage K8S cluster and implement some Service Meshes with Istio
-
-
-EF Core:
-
-  dotnet ef migrations add Users_Module_Init --startup-project ..\..\..\Bootstrapper\Edux.Bootstrapper\ -o ./EF/Migrations --context UsersWriteDbContext
-
-  dotnet ef database update --startup-project ..\..\..\Bootstrapper\Edux.Bootstrapper\ --context UsersWriteDbContext
-
-Docker:
-
-  docker build -t edux .
-
-  docker run -it --rm -p 5000:80 --name edux_container edux
-
-  docker compose -f infrastructure.yml up -d
-  docker compose -f infrastructure.yml down
-
-NBomber:
-  dotnet run -c Release (Bootstrapper)
-  dotnet test
-  EduX\tests\Modules\Users\Edux.Modules.Users.Tests.Performance\bin\Debug\net7.0\reports
