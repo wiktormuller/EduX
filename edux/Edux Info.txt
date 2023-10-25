@@ -21,21 +21,30 @@ TODO List:
   [x] Add feature flags
   [x] Define metrics and add monitoring with OpenTracing -> Prometheus
   [x] Add Graphana as a consumer for Prometheus
+
+  [x] Add Button in Swagger to Authentication
+  [ ] Add integration with Dapper
+  [ ] Create documentation about Swagger/Available Modules/RabbitUI etc.
+  [ ] Implement distributed tracing with Jaeger
+  [ ] Use portainer to manage services based on Docker
+  [ ] Add first ADRs
   [ ] Add unit and integration tests (also for refresh tokens)
   [ ] Extend Message Broker to handle some type of Envelope
   [ ] Extend Message Broker to handle many messages
   [ ] Implement Inbox Pattern
-  [ ] Implement components for consuming Integration Messages
+  [ ] Use Azure BlobStorage to store users profile images
+  [ ] Use Benchmarking and Profiling
+  [ ] Implement Auditing of user accounts
+  [ ] Implement Multi-Tenancy
+  [ ] Use SpecFlow for BDD Testing
+  [ ] Implement UI for users module with React
   [ ] Implement asynchronous action in API with some type of Webhook or SignalR backchannel to client after adding API Gateway (maybe some hybrid action?)
-  [ ] Add integration with Dapper
+  [ ] Clean up shared projects structure
 
-  [ ] Create documentation about Swagger/Available Modules/RabbitUI etc.
-  [ ] Add first ADRs
-  [ ] Implement distributed tracing with Jaeger
+  [ ] Implement components for consuming Integration Messages
   [ ] Implement some Saga via _Chronicle project
   [ ] Microservices registry with Consul and Fabio after distilling some part as a microservice
   [ ] Contracts tests with PACT.NET and PactBroker
-  [ ] Use portainer to manage services based on Docker
   [ ] Use K8S with some Sidecars
   [ ] Use Rancher to manage K8S cluster and implement some Service Meshes with Istio
 

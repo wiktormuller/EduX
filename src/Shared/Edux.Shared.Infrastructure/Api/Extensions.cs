@@ -33,13 +33,36 @@ namespace Edux.Shared.Infrastructure.Api
                 });
 
             services
-                .AddSwaggerGen(swagger =>
+                .AddSwaggerGen(swaggerGenOptions =>
                 {
-                    swagger.CustomSchemaIds(x => x.FullName); // It's required, because there may be the same types in two different modules
-                    swagger.SwaggerDoc("v1", new OpenApiInfo
+                    swaggerGenOptions.CustomSchemaIds(x => x.FullName); // It's required, because there may be the same types in two different modules
+                    swaggerGenOptions.SwaggerDoc("v1", new OpenApiInfo
                     {
                         Title = "Edux API",
                         Version = "v1"
+                    });
+                    swaggerGenOptions.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+                    {
+                        In = ParameterLocation.Header,
+                        Description = "Please enter a valid JWT",
+                        Name = "Authorization",
+                        Type = SecuritySchemeType.Http,
+                        BearerFormat = "JWT",
+                        Scheme = "Bearer"
+                    });
+                    swaggerGenOptions.AddSecurityRequirement(new OpenApiSecurityRequirement
+                    {
+                        {
+                            new OpenApiSecurityScheme
+                            {
+                                Reference = new OpenApiReference
+                                {
+                                    Type = ReferenceType.SecurityScheme,
+                                    Id = "Bearer"
+                                }
+                            },
+                            new string[] { }
+                        }
                     });
                 });
 
