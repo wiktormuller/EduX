@@ -1,7 +1,16 @@
-@url = http://localhost:4000/users-module
+@url = http://localhost:4000
 
-###
-POST {{url}}/users/sign-up
+### Bootstrapper Entrypoint
+GET {{url}}
+
+### List of Enabled Modules
+GET {{url}}/modules
+
+### Change Logging Level
+POST {{url}}logging/level?level=information
+
+### Sign-Up
+POST {{url}}/users-module/users/sign-up
 Content-Type: application/json
 
 {
@@ -16,9 +25,9 @@ Content-Type: application/json
   }
 }
 
-###
+### Sign-In
 # @name sign_in
-POST {{url}}/users/sign-in
+POST {{url}}/users-module/users/sign-in
 Content-Type: application/json
 
 {
@@ -29,34 +38,28 @@ Content-Type: application/json
 ###
 @accessToken = {{sign_in.response.body.$.accessToken}}
 
-###
-GET {{url}}/users/me
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkM2E0MzU3Ny1iYmZjLTQwYmUtYjFlNi00ZDgwZWE5YzQ0YmQiLCJ1bmlxdWVfbmFtZSI6ImQzYTQzNTc3LWJiZmMtNDBiZS1iMWU2LTRkODBlYTljNDRiZCIsImp0aSI6Ijc1M2EzMDhiLTgxMWItNDY0Ni04M2NjLTY5ZDI2NjQ5M2NiYyIsImlhdCI6IjE2OTQ2MzQ2NzMiLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL3JvbGUiOiJ1c2VyIiwicGVybWlzc2lvbnMiOiJ1c2VycyIsIm5iZiI6MTY5NDYzNDY3MywiZXhwIjoxNjk0NjcwNjczLCJpc3MiOiJlZHV4In0.ypUaQGwYfl-UEA4tWYT0woPEoFq5_2FH_SmmsOKkZ0M
+### Get Profile Information
+GET {{url}}/users-module/users/me
+Authorization: Bearer {{accessToken}}
 
-###
-POST {{url}}/users/refresh-tokens/revoke
+### Revoke Refresh Token
+POST {{url}}/users-module/users/refresh-tokens/revoke
 Content-Type: application/json
+Authorization: Bearer {{accessToken}}
 
 {
   "refreshToken": "bFEUh3uEEvDS11QUM52FOSOIQ4NVrwAbh5szI3b"
 }
 
-###
-POST {{url}}/users/refresh-tokens/use
+### Refresh Access Token
+POST {{url}}/users-module/users/refresh-tokens/use
 Content-Type: application/json
+Authorization: Bearer {{accessToken}}
 
 {
   "refreshToken": "bFEUh3uEEvDS11QUM52FOSOIQ4NVrwAbh5szI3b"
 }
 
-###
-### GET {{url}}/users
-
-### POST {{url}}/access-tokens/revoke
-
-###{
-###   "accessToken": "accessToken"  
-###}
-
-###
-POST {{url}}/logging/level?level=information
+### Get Users
+GET {{url}}/users-module/users
+Authorization: Bearer {{accessToken}}
