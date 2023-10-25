@@ -23,7 +23,7 @@ TODO List:
   [x] Add Graphana as a consumer for Prometheus
 
   [x] Add Button in Swagger to Authentication
-  [ ] Add integration with Dapper
+  [x] Add integration with Dapper - add factory for raw and open SqlConnection
   [ ] Create documentation about Swagger/Available Modules/RabbitUI etc.
   [ ] Implement distributed tracing with Jaeger
   [ ] Use portainer to manage services based on Docker

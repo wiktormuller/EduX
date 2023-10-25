@@ -1,4 +1,5 @@
 ﻿using Edux.Shared.Abstractions.Transactions;
+using Edux.Shared.Infrastructure.SqlServer.Factories;
 using Edux.Shared.Infrastructure.Transactions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -11,6 +12,8 @@ namespace Edux.Shared.Infrastructure.SqlServer
         {
             var options = services.GetOptions<SqlServerOptions>("sqlserver");
             services.AddSingleton(options);
+
+            services.AddScoped<ISqlConnectionFactory, SqlConnectionFactory>();
 
             services.AddSingleton(new UnitOfWorkTypeRegistry());
 
