@@ -1,9 +1,8 @@
 # EduX
 
-## Platform making learning easy :) Which is still in progress and another modules will be added in the near future.
+## Platform making learning easy. Which is still in progress and another modules will be added in the near future.
 
 ## Functionality
-
 ### Users Module
 - Sign-Up
 - Sign-In
@@ -23,10 +22,10 @@ From the ./edux/compose directory:
 `docker compose -f infrastructure.yml up -d`
 `docker compose -f infrastructure.yml down`
 
-### Manual Testing
+## Manual Testing
 To test the REST API you can use the `EduX.http` file from the solution - `REST Client` in Visual Studio Code is required.
 
-### Unit, Integration and Performance Testing
+## Unit, Integration and Performance Testing
 We can use NBomber to start performance tests.
 This steps are required:
 - `dotnet run -c Release (Bootstrapper)`
@@ -34,7 +33,7 @@ This steps are required:
 
 The tests' report is available under this path - `EduX\tests\Modules\Users\Edux.Modules.Users.Tests.Performance\bin\Debug\net7.0\reports`
 
-### OpenAPI Documentation
+## OpenAPI Documentation
 The OpenAPI specification is available under this endpoint - `http://localhost:4000/swagger/v1/swagger.json`
 
 Swagger documentation is available under this endpoint - `http://localhost:4000/swagger/index.html`
@@ -65,7 +64,7 @@ RabbitMQ UI - `http://localhost:15672`
 
 MSSQLServer Connection - `http://localhost:1433`
 
-### Adding New DB Migrations
+## Adding New DB Migrations
 * From module's directory level
 Creating Migration
 `dotnet ef migrations add Users_Module_Init --startup-project ..\..\..\Bootstrapper\Edux.Bootstrapper\ -o ./EF/Migrations --context UsersWriteDbContext`
