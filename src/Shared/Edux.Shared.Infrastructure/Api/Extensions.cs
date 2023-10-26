@@ -1,5 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc.ApplicationParts;
-using Microsoft.Extensions.Configuration;
+﻿using Edux.Shared.Infrastructure.Api.Providers;
+using Microsoft.AspNetCore.Mvc.ApplicationParts;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
 
@@ -16,7 +16,7 @@ namespace Edux.Shared.Infrastructure.Api
                 {
                     // Thanks to this part there will not be any run-time classes from the disabled module
                     var removedParts = new List<ApplicationPart>();
-                    foreach (var disabledModule in GetDisabledModules(services))
+                    foreach (var disabledModule in Modules.Extensions.GetDisabledModules(services))
                     {
                         var parts = manager.ApplicationParts
                             .Where(part => part.Name.Contains(disabledModule, StringComparison.InvariantCultureIgnoreCase));
@@ -77,29 +77,6 @@ namespace Edux.Shared.Infrastructure.Api
             });
 
             return services;
-        }
-
-        private static IEnumerable<string> GetDisabledModules(IServiceCollection services)
-        {
-            var disabledModules = new List<string>();
-            using (var serviceProvider = services.BuildServiceProvider())
-            {
-                var configuration = serviceProvider.GetRequiredService<IConfiguration>();
-                foreach (var (key, value) in configuration.AsEnumerable())
-                {
-                    if (!key.Contains(":module:enabled"))
-                    {
-                        continue;
-                    }
-
-                    if (!bool.Parse(value))
-                    {
-                        disabledModules.Add(key.Split(":")[0]);
-                    }
-                }
-            }
-
-            return disabledModules;
         }
     }
 }

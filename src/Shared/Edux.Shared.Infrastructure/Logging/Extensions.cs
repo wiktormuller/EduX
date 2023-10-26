@@ -1,7 +1,9 @@
 ﻿using Edux.Shared.Abstractions.Commands;
 using Edux.Shared.Abstractions.Contexts;
+using Edux.Shared.Infrastructure.App.Options;
 using Edux.Shared.Infrastructure.Logging.Decorators;
 using Edux.Shared.Infrastructure.Logging.Options;
+using Edux.Shared.Infrastructure.Logging.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;

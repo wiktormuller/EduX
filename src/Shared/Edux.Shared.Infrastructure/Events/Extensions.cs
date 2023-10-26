@@ -1,5 +1,6 @@
 ﻿using Edux.Shared.Abstractions.Events;
 using Edux.Shared.Infrastructure.Decorator;
+using Edux.Shared.Infrastructure.Events.Dispatchers;
 using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
 

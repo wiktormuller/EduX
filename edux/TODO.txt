@@ -25,6 +25,8 @@ TODO List:
   [x] Add Button in Swagger to Authentication
   [x] Add integration with Dapper - add factory for raw and open SqlConnection
   [x] Create documentation about Swagger/Available Modules/RabbitUI etc.
+  [x] Add Validation for requests
+  [x] Clean up shared projects structure
   [ ] Implement distributed tracing with Jaeger
   [ ] Use portainer to manage services based on Docker
   [ ] Add first ADRs
@@ -39,9 +41,8 @@ TODO List:
   [ ] Use SpecFlow for BDD Testing
   [ ] Implement UI for users module with React
   [ ] Implement asynchronous action in API with some type of Webhook or SignalR backchannel to client after adding API Gateway (maybe some hybrid action?)
-  [ ] Clean up shared projects structure
-  [ ] Add Validation for requests
   [ ] Forward all requests via Gateway and hide modules
+  [ ] Register event handlers (domain)
 
   [ ] Implement components for consuming Integration Messages
   [ ] Implement some Saga via _Chronicle project

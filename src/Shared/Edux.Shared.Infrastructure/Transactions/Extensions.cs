@@ -1,4 +1,5 @@
 ﻿using Edux.Shared.Abstractions.Commands;
+using Edux.Shared.Infrastructure.Transactions.Decorators;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Edux.Shared.Infrastructure.Transactions

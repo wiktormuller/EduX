@@ -1,4 +1,5 @@
 ﻿using Edux.Shared.Abstractions.Messaging.Publishers;
+using Edux.Shared.Infrastructure.Messaging.Outbox.Options;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;

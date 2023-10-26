@@ -1,5 +1,5 @@
 ﻿using Edux.Modules.Users.Infrastructure.EF.Contexts;
-using Edux.Shared.Infrastructure.SqlServer;
+using Edux.Shared.Infrastructure.SqlServer.UoW;
 
 namespace Edux.Modules.Users.Infrastructure.EF
 {

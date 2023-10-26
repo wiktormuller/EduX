@@ -1,4 +1,5 @@
-﻿using Edux.Shared.Infrastructure.Auth;
+﻿using Edux.Shared.Infrastructure.Auth.Options;
+using Edux.Shared.Infrastructure.Auth.Services;
 using Edux.Shared.Infrastructure.Time;
 
 namespace Edux.Shared.Tests.Helpers

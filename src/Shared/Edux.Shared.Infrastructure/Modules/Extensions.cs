@@ -1,5 +1,10 @@
 ﻿using Edux.Shared.Abstractions.Events;
 using Edux.Shared.Abstractions.Modules;
+using Edux.Shared.Infrastructure.Modules.Clients;
+using Edux.Shared.Infrastructure.Modules.Info;
+using Edux.Shared.Infrastructure.Modules.Registries;
+using Edux.Shared.Infrastructure.Modules.Serializers;
+using Edux.Shared.Infrastructure.Modules.Subscribers;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
@@ -61,6 +66,29 @@ namespace Edux.Shared.Infrastructure.Modules
             services.AddSingleton(moduleInfoProvider);
 
             return services;
+        }
+
+        internal static IEnumerable<string> GetDisabledModules(IServiceCollection services)
+        {
+            var disabledModules = new List<string>();
+            using (var serviceProvider = services.BuildServiceProvider())
+            {
+                var configuration = serviceProvider.GetRequiredService<IConfiguration>();
+                foreach (var (key, value) in configuration.AsEnumerable())
+                {
+                    if (!key.Contains(":module:enabled"))
+                    {
+                        continue;
+                    }
+
+                    if (!bool.Parse(value))
+                    {
+                        disabledModules.Add(key.Split(":")[0]);
+                    }
+                }
+            }
+
+            return disabledModules;
         }
 
         internal static void MapModuleInfo(this IEndpointRouteBuilder endpointRouteBuilder)

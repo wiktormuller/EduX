@@ -1,5 +1,7 @@
 ﻿using Edux.Shared.Abstractions.Auth;
 using Edux.Shared.Abstractions.Modules;
+using Edux.Shared.Infrastructure.Auth.Options;
+using Edux.Shared.Infrastructure.Auth.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization.Policy;
 using Microsoft.AspNetCore.Identity;

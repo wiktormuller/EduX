@@ -1,4 +1,6 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using Edux.Shared.Infrastructure.HTTP.Middlewares;
+using Edux.Shared.Infrastructure.HTTP.Options;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Http.Logging;
 using Polly;

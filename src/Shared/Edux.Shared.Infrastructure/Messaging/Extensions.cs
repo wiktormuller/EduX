@@ -1,6 +1,10 @@
 ﻿using Edux.Shared.Abstractions.Messaging;
+using Edux.Shared.Infrastructure.Messaging.Brokers;
 using Edux.Shared.Infrastructure.Messaging.Outbox;
+using Edux.Shared.Infrastructure.Messaging.Outbox.EF;
+using Edux.Shared.Infrastructure.Messaging.Outbox.Options;
 using Edux.Shared.Infrastructure.Messaging.Outbox.Processors;
+using Edux.Shared.Infrastructure.Messaging.Outbox.Registries;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 

@@ -1,4 +1,7 @@
 ﻿using Edux.Shared.Abstractions.Exceptions;
+using Edux.Shared.Infrastructure.Exceptions.Dispatchers;
+using Edux.Shared.Infrastructure.Exceptions.Mappers;
+using Edux.Shared.Infrastructure.Exceptions.Middlewares;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 

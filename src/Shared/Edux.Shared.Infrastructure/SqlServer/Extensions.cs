@@ -1,6 +1,7 @@
 ﻿using Edux.Shared.Abstractions.Transactions;
 using Edux.Shared.Infrastructure.SqlServer.Factories;
-using Edux.Shared.Infrastructure.Transactions;
+using Edux.Shared.Infrastructure.SqlServer.Options;
+using Edux.Shared.Infrastructure.Transactions.Registries;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 

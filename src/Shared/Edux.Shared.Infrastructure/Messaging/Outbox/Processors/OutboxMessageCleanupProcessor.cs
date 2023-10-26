@@ -1,8 +1,8 @@
 ﻿using Edux.Shared.Abstractions.Time;
+using Edux.Shared.Infrastructure.Messaging.Outbox.Options;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using System;
 using System.Diagnostics;
 
 namespace Edux.Shared.Infrastructure.Messaging.Outbox.Processors

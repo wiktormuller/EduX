@@ -10,17 +10,15 @@ using Edux.Shared.Infrastructure.Crypto;
 using Edux.Shared.Infrastructure.Events;
 using Edux.Shared.Infrastructure.Exceptions;
 using Edux.Shared.Infrastructure.Features;
-using Edux.Shared.Infrastructure.Initializers;
-using Edux.Shared.Infrastructure.Kernel;
+using Edux.Shared.Infrastructure.SharedKernel;
 using Edux.Shared.Infrastructure.Logging;
 using Edux.Shared.Infrastructure.Messaging;
 using Edux.Shared.Infrastructure.Modules;
 using Edux.Shared.Infrastructure.Observability;
 using Edux.Shared.Infrastructure.Queries;
-using Edux.Shared.Infrastructure.RabbitMQ;
-using Edux.Shared.Infrastructure.RabbitMQ.Initializers;
 using Edux.Shared.Infrastructure.Serializers;
 using Edux.Shared.Infrastructure.SqlServer;
+using Edux.Shared.Infrastructure.SqlServer.Initializers;
 using Edux.Shared.Infrastructure.Storage;
 using Edux.Shared.Infrastructure.Time;
 using Edux.Shared.Infrastructure.Transactions;
@@ -29,6 +27,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
 using System.Runtime.CompilerServices;
+using Edux.Shared.Infrastructure.Messaging.RabbitMQ;
+using Edux.Shared.Infrastructure.Messaging.RabbitMQ.Initializers;
 
 [assembly: InternalsVisibleTo("Edux.Bootstrapper")]
 [assembly: InternalsVisibleTo("Edux.Shared.Tests")]
@@ -54,7 +54,7 @@ namespace Edux.Shared.Infrastructure
 
             services.AddSingleton<IJsonSerializer, SystemTextJsonSerializer>();
 
-            services.AddHostedService<AppInitializer>();
+            services.AddHostedService<DbAppInitializer>();
 
             services.AddContext();
 

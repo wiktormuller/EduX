@@ -1,5 +1,6 @@
 ﻿using Edux.Shared.Abstractions.Queries;
 using Edux.Shared.Infrastructure.Decorator;
+using Edux.Shared.Infrastructure.Queries.Dispatchers;
 using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
 

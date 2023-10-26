@@ -1,4 +1,5 @@
-﻿using Microsoft.Data.SqlClient;
+﻿using Edux.Shared.Infrastructure.SqlServer.Options;
+using Microsoft.Data.SqlClient;
 using System.Data;
 
 namespace Edux.Shared.Infrastructure.SqlServer.Factories
