@@ -1,6 +1,6 @@
 ﻿namespace Edux.Modules.Users.Application.Contracts.Requests
 {
-    public class RevokeRefreshTokenRequest // TODO: Add validation
+    public class RevokeRefreshTokenRequest
     {
         public string RefreshToken { get; set; }
     }
