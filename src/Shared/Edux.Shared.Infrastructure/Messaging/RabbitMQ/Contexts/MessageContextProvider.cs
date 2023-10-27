@@ -1,5 +1,4 @@
-﻿using Edux.Shared.Infrastructure.Messaging.RabbitMQ;
-using Edux.Shared.Infrastructure.Messaging.RabbitMQ.Serializers;
+﻿using Edux.Shared.Infrastructure.Messaging.RabbitMQ.Serializers;
 
 namespace Edux.Shared.Infrastructure.Messaging.RabbitMQ.Contexts
 {

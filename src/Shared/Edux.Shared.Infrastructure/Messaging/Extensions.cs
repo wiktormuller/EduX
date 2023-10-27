@@ -1,11 +1,20 @@
-﻿using Edux.Shared.Abstractions.Messaging;
+﻿using Edux.Shared.Abstractions.Commands;
+using Edux.Shared.Abstractions.Events;
+using Edux.Shared.Abstractions.Messaging;
 using Edux.Shared.Infrastructure.Messaging.Brokers;
+using Edux.Shared.Infrastructure.Messaging.Inbox;
+using Edux.Shared.Infrastructure.Messaging.Inbox.Decorators;
+using Edux.Shared.Infrastructure.Messaging.Inbox.EF;
+using Edux.Shared.Infrastructure.Messaging.Inbox.Options;
+using Edux.Shared.Infrastructure.Messaging.Inbox.Processors;
+using Edux.Shared.Infrastructure.Messaging.Inbox.Registries;
 using Edux.Shared.Infrastructure.Messaging.Outbox;
 using Edux.Shared.Infrastructure.Messaging.Outbox.EF;
 using Edux.Shared.Infrastructure.Messaging.Outbox.Options;
 using Edux.Shared.Infrastructure.Messaging.Outbox.Processors;
 using Edux.Shared.Infrastructure.Messaging.Outbox.Registries;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Edux.Shared.Infrastructure.Messaging
@@ -51,6 +60,46 @@ namespace Edux.Shared.Infrastructure.Messaging
 
             services.AddHostedService<OutboxMessageProcessor>();
             services.AddHostedService<OutboxMessageCleanupProcessor>();
+
+            return services;
+        }
+
+        public static IServiceCollection AddInbox<T>(this IServiceCollection services) where T : DbContext
+        {
+            var inboxOptions = services.GetOptions<InboxOptions>("inbox");
+
+            if (!inboxOptions.Enabled)
+            {
+                return services;
+            }
+
+            services.AddTransient<IMessageInbox, EfMessageInbox<T>>();
+            services.AddTransient<EfMessageInbox<T>>();
+
+            using var serviceProvider = services.BuildServiceProvider();
+            serviceProvider.GetRequiredService<InboxTypeRegistry>()
+                .Register<EfMessageInbox<T>>();
+
+            return services;
+        }
+
+        public static IServiceCollection AddInbox(this IServiceCollection services, IConfiguration configuration)
+        {
+            var section = configuration.GetSection("inbox");
+            var inboxOptions = section.BindOptions<InboxOptions>();
+            services.Configure<InboxOptions>(section);
+
+            services.AddSingleton(new InboxTypeRegistry());
+
+            if (!inboxOptions.Enabled)
+            {
+                return services;
+            }
+
+            services.AddHostedService<InboxMessageCleanupProcessor>();
+
+            services.TryDecorate(typeof(ICommandHandler<>), typeof(InboxCommandHandlerDecorator<>));
+            services.TryDecorate(typeof(IEventHandler<>), typeof(InboxEventHandlerDecorator<>));
 
             return services;
         }

@@ -27,9 +27,9 @@ TODO List:
   [x] Add Validation for requests
   [x] Clean up shared projects structure
 
-  [ ] Register event handlers (domain)
-  [ ] Use portainer to manage services based on Docker
-  [ ] Implement Inbox Pattern
+  [x] Register event handlers (domain)
+  [x] Use portainer to manage services based on Docker
+  [x] Implement Inbox Pattern
   [ ] Use Azure BlobStorage to store users profile images
   [ ] Use Benchmarking and Profiling
   [ ] Implement Auditing of user accounts

@@ -57,7 +57,6 @@ namespace Edux.Shared.Infrastructure.Messaging.Outbox.EF
             };
 
             await _outboxMessageSet.AddAsync(outboxMessage);
-            await _dbContext.SaveChangesAsync();
         }
 
         public async Task CleanupAsync(DateTime? to = null)
