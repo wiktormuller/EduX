@@ -1,4 +1,4 @@
-﻿using Edux.Shared.Abstractions.Kernel;
+﻿using Edux.Shared.Abstractions.SharedKernel;
 using Edux.Shared.Infrastructure.Decorator;
 using Edux.Shared.Infrastructure.SharedKernel.Dispatchers;
 using Microsoft.Extensions.DependencyInjection;

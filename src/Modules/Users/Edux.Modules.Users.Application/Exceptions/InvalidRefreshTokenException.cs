@@ -1,8 +1,8 @@
-﻿using Edux.Shared.Abstractions.Kernel.Exceptions;
+﻿using Edux.Shared.Abstractions.SharedKernel.Exceptions;
 
 namespace Edux.Modules.Users.Application.Exceptions
 {
-    internal class InvalidRefreshTokenException : Shared.Abstractions.Kernel.Exceptions.ApplicationException
+    internal class InvalidRefreshTokenException : Shared.Abstractions.SharedKernel.Exceptions.ApplicationException
     {
         public override string Code { get; } = "invalid_refresh_token";
 

@@ -1,5 +1,5 @@
 ﻿using Edux.Modules.Users.Core.Entities;
-using Edux.Shared.Abstractions.Kernel.Types;
+using Edux.Shared.Abstractions.SharedKernel.Types;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 

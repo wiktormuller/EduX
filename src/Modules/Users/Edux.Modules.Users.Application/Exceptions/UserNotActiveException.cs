@@ -1,6 +1,6 @@
 ﻿namespace Edux.Modules.Users.Application.Exceptions
 {
-    internal class UserNotActiveException : Shared.Abstractions.Kernel.Exceptions.ApplicationException
+    internal class UserNotActiveException : Shared.Abstractions.SharedKernel.Exceptions.ApplicationException
     {
         public override string Code { get; } = "user_not_active";
 

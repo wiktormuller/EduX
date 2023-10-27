@@ -4,7 +4,7 @@ using Edux.Modules.Users.Infrastructure.EF.Contexts;
 using Edux.Modules.Users.Infrastructure.EF.Repositories;
 using Edux.Modules.Users.Infrastructure.Metrics;
 using Edux.Shared.Infrastructure.Messaging;
-using Edux.Shared.Infrastructure.SqlServer;
+using Edux.Shared.Infrastructure.Storage.SqlServer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using System.Runtime.CompilerServices;

@@ -1,5 +1,5 @@
 ﻿using Edux.Shared.Abstractions.Exceptions;
-using Edux.Shared.Abstractions.Kernel.Exceptions;
+using Edux.Shared.Abstractions.SharedKernel.Exceptions;
 using System.Net;
 
 namespace Edux.Shared.Infrastructure.Exceptions.Mappers
@@ -14,7 +14,7 @@ namespace Edux.Shared.Infrastructure.Exceptions.Mappers
                     new ExceptionResponse(new ErrorResponse(new Error(ex.Code, ex.Message)),
                     HttpStatusCode.BadRequest),
 
-                Abstractions.Kernel.Exceptions.ApplicationException ex =>
+                Abstractions.SharedKernel.Exceptions.ApplicationException ex =>
                     new ExceptionResponse(new ErrorResponse(new Error(ex.Code, ex.Message)),
                     HttpStatusCode.BadRequest),
 

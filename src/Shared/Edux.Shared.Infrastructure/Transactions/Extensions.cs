@@ -1,4 +1,5 @@
 ﻿using Edux.Shared.Abstractions.Commands;
+using Edux.Shared.Abstractions.SharedKernel;
 using Edux.Shared.Infrastructure.Transactions.Decorators;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -9,7 +10,9 @@ namespace Edux.Shared.Infrastructure.Transactions
         public static IServiceCollection AddTransactionalDecorators(this IServiceCollection services)
         {
             services.TryDecorate(typeof(ICommandHandler<>), typeof(TransactionalCommandHandlerDecorator<>));
-            // TODO: Do the same for event handlers
+
+            services.TryDecorate(typeof(IDomainEventHandler<>), typeof(TransactionalDomainEventHandlerDecorator<>));
+
             return services;
         }
     }

@@ -1,7 +1,7 @@
 ﻿using Edux.Modules.Users.Core.Entities;
 using Edux.Modules.Users.Core.Repositories;
 using Edux.Modules.Users.Infrastructure.EF.Contexts;
-using Edux.Shared.Abstractions.Kernel.Types;
+using Edux.Shared.Abstractions.SharedKernel.Types;
 using Microsoft.EntityFrameworkCore;
 
 namespace Edux.Modules.Users.Infrastructure.EF.Repositories

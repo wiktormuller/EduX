@@ -11,14 +11,11 @@ using Edux.Shared.Infrastructure.Events;
 using Edux.Shared.Infrastructure.Exceptions;
 using Edux.Shared.Infrastructure.Features;
 using Edux.Shared.Infrastructure.SharedKernel;
-using Edux.Shared.Infrastructure.Logging;
 using Edux.Shared.Infrastructure.Messaging;
 using Edux.Shared.Infrastructure.Modules;
 using Edux.Shared.Infrastructure.Observability;
 using Edux.Shared.Infrastructure.Queries;
 using Edux.Shared.Infrastructure.Serializers;
-using Edux.Shared.Infrastructure.SqlServer;
-using Edux.Shared.Infrastructure.SqlServer.Initializers;
 using Edux.Shared.Infrastructure.Storage;
 using Edux.Shared.Infrastructure.Time;
 using Edux.Shared.Infrastructure.Transactions;
@@ -29,6 +26,9 @@ using System.Reflection;
 using System.Runtime.CompilerServices;
 using Edux.Shared.Infrastructure.Messaging.RabbitMQ;
 using Edux.Shared.Infrastructure.Messaging.RabbitMQ.Initializers;
+using Edux.Shared.Infrastructure.Observability.Logging;
+using Edux.Shared.Infrastructure.Storage.SqlServer;
+using Edux.Shared.Infrastructure.Storage.SqlServer.Initializers;
 
 [assembly: InternalsVisibleTo("Edux.Bootstrapper")]
 [assembly: InternalsVisibleTo("Edux.Shared.Tests")]

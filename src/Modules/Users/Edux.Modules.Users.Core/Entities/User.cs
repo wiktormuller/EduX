@@ -1,6 +1,6 @@
 ﻿using Edux.Modules.Users.Core.Events;
 using Edux.Modules.Users.Core.ValueObjects;
-using Edux.Shared.Abstractions.Kernel.Types;
+using Edux.Shared.Abstractions.SharedKernel.Types;
 
 namespace Edux.Modules.Users.Core.Entities
 {

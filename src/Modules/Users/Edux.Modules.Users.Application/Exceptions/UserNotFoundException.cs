@@ -1,6 +1,6 @@
 ﻿namespace Edux.Modules.Users.Application.Exceptions
 {
-    public class UserNotFoundException : Shared.Abstractions.Kernel.Exceptions.ApplicationException
+    public class UserNotFoundException : Shared.Abstractions.SharedKernel.Exceptions.ApplicationException
     {
         public override string Code { get; } = "user_not_found";
 

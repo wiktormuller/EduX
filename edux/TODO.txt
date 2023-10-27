@@ -15,7 +15,6 @@ TODO List:
   [x] Add HttpClient extension method
   [x] Use Vault for safe app configuration
   [x] Implement Credential Lease for dynamically generated access to services as an alternative to centralized password storage (Vault)
-  [] Implement missing actions for users module
   [x] Use ThreadLocal instead of ConcurrencyDictionary for storing the RabbitMQ Channels
   [x] Add Redis Integration
   [x] Add feature flags
@@ -27,22 +26,26 @@ TODO List:
   [x] Create documentation about Swagger/Available Modules/RabbitUI etc.
   [x] Add Validation for requests
   [x] Clean up shared projects structure
-  [ ] Implement distributed tracing with Jaeger
+
+  [ ] Register event handlers (domain)
   [ ] Use portainer to manage services based on Docker
-  [ ] Add first ADRs
-  [ ] Add unit and integration tests (also for refresh tokens)
-  [ ] Extend Message Broker to handle some type of Envelope
-  [ ] Extend Message Broker to handle many messages
   [ ] Implement Inbox Pattern
   [ ] Use Azure BlobStorage to store users profile images
   [ ] Use Benchmarking and Profiling
   [ ] Implement Auditing of user accounts
   [ ] Implement Multi-Tenancy
   [ ] Use SpecFlow for BDD Testing
+  [ ] Add unit and integration tests (also for refresh tokens)
+  
+  [ ] Implement missing actions for users module
+  [ ] Extend Message Broker to handle some type of Envelope
+  [ ] Extend Message Broker to handle many messages
+  
   [ ] Implement UI for users module with React
   [ ] Implement asynchronous action in API with some type of Webhook or SignalR backchannel to client after adding API Gateway (maybe some hybrid action?)
   [ ] Forward all requests via Gateway and hide modules
-  [ ] Register event handlers (domain)
+  [ ] Implement distributed tracing with Jaeger
+  [ ] Add first ADRs
 
   [ ] Implement components for consuming Integration Messages
   [ ] Implement some Saga via _Chronicle project

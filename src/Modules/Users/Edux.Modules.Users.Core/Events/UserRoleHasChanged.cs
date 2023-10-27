@@ -1,5 +1,5 @@
 ﻿using Edux.Modules.Users.Core.Entities;
-using Edux.Shared.Abstractions.Kernel;
+using Edux.Shared.Abstractions.SharedKernel;
 
 namespace Edux.Modules.Users.Core.Events
 {

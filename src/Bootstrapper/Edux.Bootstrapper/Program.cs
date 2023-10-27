@@ -1,8 +1,8 @@
 using Edux.Bootstrapper;
 using Edux.Shared.Infrastructure;
 using Edux.Shared.Infrastructure.Modules;
-using Edux.Shared.Infrastructure.Logging;
 using Edux.Shared.Infrastructure.Secrets;
+using Edux.Shared.Infrastructure.Observability.Logging;
 
 var builder = WebApplication.CreateBuilder(args);
 

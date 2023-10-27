@@ -1,6 +1,6 @@
 ﻿namespace Edux.Modules.Users.Application.Exceptions
 {
-    internal class InvalidCredentialsException : Shared.Abstractions.Kernel.Exceptions.ApplicationException
+    internal class InvalidCredentialsException : Shared.Abstractions.SharedKernel.Exceptions.ApplicationException
     {
         public override string Code { get; } = "invalid_credentials";
 

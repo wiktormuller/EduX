@@ -1,4 +1,4 @@
-﻿using Edux.Shared.Abstractions.Kernel.Exceptions;
+﻿using Edux.Shared.Abstractions.SharedKernel.Exceptions;
 
 namespace Edux.Modules.Users.Core.Exceptions
 {
