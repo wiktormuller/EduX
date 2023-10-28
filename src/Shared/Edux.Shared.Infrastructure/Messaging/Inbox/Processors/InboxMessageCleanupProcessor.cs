@@ -26,7 +26,9 @@ namespace Edux.Shared.Infrastructure.Messaging.Inbox.Processors
             _clock = clock;
             _logger = logger;
             _inboxOptions = inboxOptions;
-            _interval = inboxOptions.CleanupInterval ?? TimeSpan.FromHours(1);
+            _interval = inboxOptions.CleanupIntervalInHours is null 
+                ? TimeSpan.FromHours(1) 
+                : TimeSpan.FromHours(inboxOptions.CleanupIntervalInHours.Value);
         }
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)

@@ -30,10 +30,10 @@ TODO List:
   [x] Register event handlers (domain)
   [x] Use portainer to manage services based on Docker
   [x] Implement Inbox Pattern
+  [ ] Use SpecFlow for BDD Testing
   [ ] Use Benchmarking and Profiling
   [ ] Implement Auditing of user accounts
   [ ] Implement Multi-Tenancy
-  [ ] Use SpecFlow for BDD Testing
   [ ] Add unit and integration tests (also for refresh tokens)
   
   [ ] Implement missing actions for users module
@@ -41,6 +41,8 @@ TODO List:
   [ ] Extend Message Broker to handle many messages
   
   [ ] Implement UI for users module with React
+  [ ] Add generic module for notifications
+  [ ] Use SignalR to check some health-check in real-time
   [ ] Implement asynchronous action in API with some type of Webhook or SignalR backchannel to client after adding API Gateway (maybe some hybrid action?)
   [ ] Forward all requests via Gateway and hide modules
   [ ] Implement distributed tracing with Jaeger

@@ -2,6 +2,7 @@
 using Edux.Shared.Abstractions.Events;
 using Edux.Shared.Abstractions.Messaging;
 using Edux.Shared.Infrastructure.Messaging.Brokers;
+using Edux.Shared.Infrastructure.Messaging.Contexts;
 using Edux.Shared.Infrastructure.Messaging.Inbox;
 using Edux.Shared.Infrastructure.Messaging.Inbox.Decorators;
 using Edux.Shared.Infrastructure.Messaging.Inbox.EF;
@@ -14,7 +15,6 @@ using Edux.Shared.Infrastructure.Messaging.Outbox.Options;
 using Edux.Shared.Infrastructure.Messaging.Outbox.Processors;
 using Edux.Shared.Infrastructure.Messaging.Outbox.Registries;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Edux.Shared.Infrastructure.Messaging
@@ -24,6 +24,7 @@ namespace Edux.Shared.Infrastructure.Messaging
         internal static IServiceCollection AddMessaging(this IServiceCollection services)
         {
             services.AddScoped<IMessageBroker, MessageBroker>();
+            services.AddMessageContext();
 
             return services;
         }

@@ -3,6 +3,6 @@
     internal class InboxOptions
     {
         public bool Enabled { get; set; }
-        public TimeSpan? CleanupInterval { get; set; }
+        public double? CleanupIntervalInHours { get; set; }
     }
 }

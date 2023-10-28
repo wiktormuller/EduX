@@ -32,7 +32,7 @@ namespace Edux.Shared.Infrastructure.Messaging.Inbox.Decorators
         {
             var context = _messageContextProvider.GetCurrent();
             var messageName = Names.GetOrAdd(typeof(T), typeof(T).Name.Underscore());
-            if (_inboxOptions.Enabled && context.MessageId is null)
+            if (_inboxOptions.Enabled && context.MessageId is not null)
             {
                 await _messageInbox.HandleAsync(context.MessageId, messageName, 
                     () => _commandHandler.HandleAsync(command, cancellationToken));
