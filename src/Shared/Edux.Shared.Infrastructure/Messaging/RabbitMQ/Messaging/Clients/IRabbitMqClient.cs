@@ -1,10 +1,11 @@
-﻿using Edux.Shared.Infrastructure.Messaging.RabbitMQ.Conventions;
+﻿using Edux.Shared.Abstractions.Messaging.Contexts;
+using Edux.Shared.Infrastructure.Messaging.RabbitMQ.Conventions;
 
 namespace Edux.Shared.Infrastructure.Messaging.RabbitMQ.Messaging.Clients
 {
     internal interface IRabbitMqClient
     {
-        void Send(object message, IConventions conventions, string messageId = null, string correlationId = null,
-        string spanContext = null, object messageContext = null, IDictionary<string, object> headers = null);
+        void Send(object message, IConventions conventions, string messageId, IMessageContext messageContext,
+        string spanContext = null, IDictionary<string, object> headers = null);
     }
 }

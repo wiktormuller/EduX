@@ -62,6 +62,7 @@ namespace Edux.Shared.Infrastructure
             services.AddCommandHandlersLoggingDecorators();
 
             services.AddOutbox();
+            services.AddInbox();
             services.AddMsSqlServer();
 
             services.AddRedis();

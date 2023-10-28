@@ -1,6 +1,5 @@
-﻿using Edux.Shared.Infrastructure.Messaging.RabbitMQ;
+﻿using Edux.Shared.Abstractions.Messaging.Contexts;
 using Edux.Shared.Infrastructure.Messaging.RabbitMQ.Connections;
-using Edux.Shared.Infrastructure.Messaging.RabbitMQ.Contexts;
 using Edux.Shared.Infrastructure.Messaging.RabbitMQ.Conventions;
 using Edux.Shared.Infrastructure.Messaging.RabbitMQ.Serializers;
 using Microsoft.Extensions.Logging;
@@ -22,6 +21,7 @@ namespace Edux.Shared.Infrastructure.Messaging.RabbitMQ.Messaging.Clients
         private readonly bool _persistMessages;
         private readonly bool _contextEnabled;
         private readonly string _spanContextHeader;
+        private readonly string _messageContextHeader;
 
         public RabbitMqClient(RabbitMqOptions options,
             ProducerConnection connection,
@@ -40,17 +40,20 @@ namespace Edux.Shared.Infrastructure.Messaging.RabbitMQ.Messaging.Clients
             _spanContextHeader = string.IsNullOrWhiteSpace(options?.SpanContextHeader)
                 ? "span_context"
                 : options.SpanContextHeader;
+            _messageContextHeader = string.IsNullOrWhiteSpace(options?.Context.Header)
+                ? "message_context"
+                : options.Context.Header;
             _channelFactory = channelFactory;
         }
 
-        public void Send(object message, IConventions conventions, string messageId = null, string correlationId = null,
-            string spanContext = null, object messageContext = null, IDictionary<string, object> headers = null)
+        public void Send(object message, IConventions conventions, string messageId, IMessageContext messageContext,
+            string spanContext = null, IDictionary<string, object> headers = null)
         {
             var channel = _channelFactory.Create(_connection);
 
             var body = _serializer.Serialize(message);
 
-            var properties = BuildProperties(channel, messageId, correlationId, spanContext, messageContext, headers);
+            var properties = BuildProperties(channel, messageId, messageContext, spanContext, headers);
 
             if (_loggerEnabled)
             {
@@ -63,8 +66,8 @@ namespace Edux.Shared.Infrastructure.Messaging.RabbitMQ.Messaging.Clients
             channel.BasicPublish(conventions.Exchange, conventions.RoutingKey, properties, body.ToArray());
         }
 
-        private IBasicProperties BuildProperties(IModel channel, string messageId, string correlationId, string spanContext,
-            object messageContext, IDictionary<string, object> headers)
+        private IBasicProperties BuildProperties(IModel channel, string messageId, IMessageContext messageContext, 
+            string spanContext, IDictionary<string, object> headers)
         {
             var properties = channel.CreateBasicProperties();
 
@@ -73,7 +76,9 @@ namespace Edux.Shared.Infrastructure.Messaging.RabbitMQ.Messaging.Clients
             properties.MessageId = string.IsNullOrWhiteSpace(messageId)
                 ? Guid.NewGuid().ToString("N")
                 : messageId;
-            properties.CorrelationId = string.IsNullOrWhiteSpace(correlationId)
+
+            var correlationId = messageContext.CorrelationContext?.CorrelationId.ToString("N");
+            properties.CorrelationId = correlationId is null
             ? Guid.NewGuid().ToString("N")
             : correlationId;
 
@@ -84,12 +89,12 @@ namespace Edux.Shared.Infrastructure.Messaging.RabbitMQ.Messaging.Clients
             {
                 if (messageContext is not null)
                 {
-                    properties.Headers.Add(_contextProvider.HeaderName, _serializer.Serialize(messageContext).ToArray());
+                    properties.Headers.Add(_messageContextHeader, _serializer.Serialize(messageContext).ToArray());
                 }
             }
             else
             {
-                properties.Headers.Add(_contextProvider.HeaderName, EMPTY_CONTEXT);
+                properties.Headers.Add(_messageContextHeader, EMPTY_CONTEXT);
             }
 
             if (!string.IsNullOrWhiteSpace(spanContext))

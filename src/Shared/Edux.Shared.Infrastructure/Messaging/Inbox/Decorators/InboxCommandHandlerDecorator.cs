@@ -1,7 +1,7 @@
 ﻿using Edux.Shared.Abstractions.Commands;
+using Edux.Shared.Abstractions.Messaging.Contexts;
 using Edux.Shared.Infrastructure.Decorator;
 using Edux.Shared.Infrastructure.Messaging.Inbox.Options;
-using Edux.Shared.Infrastructure.Messaging.RabbitMQ.Contexts;
 using Humanizer;
 using System.Collections.Concurrent;
 
@@ -30,9 +30,9 @@ namespace Edux.Shared.Infrastructure.Messaging.Inbox.Decorators
 
         public async Task HandleAsync(T command, CancellationToken cancellationToken)
         {
-            var context = _messageContextProvider.Current();
+            var context = _messageContextProvider.GetCurrent();
             var messageName = Names.GetOrAdd(typeof(T), typeof(T).Name.Underscore());
-            if (_inboxOptions.Enabled && !string.IsNullOrWhiteSpace(context.MessageId))
+            if (_inboxOptions.Enabled && context.MessageId is null)
             {
                 await _messageInbox.HandleAsync(context.MessageId, messageName, 
                     () => _commandHandler.HandleAsync(command, cancellationToken));

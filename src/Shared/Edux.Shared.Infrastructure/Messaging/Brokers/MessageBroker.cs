@@ -1,6 +1,8 @@
 ﻿using Edux.Shared.Abstractions.Contexts;
 using Edux.Shared.Abstractions.Messaging;
+using Edux.Shared.Abstractions.Messaging.Contexts;
 using Edux.Shared.Abstractions.Messaging.Publishers;
+using Edux.Shared.Infrastructure.Messaging.Contexts;
 using Edux.Shared.Infrastructure.Messaging.Outbox;
 using Edux.Shared.Infrastructure.Messaging.Outbox.Options;
 using Edux.Shared.Infrastructure.Messaging.Outbox.Registries;
@@ -16,6 +18,7 @@ namespace Edux.Shared.Infrastructure.Messaging.Brokers
         private readonly ICorrelationContextAccessor _correlationContextAccessor;
         private readonly OutboxTypeRegistry _outboxTypeRegistry;
         private readonly IServiceProvider _serviceProvider;
+        private readonly IMessageContextProvider _messageContextProvider;
         private readonly bool _isOutboxEnabled;
 
         public MessageBroker(IBusPublisher busPublisher,
@@ -23,7 +26,8 @@ namespace Edux.Shared.Infrastructure.Messaging.Brokers
             ICorrelationContextAccessor correlationContextAccessor,
             OutboxTypeRegistry outboxTypeRegistry,
             IServiceProvider serviceProvider,
-            OutboxOptions options)
+            OutboxOptions options,
+            IMessageContextProvider messageContextProvider)
         {
             _busPublisher = busPublisher;
             _logger = logger;
@@ -31,6 +35,7 @@ namespace Edux.Shared.Infrastructure.Messaging.Brokers
             _outboxTypeRegistry = outboxTypeRegistry;
             _serviceProvider = serviceProvider;
             _isOutboxEnabled = options.Enabled;
+            _messageContextProvider = messageContextProvider;
         }
 
         public async Task PublishAsync(params IMessage[] messages)
@@ -52,6 +57,8 @@ namespace Edux.Shared.Infrastructure.Messaging.Brokers
                 var messageId = Guid.NewGuid().ToString("N");
                 _logger.LogTrace($"Publishing integration message: {message.GetType().Name} [id: '{messageId}'].");
 
+                var messageContext = new MessageContext(_correlationContextAccessor.CorrelationContext, messageId);
+                _messageContextProvider.Set(messageContext);
 
                 if (_isOutboxEnabled)
                 {
@@ -61,12 +68,11 @@ namespace Edux.Shared.Infrastructure.Messaging.Brokers
                     using var scope = _serviceProvider.CreateScope();
                     var messageOutbox = (IMessageOutbox)scope.ServiceProvider.GetRequiredService(outboxType);
 
-                    await messageOutbox.SaveAsync(message, messageId, _correlationContextAccessor.CorrelationContext);
+                    await messageOutbox.SaveAsync(message, messageId, messageContext);
                     return;
                 }
 
-                await _busPublisher.PublishAsync(message, messageId: messageId,
-                    messageContext: _correlationContextAccessor.CorrelationContext);
+                await _busPublisher.PublishAsync(message, messageId, messageContext);
             }
         }
     }

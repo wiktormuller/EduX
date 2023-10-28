@@ -30,7 +30,6 @@ TODO List:
   [x] Register event handlers (domain)
   [x] Use portainer to manage services based on Docker
   [x] Implement Inbox Pattern
-  [ ] Use Azure BlobStorage to store users profile images
   [ ] Use Benchmarking and Profiling
   [ ] Implement Auditing of user accounts
   [ ] Implement Multi-Tenancy
@@ -46,6 +45,7 @@ TODO List:
   [ ] Forward all requests via Gateway and hide modules
   [ ] Implement distributed tracing with Jaeger
   [ ] Add first ADRs
+  [ ] Use Azure BlobStorage to store users profile images
 
   [ ] Implement components for consuming Integration Messages
   [ ] Implement some Saga via _Chronicle project

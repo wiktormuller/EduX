@@ -83,11 +83,10 @@ namespace Edux.Shared.Infrastructure.Messaging
             return services;
         }
 
-        public static IServiceCollection AddInbox(this IServiceCollection services, IConfiguration configuration)
+        public static IServiceCollection AddInbox(this IServiceCollection services)
         {
-            var section = configuration.GetSection("inbox");
-            var inboxOptions = section.BindOptions<InboxOptions>();
-            services.Configure<InboxOptions>(section);
+            var inboxOptions = services.GetOptions<InboxOptions>("inbox");
+            services.AddSingleton(inboxOptions);
 
             services.AddSingleton(new InboxTypeRegistry());
 

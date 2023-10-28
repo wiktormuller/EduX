@@ -1,8 +1,9 @@
 ﻿using Edux.Shared.Abstractions.Contexts;
+using Edux.Shared.Abstractions.Messaging.Contexts;
 using Edux.Shared.Abstractions.Messaging.Publishers;
 using Edux.Shared.Infrastructure.Contexts.Accessors;
+using Edux.Shared.Infrastructure.Messaging.Contexts;
 using Edux.Shared.Infrastructure.Messaging.RabbitMQ.Connections;
-using Edux.Shared.Infrastructure.Messaging.RabbitMQ.Contexts;
 using Edux.Shared.Infrastructure.Messaging.RabbitMQ.Conventions;
 using Edux.Shared.Infrastructure.Messaging.RabbitMQ.Initializers;
 using Edux.Shared.Infrastructure.Messaging.RabbitMQ.Messaging.Clients;
