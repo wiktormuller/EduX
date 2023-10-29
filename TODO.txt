@@ -31,7 +31,6 @@ TODO List:
   [x] Use portainer to manage services based on Docker
   [x] Implement Inbox Pattern
   [ ] Use SpecFlow for BDD Testing
-  [ ] Use Benchmarking and Profiling
   [ ] Implement Auditing of user accounts
   [ ] Implement Multi-Tenancy
   [ ] Add unit and integration tests (also for refresh tokens)

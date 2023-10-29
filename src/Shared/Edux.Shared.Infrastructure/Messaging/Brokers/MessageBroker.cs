@@ -1,5 +1,4 @@
-﻿using BenchmarkDotNet.Attributes;
-using Edux.Shared.Abstractions.Contexts;
+﻿using Edux.Shared.Abstractions.Contexts;
 using Edux.Shared.Abstractions.Messaging;
 using Edux.Shared.Abstractions.Messaging.Contexts;
 using Edux.Shared.Abstractions.Messaging.Publishers;
@@ -39,7 +38,6 @@ namespace Edux.Shared.Infrastructure.Messaging.Brokers
             _messageContextProvider = messageContextProvider;
         }
 
-        [Benchmark]
         public async Task PublishAsync(params IMessage[] messages)
         {
             if (messages is null)
