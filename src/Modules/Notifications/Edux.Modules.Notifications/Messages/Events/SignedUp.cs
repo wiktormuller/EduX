@@ -1,7 +1,7 @@
 ﻿using Edux.Shared.Abstractions.Events;
 using Edux.Shared.Abstractions.Messaging;
 
-namespace Edux.Modules.Users.Application.Events
+namespace Edux.Modules.Notifications.Messages.Events
 {
     [Message("users")]
     public class SignedUp : IEvent

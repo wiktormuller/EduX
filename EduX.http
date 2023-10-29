@@ -63,3 +63,6 @@ Authorization: Bearer {{accessToken}}
 ### Get Users
 GET {{url}}/users-module/users
 Authorization: Bearer {{accessToken}}
+
+### Notifications
+GET {{url}}/notifications-module

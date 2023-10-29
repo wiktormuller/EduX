@@ -43,12 +43,13 @@ namespace Edux.Modules.Users.Application.Commands.Handlers
             var password = new Password(passwordHash);
             var role = new Role(command.Role);
             var userName = new Username(command.Username);
+            var now = _clock.CurrentDate();
 
             var user = new User(Guid.NewGuid(), email, userName, password, role, isActive: true, 
-                _clock.CurrentDate(), _clock.CurrentDate(), command.Claims);
+                _clock.CurrentDate(), now, command.Claims);
             await _userRepository.AddAsync(user);
 
-            await _messageBroker.PublishAsync(new SignedUp(user.Id, user.Email, user.Role, user.Claims));
+            await _messageBroker.PublishAsync(new SignedUp(user.Id, user.Email, user.Role, now, user.Claims));
         }
     }
 }
