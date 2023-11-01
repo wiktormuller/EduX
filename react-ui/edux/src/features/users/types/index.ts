@@ -1,4 +1,4 @@
-export type JsonWebToken = {
+export type JsonWebTokenResponse = {
     id: string
     accessToken: string;
     refreshToken: string;
@@ -8,7 +8,25 @@ export type JsonWebToken = {
     claims: Map<string, string[]>
 };
 
-export type LoginRequest = {
+export type SignUpResponse = {
+};
+
+export type UserMeResponse = {
+    id: string,
+    email: string,
+    role: string,
+    isActive: boolean,
+    createdAt: Date,
+    updatedAt: Date,
+    claims: Map<string, string[]>
+};
+
+export type SignInRequest = {
+    email: string,
+    password: string
+};
+
+export type SignUpRequest = {
     email: string,
     password: string
 };

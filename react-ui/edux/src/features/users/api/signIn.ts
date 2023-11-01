@@ -1,7 +1,7 @@
 import { axios } from '@/lib/axios';
-import { JsonWebToken } from '../types';
-import { LoginRequest } from '../types';
+import { JsonWebTokenResponse } from '../types';
+import { SignInRequest } from '../types';
 
-export const signIn = (data: LoginRequest): Promise<JsonWebToken> => {
+export const signIn = (data: SignInRequest): Promise<JsonWebTokenResponse> => {
     return axios.post(`/users-module/users/sign-in`, data);
 };
