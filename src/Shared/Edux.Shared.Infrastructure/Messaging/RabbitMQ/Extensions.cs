@@ -1,13 +1,16 @@
 ﻿using Edux.Shared.Abstractions.Contexts;
 using Edux.Shared.Abstractions.Messaging.Contexts;
 using Edux.Shared.Abstractions.Messaging.Publishers;
+using Edux.Shared.Abstractions.Messaging.Subscribers;
 using Edux.Shared.Infrastructure.Contexts.Accessors;
 using Edux.Shared.Infrastructure.Messaging.Contexts;
 using Edux.Shared.Infrastructure.Messaging.RabbitMQ.Connections;
 using Edux.Shared.Infrastructure.Messaging.RabbitMQ.Conventions;
 using Edux.Shared.Infrastructure.Messaging.RabbitMQ.Initializers;
+using Edux.Shared.Infrastructure.Messaging.RabbitMQ.Messaging.Channels;
 using Edux.Shared.Infrastructure.Messaging.RabbitMQ.Messaging.Clients;
 using Edux.Shared.Infrastructure.Messaging.RabbitMQ.Messaging.Publishers;
+using Edux.Shared.Infrastructure.Messaging.RabbitMQ.Messaging.Subscribers;
 using Edux.Shared.Infrastructure.Messaging.RabbitMQ.Serializers;
 using Microsoft.Extensions.DependencyInjection;
 using RabbitMQ.Client;
@@ -37,8 +40,10 @@ namespace Edux.Shared.Infrastructure.Messaging.RabbitMQ
             services.AddSingleton<IRabbitMqClient, RabbitMqClient>();
             services.AddSingleton<IBusPublisher, RabbitMqPublisher>();
             services.AddSingleton<IRabbitMqSerializer, SystemTextJsonRabbitMqSerializer>();
+            services.AddSingleton<MessageSubscriptionsChannel>();
+            services.AddSingleton<IMessageSubscriber, RabbitMqMessageSubscriber>();
 
-            services.AddSingleton<ICorrelationContextAccessor>(new CorrelationContextAccessor());
+            services.AddSingleton<IContextAccessor>(new ContextAccessor());
 
             services.AddSingleton<IConventionsBuilder, ConventionsBuilder>();
             services.AddSingleton<IConventionsProvider, ConventionsProvider>();

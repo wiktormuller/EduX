@@ -1,4 +1,4 @@
-﻿using Edux.Shared.Abstractions.Messaging.Contexts;
+﻿using Edux.Shared.Abstractions.Contexts;
 using Edux.Shared.Infrastructure.Messaging.RabbitMQ.Connections;
 using Edux.Shared.Infrastructure.Messaging.RabbitMQ.Conventions;
 using Edux.Shared.Infrastructure.Messaging.RabbitMQ.Serializers;

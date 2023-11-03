@@ -15,7 +15,7 @@ namespace Edux.Shared.Infrastructure.Messaging.Brokers
     {
         private readonly IBusPublisher _busPublisher;
         private readonly ILogger<MessageBroker> _logger;
-        private readonly ICorrelationContextAccessor _correlationContextAccessor;
+        private readonly IContextAccessor _correlationContextAccessor;
         private readonly OutboxTypeRegistry _outboxTypeRegistry;
         private readonly IServiceProvider _serviceProvider;
         private readonly IMessageContextProvider _messageContextProvider;
@@ -23,7 +23,7 @@ namespace Edux.Shared.Infrastructure.Messaging.Brokers
 
         public MessageBroker(IBusPublisher busPublisher,
             ILogger<MessageBroker> logger,
-            ICorrelationContextAccessor correlationContextAccessor,
+            IContextAccessor correlationContextAccessor,
             OutboxTypeRegistry outboxTypeRegistry,
             IServiceProvider serviceProvider,
             OutboxOptions options,

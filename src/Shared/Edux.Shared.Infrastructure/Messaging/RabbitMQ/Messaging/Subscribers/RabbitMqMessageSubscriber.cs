@@ -2,42 +2,47 @@
 using Edux.Shared.Abstractions.Events;
 using Edux.Shared.Abstractions.Messaging;
 using Edux.Shared.Abstractions.Messaging.Subscribers;
-using Edux.Shared.Infrastructure.Messaging.RabbitMQ.Handlers;
-using System.Reflection;
+using Edux.Shared.Infrastructure.Messaging.RabbitMQ.Messaging.Channels;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Edux.Shared.Infrastructure.Messaging.RabbitMQ.Messaging.Subscribers
 {
     internal sealed class RabbitMqMessageSubscriber : IMessageSubscriber
     {
-        private readonly IMessageHandler _messageHandler;
-        //private readonly IMessageTypeRegistry _messageTypeRegistry;
+        private readonly MessageSubscriptionsChannel _messageSubscribersChannel;
 
-        public RabbitMqMessageSubscriber(IMessageHandler messageHandler)
+        public RabbitMqMessageSubscriber(MessageSubscriptionsChannel messageSubscribersChannel)
         {
-            _messageHandler = messageHandler;
+            _messageSubscribersChannel = messageSubscribersChannel;
         }
 
-        public IMessageSubscriber Command<T>() where T : class, ICommand
+        public IMessageSubscriber SubscribeForCommand<TCommand>() where TCommand : class, ICommand
         {
-            // TODO: Implement
-            throw new NotImplementedException();
+            return SubscribeForMessage<TCommand>((serviceProvider, command, cancellationToken) => 
+                serviceProvider
+                    .GetRequiredService<ICommandDispatcher>()
+                    .SendAsync(command, cancellationToken));
         }
 
-        public IMessageSubscriber Event<T>() where T : class, IEvent
+        public IMessageSubscriber SubscribeForEvent<TEvent>() where TEvent : class, IEvent
         {
-            // TODO: Implement
-            throw new NotImplementedException();
+            return SubscribeForMessage<TEvent>((serviceProvider, integrationEvent, cancellationToken) =>
+                serviceProvider
+                    .GetRequiredService<IEventDispatcher>()
+                    .PublishAsync(integrationEvent, cancellationToken));
         }
 
-        public IMessageSubscriber Message<T>(Func<IServiceProvider, T, CancellationToken, Task> handler)
+        public IMessageSubscriber SubscribeForMessage<T>(Func<IServiceProvider, T, CancellationToken, Task> handler)
             where T : class, IMessage
         {
-            //_messageTypeRegistry.Register<T>();
+            var type = typeof(T);
+            var messageSubscription = new MessageSubscription(
+                type, 
+                (serviceProvider, message, cancellationToken) => handler(serviceProvider, (T)message, cancellationToken));
 
-            var messageAttribute = typeof(T).GetCustomAttribute<MessageAttribute>() ?? new MessageAttribute();
+            _messageSubscribersChannel.Writer.TryWrite(messageSubscription);
 
-            // TODO: Implement
-            throw new NotImplementedException();
+            return this;
         }
     }
 }

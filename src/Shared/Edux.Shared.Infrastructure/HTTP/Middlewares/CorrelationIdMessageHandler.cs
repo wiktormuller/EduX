@@ -5,9 +5,9 @@ namespace Edux.Shared.Infrastructure.HTTP.Middlewares
     internal sealed class CorrelationIdMessageHandler : DelegatingHandler
     {
         private const string CorrelationIdKey = "correlation-id";
-        private readonly ICorrelationContextAccessor _correlationContextAccessor;
+        private readonly IContextAccessor _correlationContextAccessor;
 
-        public CorrelationIdMessageHandler(ICorrelationContextAccessor correlationContextAccessor)
+        public CorrelationIdMessageHandler(IContextAccessor correlationContextAccessor)
         {
             _correlationContextAccessor = correlationContextAccessor;
         }

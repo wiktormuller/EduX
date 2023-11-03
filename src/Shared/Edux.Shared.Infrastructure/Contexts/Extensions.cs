@@ -1,8 +1,8 @@
 ﻿using Edux.Shared.Abstractions.Contexts;
-using Edux.Shared.Infrastructure.Contexts.Accessors;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
+using Polly;
 using System.Net.Http.Headers;
 
 namespace Edux.Shared.Infrastructure.Contexts
@@ -13,9 +13,9 @@ namespace Edux.Shared.Infrastructure.Contexts
 
         public static IServiceCollection AddContext(this IServiceCollection services)
         {
-            services.AddSingleton<ICorrelationContextAccessor, CorrelationContextAccessor>();
-            services.AddTransient(sp => sp.GetRequiredService<ICorrelationContextAccessor>().CorrelationContext);
-
+            services.AddSingleton<IContextAccessor, ContextAccessor>();
+            services.AddTransient(sp => sp.GetRequiredService<IContextAccessor>().Context);
+                
             return services;
         }
 
@@ -23,8 +23,8 @@ namespace Edux.Shared.Infrastructure.Contexts
         {
             app.Use((httpContext, next) =>
             {
-                httpContext.RequestServices.GetRequiredService<ICorrelationContextAccessor>()
-                    .CorrelationContext = new CorrelationContext(httpContext);
+                httpContext.RequestServices.GetRequiredService<IContextAccessor>()
+                    .Context = new Context(httpContext);
 
                 return next();
             });
@@ -50,6 +50,23 @@ namespace Edux.Shared.Infrastructure.Contexts
             }
 
             return ipAddress ?? string.Empty;
+        }
+
+        public static string GetUserAgent(this HttpContext httpContext)
+        {
+            if (httpContext is null)
+            {
+                return string.Empty;
+            }
+
+            httpContext.Request.Headers.TryGetValue("user-agent", out var userAgent);
+            
+            if (!string.IsNullOrWhiteSpace(userAgent.FirstOrDefault()))
+            {
+                return userAgent;
+            }
+
+            return string.Empty;
         }
 
         public static Guid? TryGetCorrelationId(this HttpContext context)

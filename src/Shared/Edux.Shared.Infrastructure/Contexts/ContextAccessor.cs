@@ -1,12 +1,12 @@
 ﻿using Edux.Shared.Abstractions.Contexts;
 
-namespace Edux.Shared.Infrastructure.Contexts.Accessors
+namespace Edux.Shared.Infrastructure.Contexts
 {
-    internal sealed class CorrelationContextAccessor : ICorrelationContextAccessor
+    internal sealed class ContextAccessor : IContextAccessor
     {
-        private static readonly AsyncLocal<CorrelationContextHolder> Holder = new();
+        private static readonly AsyncLocal<ContextHolder> Holder = new();
 
-        public ICorrelationContext CorrelationContext
+        public IContext Context
         {
             get => Holder.Value?.Context;
             set
@@ -19,7 +19,7 @@ namespace Edux.Shared.Infrastructure.Contexts.Accessors
 
                 if (value is not null)
                 {
-                    Holder.Value = new CorrelationContextHolder
+                    Holder.Value = new ContextHolder
                     {
                         Context = value
                     };
@@ -27,9 +27,9 @@ namespace Edux.Shared.Infrastructure.Contexts.Accessors
             }
         }
 
-        private class CorrelationContextHolder
+        private class ContextHolder
         {
-            public ICorrelationContext Context;
+            public IContext Context;
         }
     }
 }

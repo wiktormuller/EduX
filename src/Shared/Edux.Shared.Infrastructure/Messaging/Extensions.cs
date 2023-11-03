@@ -1,8 +1,8 @@
 ﻿using Edux.Shared.Abstractions.Commands;
 using Edux.Shared.Abstractions.Events;
 using Edux.Shared.Abstractions.Messaging;
+using Edux.Shared.Infrastructure.Contexts;
 using Edux.Shared.Infrastructure.Messaging.Brokers;
-using Edux.Shared.Infrastructure.Messaging.Contexts;
 using Edux.Shared.Infrastructure.Messaging.Inbox;
 using Edux.Shared.Infrastructure.Messaging.Inbox.Decorators;
 using Edux.Shared.Infrastructure.Messaging.Inbox.EF;

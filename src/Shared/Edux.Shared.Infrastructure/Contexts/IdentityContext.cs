@@ -1,19 +1,14 @@
 ﻿using Edux.Shared.Abstractions.Contexts;
 using System.Security.Claims;
 
-namespace Edux.Shared.Infrastructure.Contexts.Accessors
+namespace Edux.Shared.Infrastructure.Contexts
 {
     internal sealed class IdentityContext : IIdentityContext
     {
         public bool IsAuthenticated { get; }
         public Guid Id { get; }
         public string Role { get; }
-
         public Dictionary<string, IEnumerable<string>> Claims { get; }
-
-        private IdentityContext()
-        {
-        }
 
         public IdentityContext(Guid? id)
         {
@@ -38,7 +33,5 @@ namespace Edux.Shared.Infrastructure.Contexts.Accessors
         public bool IsUser() => Role is "user";
 
         public bool IsAdmin() => Role is "admin";
-
-        public static IIdentityContext Empty => new IdentityContext();
     }
 }

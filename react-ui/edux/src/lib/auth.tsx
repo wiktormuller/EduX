@@ -1,4 +1,4 @@
-import { initReactQueryAuth } from 'react-query-auth';
+import { configureAuth } from 'react-query-auth';
 
 import { Spinner } from '@/components/Elements';
 
@@ -27,17 +27,17 @@ async function loadUser() {
   return null;
 }
 
-async function loginFn(data: SignInRequest) {
+async function login(data: SignInRequest) {
   const response = await signIn(data);
   const user = await handleUserResponse(response);
   return user;
 }
 
-async function registerFn(data: SignUpRequest) {
+async function register(data: SignUpRequest) {
   await signUp(data);
 }
 
-async function logoutFn() {
+async function logout() {
   storage.clearToken();
   window.location.assign(window.location.origin as unknown as string);
 }
@@ -56,9 +56,11 @@ const authConfig = {
   }
 };
 
-export const { AuthProvider, useAuth } = initReactQueryAuth<
-  JsonWebTokenResponse | null,
-  unknown,
-  SignInRequest,
-  SignUpRequest
->(authConfig);
+export const { useUser, useLogin, useRegister, useLogout } = configureAuth(
+    {
+        userFn: loadUser,
+        loginFn: login,
+        registerFn: register,
+        logoutFn: logout
+    }
+);

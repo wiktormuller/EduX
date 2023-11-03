@@ -55,8 +55,8 @@ namespace Edux.Shared.Infrastructure.Observability.Logging
         {
             app.Use(async (httpContext, next) =>
             {
-                var logger = httpContext.RequestServices.GetRequiredService<ILogger<ICorrelationContextAccessor>>();
-                var context = httpContext.RequestServices.GetRequiredService<ICorrelationContextAccessor>().CorrelationContext;
+                var logger = httpContext.RequestServices.GetRequiredService<ILogger<IContextAccessor>>();
+                var context = httpContext.RequestServices.GetRequiredService<IContextAccessor>().CorrelationContext;
 
                 var userId = context.Identity.IsAuthenticated
                     ? context.Identity.Id.ToString("N")

@@ -28,20 +28,20 @@ namespace Edux.Shared.Infrastructure.Messaging.Inbox.Decorators
             _inboxOptions = inboxOptions;
         }
 
-        public async Task HandleAsync(T @event)
+        public async Task HandleAsync(T @event, CancellationToken cancellationToken)
         {
             var messageContext = _messageContextProvider.GetCurrent();
 
             var messageName = Names.GetOrAdd(typeof(T), typeof(T).Name.Underscore());
-            var handlerAction = () => _eventHandler.HandleAsync(@event);
+            var handlerAction = () => _eventHandler.HandleAsync(@event, cancellationToken);
             
             if (_inboxOptions.Enabled && messageContext.MessageId is not null)
             {
                 await _inbox.HandleAsync(messageContext.MessageId, messageName, 
-                    () => _eventHandler.HandleAsync(@event));
+                    () => _eventHandler.HandleAsync(@event, cancellationToken));
             }
 
-            await _eventHandler.HandleAsync(@event);
+            await _eventHandler.HandleAsync(@event, cancellationToken);
         }
     }
 }

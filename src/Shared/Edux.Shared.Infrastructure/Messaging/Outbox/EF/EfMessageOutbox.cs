@@ -1,6 +1,5 @@
 ﻿using Edux.Shared.Abstractions.Contexts;
 using Edux.Shared.Abstractions.Messaging;
-using Edux.Shared.Abstractions.Messaging.Contexts;
 using Edux.Shared.Abstractions.Messaging.Outbox;
 using Edux.Shared.Abstractions.Messaging.Publishers;
 using Edux.Shared.Abstractions.Serializers;

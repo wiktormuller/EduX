@@ -5,7 +5,6 @@ using Edux.Shared.Abstractions.Time;
 using Edux.Shared.Infrastructure.Api;
 using Edux.Shared.Infrastructure.Auth;
 using Edux.Shared.Infrastructure.Commands;
-using Edux.Shared.Infrastructure.Contexts;
 using Edux.Shared.Infrastructure.Crypto;
 using Edux.Shared.Infrastructure.Events;
 using Edux.Shared.Infrastructure.Exceptions;

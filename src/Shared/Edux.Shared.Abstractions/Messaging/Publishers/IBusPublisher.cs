@@ -1,4 +1,4 @@
-﻿using Edux.Shared.Abstractions.Messaging.Contexts;
+﻿using Edux.Shared.Abstractions.Contexts;
 
 namespace Edux.Shared.Abstractions.Messaging.Publishers
 {
