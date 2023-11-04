@@ -12,45 +12,48 @@ namespace Edux.Shared.Infrastructure.Observability.Logging.Decorators
     {
         private readonly ILogger<CommandHandlerLoggingDecorator<TCommand>> _logger;
         private readonly ICommandHandler<TCommand> _commandHandler;
-        private readonly ICorrelationContext _context;
+        private readonly IContextProvider _contextProvider;
 
         public CommandHandlerLoggingDecorator(ILogger<CommandHandlerLoggingDecorator<TCommand>> logger,
             ICommandHandler<TCommand> commandHandler,
-            ICorrelationContext context)
+            IContextProvider contextProvider)
         {
             _logger = logger;
             _commandHandler = commandHandler;
-            _context = context;
+            _contextProvider = contextProvider;
         }
 
         public async Task HandleAsync(TCommand command, CancellationToken cancellationToken)
         {
             // We can use template mechanism here with some global registry or implement simple loggin with predefined data
 
+            var context = _contextProvider.Current();
             var module = command.GetModuleName();
             var name = command.GetType().Name.Underscore();
-            var requestId = _context.RequestId;
-            var traceId = _context.TraceId;
-            var userId = _context.Identity?.Id;
-            // TODO: Implement MessageId and CorrelationId
+            var requestId = context?.RequestContext.RequestId;
+            var traceId = context.TraceId;
+            var userId = context?.IdentityContext?.Id;
+            var correlationId = context?.CorrelationId;
+            var messageId = context?.MessageContext.MessageId;
 
             try
             {
                 _logger.LogInformation($"Handling a command: {name} ({module}) " +
-                    $"[Request ID: {requestId}, " +
-                    $"Trace ID: '{traceId}', User ID: '{userId}]'...");
+                    $"[Request ID: {requestId}, Message ID: '{messageId}', " +
+                    $"Trace ID: '{traceId}', Correlation ID: '{correlationId}', User ID: '{userId}]'...");
 
                 await _commandHandler.HandleAsync(command, cancellationToken);
 
                 _logger.LogInformation($"Handled a command: {name} ({module}) " +
-                    $"[Request ID: {requestId}, " +
-                    $"Trace ID: '{traceId}', User ID: '{userId}']");
+                    $"[Request ID: {requestId}, Message ID: '{messageId}', " +
+                    $"Trace ID: '{traceId}', Correlation ID: '{correlationId}', User ID: '{userId}']");
             }
             catch (Exception ex)
             {
                 _logger.LogError($"There was an ERROR while handling a command: {name} ({module}) " +
-                    $"[Request ID: {requestId}, " +
-                    $"Trace ID: '{traceId}', User ID: '{userId}]'. Exception message: {ex.Message}");
+                    $"[Request ID: {requestId}, Message ID: '{messageId}', " +
+                    $"Trace ID: '{traceId}', Correlation ID: '{correlationId}', User ID: '{userId}]'. " +
+                    $"Exception message: {ex.Message}");
 
                 throw;
             }

@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
-using Polly;
 using System.Net.Http.Headers;
 
 namespace Edux.Shared.Infrastructure.Contexts
@@ -10,11 +9,13 @@ namespace Edux.Shared.Infrastructure.Contexts
     internal static class Extensions
     {
         private const string CorrelationIdKey = "correlation-id";
+        private const string UserIpKey = "x-forwarded-for";
+        private const string UserAgentKey = "user-agent";
 
         public static IServiceCollection AddContext(this IServiceCollection services)
         {
             services.AddSingleton<IContextAccessor, ContextAccessor>();
-            services.AddTransient(sp => sp.GetRequiredService<IContextAccessor>().Context);
+            services.AddSingleton<IContextProvider, ContextProvider>();
                 
             return services;
         }
@@ -40,7 +41,7 @@ namespace Edux.Shared.Infrastructure.Contexts
             }
 
             var ipAddress = httpContext.Connection.RemoteIpAddress?.ToString();
-            if (httpContext.Request.Headers.TryGetValue("x-forwarded-for", out var forwardedFor))
+            if (httpContext.Request.Headers.TryGetValue(UserIpKey, out var forwardedFor))
             {
                 var ipAddresses = forwardedFor.ToString().Split(",", StringSplitOptions.RemoveEmptyEntries);
                 if (ipAddresses.Any())
@@ -59,7 +60,7 @@ namespace Edux.Shared.Infrastructure.Contexts
                 return string.Empty;
             }
 
-            httpContext.Request.Headers.TryGetValue("user-agent", out var userAgent);
+            httpContext.Request.Headers.TryGetValue(UserAgentKey, out var userAgent);
             
             if (!string.IsNullOrWhiteSpace(userAgent.FirstOrDefault()))
             {

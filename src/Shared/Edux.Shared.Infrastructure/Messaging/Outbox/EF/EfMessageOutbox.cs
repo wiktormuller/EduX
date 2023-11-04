@@ -4,7 +4,6 @@ using Edux.Shared.Abstractions.Messaging.Outbox;
 using Edux.Shared.Abstractions.Messaging.Publishers;
 using Edux.Shared.Abstractions.Serializers;
 using Edux.Shared.Abstractions.Time;
-using Edux.Shared.Infrastructure.Messaging.Contexts;
 using Edux.Shared.Infrastructure.Messaging.Outbox.Options;
 using Edux.Shared.Infrastructure.Messaging.Outbox.Processors;
 using Humanizer;
@@ -23,15 +22,14 @@ namespace Edux.Shared.Infrastructure.Messaging.Outbox.EF
         private readonly ILogger<EfMessageOutbox<T>> _logger;
         private readonly IBusPublisher _busPublisher;
         private readonly OutboxOptions _outboxOptions;
-        private readonly IMessageContextProvider _messageContextProvider;
+        private readonly IContextProvider _contextProvider;
 
         public EfMessageOutbox(IJsonSerializer serializer,
             IClock clock,
             T dbContext,
             ILogger<EfMessageOutbox<T>> logger,
             IBusPublisher busPublisher,
-            OutboxOptions outboxOptions,
-            IMessageContextProvider messageContextProvider)
+            OutboxOptions outboxOptions)
         {
             _jsonSerializer = serializer;
             _clock = clock;
@@ -40,7 +38,6 @@ namespace Edux.Shared.Infrastructure.Messaging.Outbox.EF
             _logger = logger;
             _busPublisher = busPublisher;
             _outboxOptions = outboxOptions;
-            _messageContextProvider = messageContextProvider;
         }
 
         public async Task SaveAsync<TMessage>(TMessage message, string messageId, IMessageContext messageContext)
@@ -108,7 +105,7 @@ namespace Edux.Shared.Infrastructure.Messaging.Outbox.EF
             foreach (var outboxMessage in unsentMessages)
             {
                 var messageContext = _jsonSerializer.Deserialize<IMessageContext>(outboxMessage.Context);
-                _messageContextProvider.Set(messageContext);
+                _contextProvider.Current().SetMessageContext(messageContext);
 
                 _logger.LogInformation($"Publishing a message from outbox ('{module}'): {outboxMessage.Name} [Message ID: {outboxMessage.Id}]...");
                 await _busPublisher.PublishAsync(outboxMessage, outboxMessage.Id, messageContext);

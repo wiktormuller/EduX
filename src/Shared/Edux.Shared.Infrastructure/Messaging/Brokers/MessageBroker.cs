@@ -1,8 +1,7 @@
 ﻿using Edux.Shared.Abstractions.Contexts;
 using Edux.Shared.Abstractions.Messaging;
-using Edux.Shared.Abstractions.Messaging.Contexts;
 using Edux.Shared.Abstractions.Messaging.Publishers;
-using Edux.Shared.Infrastructure.Messaging.Contexts;
+using Edux.Shared.Infrastructure.Contexts;
 using Edux.Shared.Infrastructure.Messaging.Outbox;
 using Edux.Shared.Infrastructure.Messaging.Outbox.Options;
 using Edux.Shared.Infrastructure.Messaging.Outbox.Registries;
@@ -15,27 +14,24 @@ namespace Edux.Shared.Infrastructure.Messaging.Brokers
     {
         private readonly IBusPublisher _busPublisher;
         private readonly ILogger<MessageBroker> _logger;
-        private readonly IContextAccessor _correlationContextAccessor;
         private readonly OutboxTypeRegistry _outboxTypeRegistry;
         private readonly IServiceProvider _serviceProvider;
-        private readonly IMessageContextProvider _messageContextProvider;
         private readonly bool _isOutboxEnabled;
+        private readonly IContextProvider _contextProvider;
 
         public MessageBroker(IBusPublisher busPublisher,
             ILogger<MessageBroker> logger,
-            IContextAccessor correlationContextAccessor,
             OutboxTypeRegistry outboxTypeRegistry,
             IServiceProvider serviceProvider,
             OutboxOptions options,
-            IMessageContextProvider messageContextProvider)
+            IContextProvider contextProvider)
         {
             _busPublisher = busPublisher;
             _logger = logger;
-            _correlationContextAccessor = correlationContextAccessor;
             _outboxTypeRegistry = outboxTypeRegistry;
             _serviceProvider = serviceProvider;
             _isOutboxEnabled = options.Enabled;
-            _messageContextProvider = messageContextProvider;
+            _contextProvider = contextProvider;
         }
 
         public async Task PublishAsync(params IMessage[] messages)
@@ -57,8 +53,9 @@ namespace Edux.Shared.Infrastructure.Messaging.Brokers
                 var messageId = Guid.NewGuid().ToString("N");
                 _logger.LogTrace($"Publishing integration message: {message.GetType().Name} [id: '{messageId}'].");
 
-                var messageContext = new MessageContext(_correlationContextAccessor.CorrelationContext, messageId);
-                _messageContextProvider.Set(messageContext);
+                var context = _contextProvider.Current();
+                var messageContext = new MessageContext(messageId, new Dictionary<string, object>(), DateTimeOffset.UtcNow.ToUnixTimeSeconds());
+                context.SetMessageContext(messageContext);
 
                 if (_isOutboxEnabled)
                 {

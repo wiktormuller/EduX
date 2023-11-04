@@ -18,7 +18,7 @@ namespace Edux.Modules.Notifications.Messages.Events.Handlers
             _mailKitOptions = mailKitOptions;
         }
 
-        public async Task HandleAsync(SignedUp @event)
+        public async Task HandleAsync(SignedUp @event, CancellationToken cancellationToken)
         {
             var message = MimeMessageBuilder
                 .Create()
@@ -28,7 +28,7 @@ namespace Edux.Modules.Notifications.Messages.Events.Handlers
                 .WithBody(MessageTemplates.UserSignedUpBody, @event.Email, @event.CreatedAt)
                 .Build();
 
-            await _messageService.SendAsync(message);
+            await _messageService.SendAsync(message, cancellationToken);
         }
     }
 }

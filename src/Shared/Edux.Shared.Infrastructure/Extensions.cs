@@ -28,6 +28,7 @@ using Edux.Shared.Infrastructure.Messaging.RabbitMQ.Initializers;
 using Edux.Shared.Infrastructure.Observability.Logging;
 using Edux.Shared.Infrastructure.Storage.SqlServer;
 using Edux.Shared.Infrastructure.Storage.SqlServer.Initializers;
+using Edux.Shared.Infrastructure.Contexts;
 
 [assembly: InternalsVisibleTo("Edux.Bootstrapper")]
 [assembly: InternalsVisibleTo("Edux.Shared.Tests")]
@@ -49,13 +50,12 @@ namespace Edux.Shared.Infrastructure
             services.AddMessaging();
             services.AddSingleton<IRandomNumberGenerator, RandomNumberGenerator>();
             services.AddHttpContextAccessor();
+            services.AddContext();
             services.AddRabbitMq();
 
             services.AddSingleton<IJsonSerializer, SystemTextJsonSerializer>();
 
             services.AddHostedService<DbAppInitializer>();
-
-            services.AddContext();
 
             services.AddTransactionalDecorators();
             services.AddCommandHandlersLoggingDecorators();

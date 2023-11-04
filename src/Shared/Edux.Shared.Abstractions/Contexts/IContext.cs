@@ -7,5 +7,7 @@
         IRequestContext RequestContext { get; }
         IIdentityContext IdentityContext { get; }
         IMessageContext MessageContext { get; }
+
+        void SetMessageContext(IMessageContext messageContext);
     }
 }

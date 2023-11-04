@@ -14,7 +14,7 @@ namespace Edux.Shared.Infrastructure.Messaging.RabbitMQ.Messaging.Clients
         private readonly IConnection _connection;
         private readonly ILogger<RabbitMqClient> _logger;
         private readonly IRabbitMqSerializer _serializer;
-        private readonly IMessageContextProvider _contextProvider;
+        private readonly IContextAccessor _contextAccessor;
         private readonly IChannelFactory _channelFactory;
 
         private readonly bool _loggerEnabled;
@@ -27,7 +27,7 @@ namespace Edux.Shared.Infrastructure.Messaging.RabbitMQ.Messaging.Clients
             ProducerConnection connection,
             ILogger<RabbitMqClient> logger,
             IRabbitMqSerializer serializer,
-            IMessageContextProvider contextProvider,
+            IContextAccessor contextAccessor,
             IChannelFactory channelFactory)
         {
             _connection = connection.Connection;
@@ -36,7 +36,7 @@ namespace Edux.Shared.Infrastructure.Messaging.RabbitMQ.Messaging.Clients
             _contextEnabled = options?.Context?.Enabled ?? false;
             _logger = logger;
             _serializer = serializer;
-            _contextProvider = contextProvider;
+            _contextAccessor = contextAccessor;
             _spanContextHeader = string.IsNullOrWhiteSpace(options?.SpanContextHeader)
                 ? "span_context"
                 : options.SpanContextHeader;
@@ -46,14 +46,13 @@ namespace Edux.Shared.Infrastructure.Messaging.RabbitMQ.Messaging.Clients
             _channelFactory = channelFactory;
         }
 
-        public void Send(object message, IConventions conventions, string messageId, IMessageContext messageContext,
-            string spanContext = null, IDictionary<string, object> headers = null)
+        public void Send(object message, IConventions conventions, IMessageContext messageContext, string spanContext = null)
         {
             var channel = _channelFactory.Create(_connection);
 
             var body = _serializer.Serialize(message);
 
-            var properties = BuildProperties(channel, messageId, messageContext, spanContext, headers);
+            var properties = BuildProperties(channel, messageContext, spanContext);
 
             if (_loggerEnabled)
             {
@@ -66,23 +65,23 @@ namespace Edux.Shared.Infrastructure.Messaging.RabbitMQ.Messaging.Clients
             channel.BasicPublish(conventions.Exchange, conventions.RoutingKey, properties, body.ToArray());
         }
 
-        private IBasicProperties BuildProperties(IModel channel, string messageId, IMessageContext messageContext, 
-            string spanContext, IDictionary<string, object> headers)
+        private IBasicProperties BuildProperties(IModel channel, IMessageContext messageContext, 
+            string spanContext)
         {
             var properties = channel.CreateBasicProperties();
 
             properties.Persistent = _persistMessages;
 
-            properties.MessageId = string.IsNullOrWhiteSpace(messageId)
+            properties.MessageId = string.IsNullOrWhiteSpace(messageContext.MessageId)
                 ? Guid.NewGuid().ToString("N")
-                : messageId;
+                : messageContext.MessageId;
 
-            var correlationId = messageContext.CorrelationContext?.CorrelationId.ToString("N");
+            var correlationId = _contextAccessor?.Context.CorrelationId.ToString("N");
             properties.CorrelationId = correlationId is null
             ? Guid.NewGuid().ToString("N")
             : correlationId;
 
-            properties.Timestamp = new AmqpTimestamp(DateTimeOffset.UtcNow.ToUnixTimeSeconds());
+            properties.Timestamp = new AmqpTimestamp(messageContext.Timestamp);
             properties.Headers = new Dictionary<string, object>();
 
             if (_contextEnabled)
@@ -102,9 +101,9 @@ namespace Edux.Shared.Infrastructure.Messaging.RabbitMQ.Messaging.Clients
                 properties.Headers.Add(_spanContextHeader, spanContext);
             }
 
-            if (headers is not null)
+            if (messageContext?.Headers is not null)
             {
-                foreach (var (key, value) in headers)
+                foreach (var (key, value) in messageContext.Headers)
                 {
                     if (string.IsNullOrWhiteSpace(key) || value is null)
                     {

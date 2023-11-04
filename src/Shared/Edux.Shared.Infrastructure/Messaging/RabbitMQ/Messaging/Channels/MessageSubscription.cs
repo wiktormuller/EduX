@@ -1,4 +1,6 @@
-﻿namespace Edux.Shared.Infrastructure.Messaging.RabbitMQ.Messaging.Channels
+﻿using Edux.Shared.Abstractions.Contexts;
+
+namespace Edux.Shared.Infrastructure.Messaging.RabbitMQ.Messaging.Channels
 {
     internal class MessageSubscription : IMessageSubscription
     {

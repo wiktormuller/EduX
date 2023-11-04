@@ -5,7 +5,7 @@ namespace Edux.Shared.Infrastructure.Messaging.RabbitMQ.Messaging.Clients
 {
     internal interface IRabbitMqClient
     {
-        void Send(object message, IConventions conventions, string messageId, IMessageContext messageContext,
-        string spanContext = null, IDictionary<string, object> headers = null);
+        void Send(object message, IConventions conventions, IMessageContext messageContext,
+        string spanContext = null);
     }
 }

@@ -5,18 +5,19 @@ namespace Edux.Shared.Infrastructure.HTTP.Middlewares
     internal sealed class CorrelationIdMessageHandler : DelegatingHandler
     {
         private const string CorrelationIdKey = "correlation-id";
-        private readonly IContextAccessor _correlationContextAccessor;
+        private readonly IContextProvider _contextProvider;
 
-        public CorrelationIdMessageHandler(IContextAccessor correlationContextAccessor)
+        public CorrelationIdMessageHandler(IContextProvider contextProvider)
         {
-            _correlationContextAccessor = correlationContextAccessor;
+            _contextProvider = contextProvider;
         }
 
         protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
         {
-            var correlationId = _correlationContextAccessor.CorrelationContext.CorrelationId == Guid.Empty
+            var context = _contextProvider.Current();
+            var correlationId = context.CorrelationId == Guid.Empty
                 ? Guid.NewGuid().ToString("N")
-                : _correlationContextAccessor.CorrelationContext.CorrelationId.ToString("N");
+                : context.CorrelationId.ToString("N");
 
             request.Headers.TryAddWithoutValidation(CorrelationIdKey, correlationId);
 

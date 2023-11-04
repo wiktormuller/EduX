@@ -13,14 +13,14 @@ namespace Edux.Modules.Notifications.Services
             _options = options;
         }
 
-        public async Task SendAsync(MimeMessage message)
+        public async Task SendAsync(MimeMessage message, CancellationToken cancellationToken = default)
         {
             using var client = new SmtpClient();
-            client.Connect(_options.SmtpHost, _options.Port, true);
-            client.Authenticate(_options.Username, _options.Password);
+            client.Connect(_options.SmtpHost, _options.Port, true, cancellationToken: cancellationToken);
+            client.Authenticate(_options.Username, _options.Password, cancellationToken: cancellationToken);
 
-            await client.SendAsync(message);
-            client.Disconnect(true);
+            await client.SendAsync(message, cancellationToken: cancellationToken);
+            client.Disconnect(true, cancellationToken: cancellationToken);
         }
     }
 }

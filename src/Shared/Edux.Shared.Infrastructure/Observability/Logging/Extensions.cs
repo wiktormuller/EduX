@@ -56,20 +56,20 @@ namespace Edux.Shared.Infrastructure.Observability.Logging
             app.Use(async (httpContext, next) =>
             {
                 var logger = httpContext.RequestServices.GetRequiredService<ILogger<IContextAccessor>>();
-                var context = httpContext.RequestServices.GetRequiredService<IContextAccessor>().CorrelationContext;
+                var context = httpContext.RequestServices.GetRequiredService<IContextProvider>().Current();
 
-                var userId = context.Identity.IsAuthenticated
-                    ? context.Identity.Id.ToString("N")
+                var userId = context.IdentityContext.IsAuthenticated
+                    ? context.IdentityContext.Id.ToString("N")
                     : string.Empty;
 
                 logger.LogInformation($"Started processing a request " +
-                    $"[Request ID: '{context.RequestId}', Correlation ID: '{context.CorrelationId}', " +
+                    $"[Request ID: '{context.RequestContext.RequestId}', Correlation ID: '{context.CorrelationId}', " +
                     $"Trace ID: '{context.TraceId}', User ID: '{userId}']...");
 
                 await next();
 
                 logger.LogInformation($"Finished processing a request with status code: {httpContext.Response.StatusCode} " +
-                    $"[Request ID: '{context.RequestId}', Correlation ID: '{context.CorrelationId}', " +
+                    $"[Request ID: '{context.RequestContext.RequestId}', Correlation ID: '{context.CorrelationId}', " +
                     $"Trace ID: '{context.TraceId}', User ID: '{userId}']");
             });
 

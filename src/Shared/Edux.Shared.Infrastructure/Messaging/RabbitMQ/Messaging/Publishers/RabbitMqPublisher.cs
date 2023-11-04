@@ -22,7 +22,7 @@ namespace Edux.Shared.Infrastructure.Messaging.RabbitMQ.Messaging.Publishers
                 where T : class
         {
             var conventions = _conventionsProvider.Get(message.GetType());
-            _rabbitMqClient.Send(message, conventions, messageId, messageContext, spanContext, headers);
+            _rabbitMqClient.Send(message, conventions, messageContext, spanContext);
 
             return Task.CompletedTask;
         }

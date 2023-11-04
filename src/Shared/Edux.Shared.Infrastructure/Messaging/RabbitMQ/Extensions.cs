@@ -1,12 +1,10 @@
-﻿using Edux.Shared.Abstractions.Contexts;
-using Edux.Shared.Abstractions.Messaging.Contexts;
+﻿using Edux.Shared.Abstraction.Messaging;
 using Edux.Shared.Abstractions.Messaging.Publishers;
 using Edux.Shared.Abstractions.Messaging.Subscribers;
-using Edux.Shared.Infrastructure.Contexts.Accessors;
-using Edux.Shared.Infrastructure.Messaging.Contexts;
 using Edux.Shared.Infrastructure.Messaging.RabbitMQ.Connections;
 using Edux.Shared.Infrastructure.Messaging.RabbitMQ.Conventions;
 using Edux.Shared.Infrastructure.Messaging.RabbitMQ.Initializers;
+using Edux.Shared.Infrastructure.Messaging.RabbitMQ.Messaging.BackgroundServices;
 using Edux.Shared.Infrastructure.Messaging.RabbitMQ.Messaging.Channels;
 using Edux.Shared.Infrastructure.Messaging.RabbitMQ.Messaging.Clients;
 using Edux.Shared.Infrastructure.Messaging.RabbitMQ.Messaging.Publishers;
@@ -19,11 +17,11 @@ using System.Security.Cryptography.X509Certificates;
 
 namespace Edux.Shared.Infrastructure.Messaging.RabbitMQ
 {
-    internal static class Extensions
+    public static class Extensions
     {
         private const string RABBIT_SECTION_NAME = "rabbitmq";
 
-        public static IServiceCollection AddRabbitMq(this IServiceCollection services)
+        internal static IServiceCollection AddRabbitMq(this IServiceCollection services)
         {
             var options = services.GetOptions<RabbitMqOptions>(RABBIT_SECTION_NAME);
             services.AddSingleton(options);
@@ -36,14 +34,13 @@ namespace Edux.Shared.Infrastructure.Messaging.RabbitMQ
             services.AddSingleton<ChannelAccessor>();
             services.AddSingleton<IChannelFactory, ChannelFactory>();
 
-            services.AddSingleton<IMessageContextProvider, MessageContextProvider>();
             services.AddSingleton<IRabbitMqClient, RabbitMqClient>();
             services.AddSingleton<IBusPublisher, RabbitMqPublisher>();
             services.AddSingleton<IRabbitMqSerializer, SystemTextJsonRabbitMqSerializer>();
             services.AddSingleton<MessageSubscriptionsChannel>();
             services.AddSingleton<IMessageSubscriber, RabbitMqMessageSubscriber>();
 
-            services.AddSingleton<IContextAccessor>(new ContextAccessor());
+            services.AddHostedService<RabbitMqBackgroundService>();
 
             services.AddSingleton<IConventionsBuilder, ConventionsBuilder>();
             services.AddSingleton<IConventionsProvider, ConventionsProvider>();
@@ -145,6 +142,20 @@ namespace Edux.Shared.Infrastructure.Messaging.RabbitMQ
 
                 return isValid;
             };
+        }
+
+        public static IServiceCollection AddExceptionToMessageMapper<T>(this IServiceCollection services)
+            where T : class, IExceptionToMessageMapper
+        {
+            services.AddSingleton<IExceptionToMessageMapper, T>();
+            return services;
+        }
+
+        public static IServiceCollection AddExceptionToFailedMessageMapper<T>(this IServiceCollection services)
+            where T : class, IExceptionToFailedMessageMapper
+        {
+            services.AddSingleton<IExceptionToFailedMessageMapper, T>();
+            return services;
         }
     }
 }

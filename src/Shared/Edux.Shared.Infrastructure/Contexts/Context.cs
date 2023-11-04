@@ -9,7 +9,7 @@ namespace Edux.Shared.Infrastructure.Contexts
         public Guid CorrelationId { get; }
         public IRequestContext RequestContext { get; }
         public IIdentityContext IdentityContext { get; }
-        public IMessageContext MessageContext { get; }
+        public IMessageContext MessageContext { get; private set; }
 
         public Context(string messageId, IDictionary<string, object> headers, long timestamp)
             : this(Guid.NewGuid(), Guid.NewGuid().ToString("N"), null, null, new MessageContext(messageId, headers, timestamp))
@@ -30,6 +30,11 @@ namespace Edux.Shared.Infrastructure.Contexts
             TraceId = traceId;
             RequestContext = requestContext;
             IdentityContext = identityContext;
+            MessageContext = messageContext;
+        }
+
+        public void SetMessageContext(IMessageContext messageContext)
+        {
             MessageContext = messageContext;
         }
     }

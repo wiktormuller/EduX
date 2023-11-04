@@ -24,7 +24,6 @@ namespace Edux.Shared.Infrastructure.Messaging
         internal static IServiceCollection AddMessaging(this IServiceCollection services)
         {
             services.AddScoped<IMessageBroker, MessageBroker>();
-            services.AddMessageContext();
 
             return services;
         }
