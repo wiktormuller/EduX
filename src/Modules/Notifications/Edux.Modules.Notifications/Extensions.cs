@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Edux.Shared.Infrastructure.Messaging.MailKit;
 using Edux.Shared.Infrastructure;
+using Edux.Shared.Infrastructure.Messaging.RabbitMQ;
+using Edux.Modules.Notifications.Messages.Events;
 
 namespace Edux.Modules.Notifications
 {
@@ -20,7 +22,8 @@ namespace Edux.Modules.Notifications
 
         public static IApplicationBuilder UseCore(this  IApplicationBuilder app)
         {
-            //app.UseRabbitMq(); // TODO: Add subscriber
+            app.UseRabbitMq()
+                .SubscribeForEvent<SignedUp>();
 
             return app;
         }

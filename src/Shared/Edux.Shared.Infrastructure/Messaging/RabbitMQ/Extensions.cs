@@ -10,6 +10,7 @@ using Edux.Shared.Infrastructure.Messaging.RabbitMQ.Messaging.Clients;
 using Edux.Shared.Infrastructure.Messaging.RabbitMQ.Messaging.Publishers;
 using Edux.Shared.Infrastructure.Messaging.RabbitMQ.Messaging.Subscribers;
 using Edux.Shared.Infrastructure.Messaging.RabbitMQ.Serializers;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using RabbitMQ.Client;
 using System.Net.Security;
@@ -156,6 +157,12 @@ namespace Edux.Shared.Infrastructure.Messaging.RabbitMQ
         {
             services.AddSingleton<IExceptionToFailedMessageMapper, T>();
             return services;
+        }
+
+        public static IMessageSubscriber UseRabbitMq(this IApplicationBuilder app)
+        {
+            return new RabbitMqMessageSubscriber(
+                app.ApplicationServices.GetRequiredService<MessageSubscriptionsChannel>());
         }
     }
 }

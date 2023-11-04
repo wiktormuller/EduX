@@ -1,5 +1,4 @@
 ﻿using Edux.Shared.Abstractions.Commands;
-using Edux.Shared.Abstractions.Contexts;
 using Edux.Shared.Abstractions.Events;
 using Edux.Shared.Abstractions.Messaging;
 using Edux.Shared.Abstractions.Messaging.Subscribers;
