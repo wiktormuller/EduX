@@ -14,11 +14,24 @@ namespace Edux.Shared.Infrastructure.Auth.Services
         private static readonly IDictionary<string, IEnumerable<string>> EmptyClaims =
             new Dictionary<string, IEnumerable<string>>();
 
+        private static readonly ISet<string> DefaultClaims = new HashSet<string>
+        {
+            JwtRegisteredClaimNames.Sub,
+            JwtRegisteredClaimNames.UniqueName,
+            JwtRegisteredClaimNames.Jti,
+            JwtRegisteredClaimNames.Iat,
+            ClaimTypes.Role,
+        };
+
         private readonly IClock _clock;
         private readonly AuthOptions _authOptions;
         private readonly SigningCredentials _signingCredentials;
+        private readonly JwtSecurityTokenHandler _jwtSecurityTokenHandler = new();
+        private readonly TokenValidationParameters _tokenValidationParameters;
 
-        public JwtProvider(IClock clock, AuthOptions authOptions)
+        public JwtProvider(IClock clock, 
+            AuthOptions authOptions, 
+            TokenValidationParameters tokenValidationParameters)
         {
             if (authOptions.IssuerSigningKey is null)
             {
@@ -31,6 +44,7 @@ namespace Edux.Shared.Infrastructure.Auth.Services
 
             _clock = clock;
             _authOptions = authOptions;
+            _tokenValidationParameters = tokenValidationParameters;
         }
 
         public JsonWebToken CreateToken(string userId, string email, string role = null, string audience = null,
@@ -92,6 +106,26 @@ namespace Edux.Shared.Infrastructure.Auth.Services
                 Id = userId,
                 Role = role ?? string.Empty,
                 Claims = claims ?? EmptyClaims
+            };
+        }
+
+        public JsonWebTokenPayload GetTokenPayload(string accessToken)
+        {
+            _jwtSecurityTokenHandler.ValidateToken(accessToken, _tokenValidationParameters, out var validatedSecurityToken);
+
+            if (validatedSecurityToken is not JwtSecurityToken jwt)
+            {
+                return null;
+            }
+
+            return new JsonWebTokenPayload
+            {
+                Subject = jwt.Subject,
+                Role = jwt.Claims.SingleOrDefault(c => c.Type == ClaimTypes.Role)?.Value,
+                Expires = jwt.ValidTo.ToUnixTimeStamp(),
+                Claims = jwt.Claims.Where(c => !DefaultClaims.Contains(c.Type))
+                    .GroupBy(c => c.Type)
+                    .ToDictionary(k => k.Key, v => v.Select(c => c.Value))
             };
         }
     }

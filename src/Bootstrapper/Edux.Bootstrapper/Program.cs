@@ -25,11 +25,6 @@ builder.InstallVault();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-app.UseInfrastructure();
-foreach (var module in _modules)
-{
-    module.Use(app);
-}
 
 // Logging
 app.UseCorrelationContextLogging();
@@ -48,6 +43,12 @@ app.UseEndpoints(endpointRouteBuilder =>
     endpointRouteBuilder.MapModuleInfo();
     endpointRouteBuilder.MapLogLevelEndpoint("~/logging/level");
 });
+
+app.UseInfrastructure();
+foreach (var module in _modules)
+{
+    module.Use(app);
+}
 
 _assemblies.Clear();
 _modules.Clear();

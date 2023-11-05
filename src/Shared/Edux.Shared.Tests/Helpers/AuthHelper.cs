@@ -1,6 +1,7 @@
 ﻿using Edux.Shared.Infrastructure.Auth.Options;
 using Edux.Shared.Infrastructure.Auth.Services;
 using Edux.Shared.Infrastructure.Time;
+using Microsoft.IdentityModel.Tokens;
 
 namespace Edux.Shared.Tests.Helpers
 {
@@ -11,7 +12,7 @@ namespace Edux.Shared.Tests.Helpers
         static AuthHelper()
         {
             var options = OptionsHelper.GetOptions<AuthOptions>("auth");
-            _jwtProvider = new JwtProvider(new UtcClock(), options);
+            _jwtProvider = new JwtProvider(new UtcClock(), options, new TokenValidationParameters());
         }
 
         public static string CreateJwtToken(Guid userId, string email, string role = null, string audience = null,

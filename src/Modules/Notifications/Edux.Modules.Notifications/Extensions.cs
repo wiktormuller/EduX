@@ -5,6 +5,7 @@ using Edux.Shared.Infrastructure.Messaging.MailKit;
 using Edux.Shared.Infrastructure;
 using Edux.Shared.Infrastructure.Messaging.RabbitMQ;
 using Edux.Modules.Notifications.Messages.Events;
+using Edux.Modules.Notifications.Hubs;
 
 namespace Edux.Modules.Notifications
 {
@@ -17,6 +18,9 @@ namespace Edux.Modules.Notifications
             var options = services.GetOptions<MailKitOptions>("mailkit");
             services.AddSingleton(options);
 
+            services.AddTransient<IHubService, HubService>();
+            services.AddTransient<IHubWrapper, HubWrapper>();
+
             return services;
         }
 
@@ -25,7 +29,22 @@ namespace Edux.Modules.Notifications
             app.UseRabbitMq()
                 .SubscribeForEvent<SignedUp>();
 
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapHub<NotificationsHub>(NotificationsModule.BasePath + "/notifications");
+            });
+
             return app;
+        }
+
+        internal static string ToUserGroup(this Guid userId)
+        {
+            return userId.ToString("N").ToUserGroup();
+        }
+
+        internal static string ToUserGroup(this string userId)
+        {
+            return $"users:{userId}";
         }
     }
 }

@@ -30,20 +30,22 @@ TODO List:
   [x] Register event handlers (domain)
   [x] Use portainer to manage services based on Docker
   [x] Implement Inbox Pattern
+  [x] Implement components for consuming Integration Messages
+  [x] Add generic module for notifications
+  [x] Implement asynchronous action in API with some type of Webhook or SignalR backchannel to client after adding API Gateway (maybe some hybrid action?) (maybe real-time health checks)
   [ ] Use SpecFlow for BDD Testing
   [ ] Implement Auditing of user accounts
   [ ] Implement Multi-Tenancy
   [ ] Add unit and integration tests (also for refresh tokens)
   [ ] Implement missing actions for users module
+  [ ] Use gRPC
   
   [ ] Extend Message Broker to handle some type of Envelope
   [ ] Extend Message Broker to handle many messages
   
   [ ] Implement UI for users module with React
-  [ ] Add generic module for notifications
-  [ ] Implement asynchronous action in API with some type of Webhook or SignalR backchannel to client after adding API Gateway (maybe some hybrid action?) (maybe real-time health checks)
   [ ] Forward all requests via Gateway and hide modules
   [ ] Implement distributed tracing with Jaeger
   [ ] Add first ADRs
   [ ] Use Azure BlobStorage to store users profile images
-  [ ] Implement components for consuming Integration Messages
+  [ ] Scale-out monolith properly

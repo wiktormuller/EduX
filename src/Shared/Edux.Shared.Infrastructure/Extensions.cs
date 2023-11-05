@@ -29,6 +29,7 @@ using Edux.Shared.Infrastructure.Observability.Logging;
 using Edux.Shared.Infrastructure.Storage.SqlServer;
 using Edux.Shared.Infrastructure.Storage.SqlServer.Initializers;
 using Edux.Shared.Infrastructure.Contexts;
+using Edux.Shared.Infrastructure.WebSockets;
 
 [assembly: InternalsVisibleTo("Edux.Bootstrapper")]
 [assembly: InternalsVisibleTo("Edux.Shared.Tests")]
@@ -71,6 +72,8 @@ namespace Edux.Shared.Infrastructure
             services.AddModuleInfo(modules);
             services.AddModuleRequests(assemblies);
             services.AddControllersWithOpenApi();
+
+            services.AddSignalr();
 
             return services;
         }
