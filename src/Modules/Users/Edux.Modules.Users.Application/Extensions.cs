@@ -6,6 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 using System.Runtime.CompilerServices;
 
 [assembly: InternalsVisibleTo("Edux.Modules.Users.Api")]
+[assembly: InternalsVisibleTo("Edux.Architecture.Tests")]
 namespace Edux.Modules.Users.Application
 {
     internal static class Extensions

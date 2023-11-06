@@ -32,13 +32,15 @@ TODO List:
   [x] Add generic module for notifications
   [x] Implement asynchronous action in API with some type of Webhook or SignalR backchannel to client after adding API Gateway (maybe some hybrid action?) (maybe real-time health checks)
   [x] Add first ADRs
+  [x] Add architecture tests
 
-  [ ] Use SpecFlow for BDD Testing
-  [ ] Implement Auditing of user accounts
   [ ] Implement Multi-Tenancy
   [ ] Use gRPC
 
-  [ ] Add unit and integration tests (also for refresh tokens)
+  [ ] Use SpecFlow for BDD Testing
+  [ ] Implement Auditing of user accounts
+
+  [ ] Add unit and integration tests with testcontainers (also for refresh tokens)
   [ ] Implement missing actions for users module
   
   [ ] Extend Message Broker to handle some type of Envelope
@@ -49,4 +51,3 @@ TODO List:
   [ ] Implement distributed tracing with Jaeger
   [ ] Use Azure BlobStorage to store users profile images
   [ ] Scale-out monolith properly
-  [ ] Add architecture tests

@@ -2,6 +2,7 @@
 using System.Runtime.CompilerServices;
 
 [assembly: InternalsVisibleTo("Edux.Modules.Users.Api")]
+[assembly: InternalsVisibleTo("Edux.Architecture.Tests")]
 namespace Edux.Modules.Users.Core
 {
     internal static class Extensions

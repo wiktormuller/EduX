@@ -9,7 +9,9 @@ using Edux.Shared.Abstractions.Queries;
 using Edux.Shared.Infrastructure.Modules;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
+using System.Runtime.CompilerServices;
 
+[assembly: InternalsVisibleTo("Edux.Architecture.Tests")]
 namespace Edux.Modules.Users.Api
 {
     internal class UsersModule : IModule
