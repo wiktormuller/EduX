@@ -20,25 +20,26 @@ TODO List:
   [x] Add feature flags
   [x] Define metrics and add monitoring with OpenTracing -> Prometheus
   [x] Add Graphana as a consumer for Prometheus
-
   [x] Add Button in Swagger to Authentication
   [x] Add integration with Dapper - add factory for raw and open SqlConnection
   [x] Create documentation about Swagger/Available Modules/RabbitUI etc.
   [x] Add Validation for requests
   [x] Clean up shared projects structure
-
   [x] Register event handlers (domain)
   [x] Use portainer to manage services based on Docker
   [x] Implement Inbox Pattern
   [x] Implement components for consuming Integration Messages
   [x] Add generic module for notifications
   [x] Implement asynchronous action in API with some type of Webhook or SignalR backchannel to client after adding API Gateway (maybe some hybrid action?) (maybe real-time health checks)
+  [x] Add first ADRs
+
   [ ] Use SpecFlow for BDD Testing
   [ ] Implement Auditing of user accounts
   [ ] Implement Multi-Tenancy
+  [ ] Use gRPC
+
   [ ] Add unit and integration tests (also for refresh tokens)
   [ ] Implement missing actions for users module
-  [ ] Use gRPC
   
   [ ] Extend Message Broker to handle some type of Envelope
   [ ] Extend Message Broker to handle many messages
@@ -46,6 +47,6 @@ TODO List:
   [ ] Implement UI for users module with React
   [ ] Forward all requests via Gateway and hide modules
   [ ] Implement distributed tracing with Jaeger
-  [ ] Add first ADRs
   [ ] Use Azure BlobStorage to store users profile images
   [ ] Scale-out monolith properly
+  [ ] Add architecture tests
