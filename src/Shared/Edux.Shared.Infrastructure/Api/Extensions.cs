@@ -1,4 +1,5 @@
 ﻿using Edux.Shared.Infrastructure.Api.Providers;
+using Edux.Shared.Infrastructure.Api.RateLimiting;
 using Microsoft.AspNetCore.Mvc.ApplicationParts;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
@@ -75,6 +76,8 @@ namespace Edux.Shared.Infrastructure.Api
                         .WithMethods("POST", "PUT", "DELETE");
                 });
             });
+
+            services.AddRateLimiting();
 
             return services;
         }

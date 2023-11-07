@@ -32,18 +32,6 @@ app.UseCorrelationContextLogging();
 var logger = app.Services.GetService<ILogger<Program>>();
 logger.LogInformation($"Modules: {string.Join(", ", _modules.Select(x => x.Name))}");
 
-app.UseHttpsRedirection();
-
-app.UseAuthorization();
-
-app.UseEndpoints(endpointRouteBuilder =>
-{
-    endpointRouteBuilder.MapControllers();
-    endpointRouteBuilder.MapGet("/", () => "Edux API!");
-    endpointRouteBuilder.MapModuleInfo();
-    endpointRouteBuilder.MapLogLevelEndpoint("~/logging/level");
-});
-
 app.UseInfrastructure();
 foreach (var module in _modules)
 {

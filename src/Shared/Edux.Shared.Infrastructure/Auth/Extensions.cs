@@ -29,6 +29,7 @@ namespace Edux.Shared.Infrastructure.Auth
             }
 
             var tokenValidationParameters = BuildTokenValidationParameters(options);
+            services.AddSingleton(tokenValidationParameters);
 
             services
                 .AddAuthentication(authOptions =>

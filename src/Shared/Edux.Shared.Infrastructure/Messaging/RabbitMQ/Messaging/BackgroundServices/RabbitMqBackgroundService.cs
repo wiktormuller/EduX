@@ -49,10 +49,7 @@ namespace Edux.Shared.Infrastructure.Messaging.RabbitMQ.Messaging.BackgroundServ
             RabbitMqOptions options,
             IServiceProvider serviceProvider,
             IRabbitMqSerializer rabbitMqSerializer,
-            IContext context,
             IBusPublisher busPublisher,
-            IExceptionToMessageMapper exceptionToMessageMapper,
-            IExceptionToFailedMessageMapper exceptionToFailedMessageMapper,
             IContextProvider contextProvider)
         {
             _messageSubscriptionsChannel = messageSubscriptionsChannel;
@@ -71,8 +68,6 @@ namespace Edux.Shared.Infrastructure.Messaging.RabbitMQ.Messaging.BackgroundServ
                 ? _options.RetryInterval
                 : 2;
             _busPublisher = busPublisher;
-            _exceptionToMessageMapper = exceptionToMessageMapper;
-            _exceptionToFailedMessageMapper = exceptionToFailedMessageMapper;
             _contextProvider = contextProvider;
             _exceptionToMessageMapper = _serviceProvider.GetService<IExceptionToMessageMapper>() 
                 ?? _exceptionMapper;

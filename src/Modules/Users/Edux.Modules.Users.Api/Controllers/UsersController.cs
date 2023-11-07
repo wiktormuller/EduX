@@ -8,6 +8,7 @@ using Edux.Shared.Abstractions.Queries;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.RateLimiting;
 
 namespace Edux.Modules.Users.Api.Controllers
 {
@@ -30,6 +31,7 @@ namespace Edux.Modules.Users.Api.Controllers
         [HttpGet("me")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [EnableRateLimiting("jwt")]
         public async Task<ActionResult<UserMeResponse>> Get(CancellationToken cancellationToken)
         {
             if (string.IsNullOrWhiteSpace(User.Identity?.Name))

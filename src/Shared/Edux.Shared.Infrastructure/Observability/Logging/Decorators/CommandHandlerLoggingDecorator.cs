@@ -34,7 +34,7 @@ namespace Edux.Shared.Infrastructure.Observability.Logging.Decorators
             var traceId = context.TraceId;
             var userId = context?.IdentityContext?.Id;
             var correlationId = context?.CorrelationId;
-            var messageId = context?.MessageContext.MessageId;
+            var messageId = context?.MessageContext?.MessageId;
 
             try
             {

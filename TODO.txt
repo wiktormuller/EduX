@@ -33,15 +33,35 @@ TODO List:
   [x] Implement asynchronous action in API with some type of Webhook or SignalR backchannel to client after adding API Gateway (maybe some hybrid action?) (maybe real-time health checks)
   [x] Add first ADRs
   [x] Add architecture tests
-
-  [ ] Implement Multi-Tenancy
+  [x] Implement rate limiting
+  
   [ ] Use gRPC
+  [ ] Integrate with GitHub Continuous Integration and apply feature branches
+  [ ] Implement Multi-Tenancy
+  [ ] Add integration with quartz
+  [ ] Clean up appsettings[ ] Use MongoDB
+  [ ] Handle uploading images
+  [ ] Integration with Kafka
+  [ ] Use GraphQL
+  [ ] HATEOS
+  [ ] WebHooks
+  [ ] Auth with BasicAuth
+  [ ] Add health checks
+  [ ] Improve OpenAPI documentation
 
+  [ ] Add badges to repo
   [ ] Use SpecFlow for BDD Testing
   [ ] Implement Auditing of user accounts
-
   [ ] Add unit and integration tests with testcontainers (also for refresh tokens)
+  [ ] Async Web API testing with TaskCompletionSource
+  [ ] Use Bogus for generating fake data in tests
   [ ] Implement missing actions for users module
+  [ ] Configure Continuous Delivery with Azure DevOps
+  [ ] CI/CD with Docker
+
+  [ ] Integrate with SonarQube
+  [ ] Use test coverage metrics
+  [ ] Add test environment for QAs
   
   [ ] Extend Message Broker to handle some type of Envelope
   [ ] Extend Message Broker to handle many messages
@@ -50,4 +70,11 @@ TODO List:
   [ ] Forward all requests via Gateway and hide modules
   [ ] Implement distributed tracing with Jaeger
   [ ] Use Azure BlobStorage to store users profile images
+  
   [ ] Scale-out monolith properly
+  [ ] Scale-out database properly
+  [ ] Implement ES with CQRS and two different databases
+  [ ] JSON Patch
+  [ ] Login via Google (OAuth 2.0)
+  [ ] Handle more sophisticated auth permissions in database instead of in the JWT
+  [ ] Miro with Architecture Diagrams

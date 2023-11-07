@@ -82,6 +82,7 @@ namespace Edux.Shared.Infrastructure
         {
             app.UseContext();
             app.UseInitializers();
+            app.UseHttpsRedirection();
             app.UseCors("cors");
             app.UseObservability();
             app.UseErrorHandling();
@@ -96,6 +97,16 @@ namespace Edux.Shared.Infrastructure
             app.UseAuthentication();
             app.UseRouting();
             app.UseAuthorization();
+
+            app.UseRateLimiter();
+
+            app.UseEndpoints(endpointRouteBuilder =>
+            {
+                endpointRouteBuilder.MapControllers();
+                endpointRouteBuilder.MapGet("/", () => "Edux API!");
+                endpointRouteBuilder.MapModuleInfo();
+                endpointRouteBuilder.MapLogLevelEndpoint("~/logging/level");
+            });
 
             return app;
         }
