@@ -34,12 +34,13 @@ TODO List:
   [x] Add first ADRs
   [x] Add architecture tests
   [x] Implement rate limiting
-  
+
   [ ] Use gRPC
   [ ] Integrate with GitHub Continuous Integration and apply feature branches
   [ ] Implement Multi-Tenancy
   [ ] Add integration with quartz
-  [ ] Clean up appsettings[ ] Use MongoDB
+  [ ] Clean up appsettings
+  [ ] Use MongoDB
   [ ] Handle uploading images
   [ ] Integration with Kafka
   [ ] Use GraphQL
