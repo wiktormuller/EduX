@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net7.0</TargetFramework>
@@ -10,6 +10,19 @@
     <ProjectReference Include="..\..\..\Shared\Edux.Shared.Abstractions\Edux.Shared.Abstractions.csproj" />
     <ProjectReference Include="..\..\..\Shared\Edux.Shared.Infrastructure\Edux.Shared.Infrastructure.csproj" />
     <ProjectReference Include="..\Edux.Modules.Users.Application\Edux.Modules.Users.Application.csproj" />
+  </ItemGroup>
+	
+  <ItemGroup>
+	<PackageReference Include="Grpc.AspNetCore" Version="2.59.0" />
+	<PackageReference Include="Google.Protobuf" Version="3.25.0" />
+	<PackageReference Include="Grpc.Tools" Version="2.59.0">
+		<PrivateAssets>all</PrivateAssets>
+		<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+	</PackageReference>
+  </ItemGroup>
+	
+  <ItemGroup>
+    <Protobuf Include="..\Edux.Modules.Users.Application\Grpc\Protos\Users.proto" GrpcServices="Server" />
   </ItemGroup>
 
   <ItemGroup>

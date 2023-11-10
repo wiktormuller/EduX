@@ -30,6 +30,8 @@ using Edux.Shared.Infrastructure.Storage.SqlServer;
 using Edux.Shared.Infrastructure.Storage.SqlServer.Initializers;
 using Edux.Shared.Infrastructure.Contexts;
 using Edux.Shared.Infrastructure.WebSockets;
+using Microsoft.AspNetCore.Routing;
+using Microsoft.AspNetCore.Http;
 
 [assembly: InternalsVisibleTo("Edux.Bootstrapper")]
 [assembly: InternalsVisibleTo("Edux.Shared.Tests")]
@@ -104,6 +106,25 @@ namespace Edux.Shared.Infrastructure
             {
                 endpointRouteBuilder.MapControllers();
                 endpointRouteBuilder.MapGet("/", () => "Edux API!");
+                endpointRouteBuilder.MapGet("/grpc-endpoints", async context =>
+                {
+                    var endpointDataSource = context.RequestServices.GetRequiredService<EndpointDataSource>();
+
+                    await context.Response.WriteAsJsonAsync(new
+                    {
+                        Results = endpointDataSource
+                            .Endpoints
+                            .OfType<RouteEndpoint>()
+                            .Where(e => e.DisplayName?.StartsWith("gRPC") is true)
+                            .Select(e => new
+                            {
+                                Name = e.DisplayName,
+                                Pattern = e.RoutePattern.RawText,
+                                Order = e.Order
+                            })
+                            .ToList()
+                    });
+                });
                 endpointRouteBuilder.MapModuleInfo();
                 endpointRouteBuilder.MapLogLevelEndpoint("~/logging/level");
             });

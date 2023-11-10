@@ -2,6 +2,7 @@
 using Edux.Modules.Users.Infrastructure.EF;
 using Edux.Modules.Users.Infrastructure.EF.Contexts;
 using Edux.Modules.Users.Infrastructure.EF.Repositories;
+using Edux.Modules.Users.Infrastructure.Grpc;
 using Edux.Modules.Users.Infrastructure.Metrics;
 using Edux.Shared.Infrastructure.Messaging;
 using Edux.Shared.Infrastructure.Storage.SqlServer;
@@ -34,7 +35,14 @@ namespace Edux.Modules.Users.Infrastructure
 
         public static IApplicationBuilder UseInfrastructure(this IApplicationBuilder app)
         {
-            return app.UseMiddleware<CqrsMetricsMiddleware>();
+            app.UseMiddleware<CqrsMetricsMiddleware>();
+
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapGrpcService<UsersService>();
+            });
+
+            return app;
         }
     }
 }

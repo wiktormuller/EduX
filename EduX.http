@@ -1,7 +1,10 @@
 @url = http://localhost:5000
 
 ### Bootstrapper Entrypoint
-GET {{url}}
+GET {{url}}/
+
+### gRPC Services
+GET {{url}}/grpc-endpoints
 
 ### List of Enabled Modules
 GET {{url}}/modules

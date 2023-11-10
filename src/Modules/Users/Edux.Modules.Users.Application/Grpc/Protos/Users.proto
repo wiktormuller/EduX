@@ -1,0 +1,22 @@
+﻿syntax = "proto3";
+
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Edux.Modules.Users.Application.Grpc.Protos";
+
+service GrpcUsersService {
+    rpc GetUserMe (GetUserMeRequest) returns (GetUserMeResponse) {}
+}
+
+message GetUserMeRequest {
+}
+
+message GetUserMeResponse {
+    string id = 1;
+    string email = 2;
+    string role = 3;
+    bool isActive = 4;
+    google.protobuf.Timestamp createdAt = 5;
+    google.protobuf.Timestamp updatedAt = 6;
+    string claimsAsJson = 7;
+}
