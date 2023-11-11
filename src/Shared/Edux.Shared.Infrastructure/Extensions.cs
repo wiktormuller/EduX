@@ -32,6 +32,8 @@ using Edux.Shared.Infrastructure.Contexts;
 using Edux.Shared.Infrastructure.WebSockets;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.FileProviders;
+using Microsoft.AspNetCore.StaticFiles;
 
 [assembly: InternalsVisibleTo("Edux.Bootstrapper")]
 [assembly: InternalsVisibleTo("Edux.Shared.Tests")]
@@ -97,6 +99,7 @@ namespace Edux.Shared.Infrastructure
                 reDoc.DocumentTitle = "Edux API";
             });
             app.UseAuthentication();
+            app.ShareProtoFiles();
             app.UseRouting();
             app.UseAuthorization();
 
@@ -130,6 +133,20 @@ namespace Edux.Shared.Infrastructure
             });
 
             return app;
+        }
+
+        private static IApplicationBuilder ShareProtoFiles(this IApplicationBuilder app)
+        {
+            var provider = new FileExtensionContentTypeProvider();
+            provider.Mappings.Clear();
+            provider.Mappings[".proto"] = "text/plain";
+
+            return app.UseStaticFiles(new StaticFileOptions
+             {
+                 FileProvider = new PhysicalFileProvider(Path.Combine(((WebApplication)app).Environment.ContentRootPath, "Grpc/Protos")),
+                 RequestPath = "/proto",
+                 ContentTypeProvider = provider
+             });
         }
 
         public static IApplicationBuilder UseInitializers(this IApplicationBuilder app)

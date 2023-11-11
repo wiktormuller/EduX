@@ -56,6 +56,8 @@ Bootstrapper Entry Point is available under this endpoint - `http://localhost:40
 
 List of available gRPC services - `http://localhost:4000/grpc-endpoints`
 
+List of Proto contract files - `http://localhost:4000/proto`
+
 List of Enabled Modules is available under this endpoint - `http://localhost:4000/modules`
 
 Changing Logging Level can be done via this endpoint - `POST http://localhost:4000/logging/level?level=information`

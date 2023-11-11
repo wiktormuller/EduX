@@ -6,6 +6,9 @@ GET {{url}}/
 ### gRPC Services
 GET {{url}}/grpc-endpoints
 
+### Proto Contract Files
+GET {{url}}/proto
+
 ### List of Enabled Modules
 GET {{url}}/modules
 

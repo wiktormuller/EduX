@@ -34,34 +34,34 @@ TODO List:
   [x] Add first ADRs
   [x] Add architecture tests
   [x] Implement rate limiting
-
-  [ ] Use gRPC
-  [ ] Integrate with GitHub Continuous Integration and apply feature branches
-  [ ] Implement Multi-Tenancy
-  [ ] Add integration with quartz
-  [ ] Clean up appsettings
-  [ ] Use MongoDB
-  [ ] Handle uploading images
-  [ ] Integration with Kafka
+  [x] Use gRPC
+  [x] Integrate with GitHub Continuous Integration and apply feature branches
+  [x] Share gRPC contracts via endpoint
+  
+  [ ] Add integration with standalone quartz and integrate it with users domain
   [ ] Use GraphQL
-  [ ] HATEOS
+  [ ] Use MongoDB
+  [ ] Add health checks
   [ ] WebHooks
   [ ] Auth with BasicAuth
-  [ ] Add health checks
-  [ ] Improve OpenAPI documentation
-
+  [ ] Improve OpenAPI documentation + HATEOS
+  [ ] Integration with Kafka
   [ ] Add badges to repo
   [ ] Use SpecFlow for BDD Testing
+  [ ] Clean up appsettings
+
+  [ ] Configure Continuous Delivery with Azure DevOps
+  [ ] CI/CD with Docker
+  [ ] Implement Multi-Tenancy
+  [ ] Handle uploading images
   [ ] Implement Auditing of user accounts
   [ ] Add unit and integration tests with testcontainers (also for refresh tokens)
+  [ ] Use test coverage metrics
   [ ] Async Web API testing with TaskCompletionSource
   [ ] Use Bogus for generating fake data in tests
   [ ] Implement missing actions for users module
-  [ ] Configure Continuous Delivery with Azure DevOps
-  [ ] CI/CD with Docker
 
   [ ] Integrate with SonarQube
-  [ ] Use test coverage metrics
   [ ] Add test environment for QAs
   
   [ ] Extend Message Broker to handle some type of Envelope
