@@ -27,8 +27,8 @@ namespace Edux.Shared.Infrastructure.SharedKernel.Dispatchers
                 var handlers = scope.ServiceProvider.GetServices(handlerType);
 
                 var tasks = handlers.Select(x => (Task)handlerType
-                    .GetMethod(nameof(IDomainEventHandler<IDomainEvent>.HandleAsync))
-                    .Invoke(x, new[] { domainEvent }));
+                    .GetMethod(nameof(IDomainEventHandler<IDomainEvent>.HandleAsync))!
+                    .Invoke(x, new[] { domainEvent })!);
 
                 await Task.WhenAll(tasks);
             }

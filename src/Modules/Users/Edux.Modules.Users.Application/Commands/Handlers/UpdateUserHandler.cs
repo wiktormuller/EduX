@@ -30,7 +30,7 @@ namespace Edux.Modules.Users.Application.Commands.Handlers
 
             user.ChangeClaims(command.Claims, now);
 
-            _userRepository.UpdateAsync(user);
+            _userRepository.Update(user);
         }
     }
 }

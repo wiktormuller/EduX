@@ -1,5 +1,4 @@
 ﻿using Edux.Shared.Abstractions.Messaging;
-using Edux.Shared.Infrastructure.Messaging.RabbitMQ;
 using System.Reflection;
 
 namespace Edux.Shared.Infrastructure.Messaging.RabbitMQ.Conventions
@@ -19,13 +18,13 @@ namespace Edux.Shared.Infrastructure.Messaging.RabbitMQ.Conventions
 
             _queueTemplate = string.IsNullOrWhiteSpace(_options?.Queue?.Template)
                 ? "{{assembly}}/{{exchange}}.{{message}}"
-                : options.Queue.Template;
+                : options!.Queue!.Template;
         }
 
         public string GetExchange(Type type)
         {
             var exchange = string.IsNullOrWhiteSpace(_options?.Exchange?.Name)
-                ? type.Assembly.GetName().Name
+                ? type.Assembly.GetName().Name!
                 : _options.Exchange.Name;
 
             if (_options?.Conventions?.MessageAttribute?.IgnoreExchange is true)
@@ -57,9 +56,9 @@ namespace Edux.Shared.Infrastructure.Messaging.RabbitMQ.Conventions
             var message = type.Name;
 
             var exchange = ignoreExchangeAttribute is true
-                ? _options.Exchange?.Name
+                ? _options?.Exchange?.Name
                 : string.IsNullOrWhiteSpace(attribute?.Exchange)
-                    ? _options.Exchange?.Name
+                    ? _options?.Exchange?.Name
                     : attribute.Exchange;
 
             var queue = _queueTemplate.Replace("{{assembly}}", assembly)
@@ -86,7 +85,7 @@ namespace Edux.Shared.Infrastructure.Messaging.RabbitMQ.Conventions
             return WithCasing(routingKey);
         }
 
-        private static MessageAttribute GetAttribute(MemberInfo type)
+        private static MessageAttribute? GetAttribute(MemberInfo type)
             => type.GetCustomAttribute<MessageAttribute>();
 
         private string WithCasing(string value) => _useSnakeCase ? SnakeCase(value) : value;

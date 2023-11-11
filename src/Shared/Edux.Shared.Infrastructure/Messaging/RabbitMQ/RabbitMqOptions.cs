@@ -2,12 +2,12 @@
 {
     internal class RabbitMqOptions
     {
-        public string ConnectionName { get; set; }
-        public IEnumerable<string> HostNames { get; set; }
+        public string ConnectionName { get; set; } = string.Empty;
+        public IEnumerable<string> HostNames { get; set; } = new List<string>();
         public int Port { get; set; }
-        public string VirtualHost { get; set; }
-        public string Username { get; set; }
-        public string Password { get; set; }
+        public string VirtualHost { get; set; } = string.Empty;
+        public string Username { get; set; } = string.Empty;
+        public string Password { get; set; } = string.Empty;
         public TimeSpan RequestedHeartbeat { get; set; } = TimeSpan.FromSeconds(60);
         public TimeSpan RequestedConnectionTimeout { get; set; } = TimeSpan.FromSeconds(30);
         public TimeSpan SocketReadTimeout { get; set; } = TimeSpan.FromSeconds(30);
@@ -19,19 +19,19 @@
         public ushort RequestedChannelMax { get; set; }
         public uint RequestedFrameMax { get; set; }
         public bool UseBackgroundThreadsForIO { get; set; }
-        public string ConventionsCasing { get; set; }
+        public string ConventionsCasing { get; set; } = string.Empty;
         public int Retries { get; set; }
         public int RetryInterval { get; set; }
         public bool MessagesPersisted { get; set; }
-        public ContextOptions Context { get; set; }
-        public ExchangeOptions Exchange { get; set; }
-        public LoggerOptions Logger { get; set; }
-        public SslOptions Ssl { get; set; }
-        public QueueOptions Queue { get; set; }
-        public DeadLetterOptions DeadLetter { get; set; }
-        public QosOptions Qos { get; set; }
-        public ConventionsOptions Conventions { get; set; }
-        public string SpanContextHeader { get; set; }
+        public ContextOptions? Context { get; set; }
+        public ExchangeOptions? Exchange { get; set; }
+        public LoggerOptions? Logger { get; set; }
+        public SslOptions? Ssl { get; set; }
+        public QueueOptions? Queue { get; set; }
+        public DeadLetterOptions? DeadLetter { get; set; }
+        public QosOptions? Qos { get; set; }
+        public ConventionsOptions? Conventions { get; set; }
+        public string SpanContextHeader { get; set; } = string.Empty;
         public int MaxProducerChannels { get; set; }
         public bool RequeueFailedMessages { get; set; }
 
@@ -48,13 +48,13 @@
         public class ContextOptions
         {
             public bool Enabled { get; set; }
-            public string Header { get; set; }
+            public string Header { get; set; } = string.Empty;
         }
 
         public class ExchangeOptions
         {
-            public string Name { get; set; }
-            public string Type { get; set; }
+            public string Name { get; set; } = string.Empty;
+            public string Type { get; set; } = string.Empty;
             public bool Declare { get; set; }
             public bool Durable { get; set; }
             public bool AutoDelete { get; set; }
@@ -62,7 +62,7 @@
 
         public class QueueOptions
         {
-            public string Template { get; set; }
+            public string Template { get; set; } = string.Empty;
             public bool Declare { get; set; }
             public bool Durable { get; set; }
             public bool Exclusive { get; set; }
@@ -72,8 +72,8 @@
         public class DeadLetterOptions
         {
             public bool Enabled { get; set; }
-            public string Prefix { get; set; }
-            public string Suffix { get; set; }
+            public string Prefix { get; set; } = string.Empty;
+            public string Suffix { get; set; } = string.Empty;
             public bool Declare { get; set; }
             public bool Durable { get; set; }
             public bool Exclusive { get; set; }
@@ -84,10 +84,10 @@
         public class SslOptions
         {
             public bool Enabled { get; set; }
-            public string ServerName { get; set; }
-            public string CertificatePath { get; set; }
-            public string CaCertificatePath { get; set; }
-            public IEnumerable<string> X509IgnoredStatuses { get; set; }
+            public string ServerName { get; set; } = string.Empty;
+            public string CertificatePath { get; set; } = string.Empty;
+            public string CaCertificatePath { get; set; } = string.Empty;
+            public IEnumerable<string> X509IgnoredStatuses { get; set; } = new List<string>();
         }
 
         public class QosOptions
@@ -99,7 +99,7 @@
 
         public class ConventionsOptions
         {
-            public MessageAttributeOptions MessageAttribute { get; set; }
+            public MessageAttributeOptions? MessageAttribute { get; set; }
 
             public class MessageAttributeOptions
             {

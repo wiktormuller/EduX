@@ -7,44 +7,44 @@ namespace Edux.Modules.Users.Infrastructure.EF.Queries
     {
         public static UserResponse AsUserResponse(this UserReadModel userReadModel)
         {
-            return new()
-            {
-                Id = userReadModel.Id,
-                Email = userReadModel.Email,
-                Role = userReadModel.Role,
-                IsActive = userReadModel.IsActive,
-                CreatedAt = userReadModel.CreatedAt,
-                UpdatedAt = userReadModel.UpdatedAt,
-                Claims = userReadModel.Claims
-            };
+            return new
+            (
+                userReadModel.Id,
+                userReadModel.Email,
+                userReadModel.Role,
+                userReadModel.IsActive,
+                userReadModel.CreatedAt,
+                userReadModel.UpdatedAt,
+                userReadModel.Claims
+            );
         }
 
         public static UserDetailsResponse AsUserDetailsResponse(this UserReadModel userReadModel)
         {
-            return new()
-            {
-                Id = userReadModel.Id,
-                Email = userReadModel.Email,
-                Role = userReadModel.Role,
-                IsActive = userReadModel.IsActive,
-                CreatedAt = userReadModel.CreatedAt,
-                UpdatedAt = userReadModel.UpdatedAt,
-                Claims = userReadModel.Claims
-            };
+            return new
+            (
+                userReadModel.Id,
+                userReadModel.Email,
+                userReadModel.Role,
+                userReadModel.IsActive,
+                userReadModel.CreatedAt,
+                userReadModel.UpdatedAt,
+                userReadModel.Claims
+            );
         }
 
         public static UserMeResponse AsUserMeResponse(this UserReadModel userReadModel)
         {
-            return new UserMeResponse()
-            {
-                Id = userReadModel.Id,
-                Email = userReadModel.Email,
-                Role = userReadModel.Role,
-                IsActive = userReadModel.IsActive,
-                CreatedAt = userReadModel.CreatedAt,
-                UpdatedAt = userReadModel.UpdatedAt,
-                Claims = userReadModel.Claims
-            };
+            return new UserMeResponse
+            (
+                userReadModel.Id,
+                userReadModel.Email,
+                userReadModel.Role,
+                userReadModel.IsActive,
+                userReadModel.CreatedAt,
+                userReadModel.UpdatedAt,
+                userReadModel.Claims
+            );
         }
     }
 }

@@ -15,13 +15,9 @@ namespace Edux.Modules.Users.Core.Entities
         public DateTime UpdatedAt { get; private set; }
         public Dictionary<string, IEnumerable<string>> Claims { get; private set; }
 
-        protected User()
-        {
-        }
-
         public User(Guid id, Email email, Username username, Password password, Role role, bool isActive,
             DateTime createdAt, DateTime updatedAt, 
-            Dictionary<string, IEnumerable<string>> claims = null)
+            Dictionary<string, IEnumerable<string>>? claims = null)
         {
             Id = id;
             Email = email;
@@ -113,7 +109,7 @@ namespace Edux.Modules.Users.Core.Entities
             // Check if the values for corresponding keys are equal
             foreach (var kvp in first)
             {
-                if (!second.TryGetValue(kvp.Key, out IEnumerable<string> value) || !kvp.Value.SequenceEqual(value))
+                if (!second.TryGetValue(kvp.Key, out IEnumerable<string>? value) || !kvp.Value.SequenceEqual(value))
                 {
                     return false;
                 }

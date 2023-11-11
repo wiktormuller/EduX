@@ -59,7 +59,7 @@ namespace Edux.Shared.Infrastructure.Messaging.RabbitMQ.Messaging.BackgroundServ
             _options = options;
             _serviceProvider = serviceProvider;
             _rabbitMqSerializer = rabbitMqSerializer;
-            _logMessagePayload = options?.Logger.LogMessagePayload ?? false;
+            _logMessagePayload = options?.Logger?.LogMessagePayload ?? false;
             _requeueFailedMessages = options?.RequeueFailedMessages ?? false;
             _retries = _options.Retries >= 0
                 ? _options.Retries
@@ -120,11 +120,13 @@ namespace Edux.Shared.Infrastructure.Messaging.RabbitMQ.Messaging.BackgroundServ
             var autoDelete = _options.Queue?.AutoDelete ?? false;
 
             var deadLetterEnabled = _options.DeadLetter?.Enabled is true;
+            
             var deadLetterExchange = deadLetterEnabled
-                ? $"{_options.DeadLetter.Prefix}{_options.Exchange.Name}{_options.DeadLetter.Suffix}"
+                ? $"{_options.DeadLetter!.Prefix}{_options.Exchange?.Name}{_options.DeadLetter!.Suffix}"
                 : string.Empty;
+            
             var deadLetterQueue = deadLetterEnabled
-                ? $"{_options.DeadLetter.Prefix}{conventions.Queue}{_options.DeadLetter.Suffix}"
+                ? $"{_options.DeadLetter!.Prefix}{conventions.Queue}{_options.DeadLetter.Suffix}"
                 : string.Empty;
 
             if (declare)
@@ -143,7 +145,7 @@ namespace Edux.Shared.Infrastructure.Messaging.RabbitMQ.Messaging.BackgroundServ
             }
 
             channel.QueueBind(conventions.Queue, conventions.Exchange, conventions.RoutingKey);
-            channel.BasicQos(_options.Qos.PrefetchSize, _options.Qos.PrefetchCount, _options.Qos.Global);
+            channel.BasicQos(_options.Qos!.PrefetchSize, _options.Qos.PrefetchCount, _options.Qos.Global);
 
             if (_options.DeadLetter?.Enabled is true)
             {
@@ -182,7 +184,8 @@ namespace Edux.Shared.Infrastructure.Messaging.RabbitMQ.Messaging.BackgroundServ
                     var messageId = args.BasicProperties.MessageId;
                     var correlationId = args.BasicProperties.CorrelationId;
                     var timestamp = args.BasicProperties.Timestamp.UnixTime;
-                    var message = _rabbitMqSerializer.Deserialize(args.Body.Span, messageSubscription.Type);
+                    var message = _rabbitMqSerializer.Deserialize(args.Body.Span, messageSubscription.Type)
+                        ?? throw new InvalidOperationException("Message is not able to be processed.");
 
                     var messagePayload = _logMessagePayload
                         ? Encoding.UTF8.GetString(args.Body.Span)
@@ -231,7 +234,7 @@ namespace Edux.Shared.Infrastructure.Messaging.RabbitMQ.Messaging.BackgroundServ
             {
                 try
                 {
-                    _logger.LogInformation($"Handling a message: {messageName} with ID: {messageContext.MessageId}, " +
+                    _logger.LogInformation($"Handling a message: {messageName} with ID: {messageContext!.MessageId}, " +
                         $"Correlation ID: {context.CorrelationId}, retry: {currentRetry}");
 
                     if (_options.MessageProcessingTimeout.HasValue)
@@ -241,7 +244,7 @@ namespace Edux.Shared.Infrastructure.Messaging.RabbitMQ.Messaging.BackgroundServ
 
                         if (result != task)
                         {
-                            throw new RabbitMqMessageProcessingTimeoutException(messageContext.MessageId, context.CorrelationId.ToString("N"));
+                            throw new RabbitMqMessageProcessingTimeoutException(messageContext!.MessageId!, context.CorrelationId.ToString("N"));
                         }
                     }
                     else
@@ -283,11 +286,12 @@ namespace Edux.Shared.Infrastructure.Messaging.RabbitMQ.Messaging.BackgroundServ
                     {
                         var failedMessageName = failedMessage.Message.GetType().Name.Underscore();
                         var failedMessageId = Guid.NewGuid().ToString("N");
-                        await _busPublisher.PublishAsync(failedMessage.Message, failedMessageId, messageContext);
+                        await _busPublisher.PublishAsync(failedMessage.Message, failedMessageId, messageContext!);
                         _logger.LogError(ex, ex.Message);
 
                         _logger.LogWarning($"Published a failed messaged: {failedMessageName} with ID: {failedMessageId}, " +
-                                               $"Correlation ID: {context.CorrelationId}, for the message: {messageName} with ID: {messageContext.MessageId}");
+                                               $"Correlation ID: {context.CorrelationId}, for the message: {messageName} " +
+                                               $"with ID: {messageContext!.MessageId}");
 
                         if (!deadLetterEnabled || !failedMessage.MoveToDeadLetter)
                         {
@@ -299,7 +303,7 @@ namespace Edux.Shared.Infrastructure.Messaging.RabbitMQ.Messaging.BackgroundServ
 
                     if (failedMessage is null || failedMessage.ShouldRetry)
                     {
-                        var errorMessage = $"Unable to handle a message: '{messageName}' with ID: '{messageContext.MessageId}', " +
+                        var errorMessage = $"Unable to handle a message: '{messageName}' with ID: '{messageContext!.MessageId}', " +
                                            $"Correlation ID: '{context.CorrelationId}', retry {currentRetry}/{_retries}...";
 
                         _logger.LogError(errorMessage);
@@ -310,7 +314,7 @@ namespace Edux.Shared.Infrastructure.Messaging.RabbitMQ.Messaging.BackgroundServ
                         }
                     }
 
-                    _logger.LogError($"Handling a message: {messageName} with ID: {messageContext.MessageId}, Correlation ID: " +
+                    _logger.LogError($"Handling a message: {messageName} with ID: {messageContext!.MessageId}, Correlation ID: " +
                                  $"{context.CorrelationId} failed");
 
                     if (failedMessage is not null && !failedMessage.MoveToDeadLetter)
@@ -322,7 +326,7 @@ namespace Edux.Shared.Infrastructure.Messaging.RabbitMQ.Messaging.BackgroundServ
 
                     if (deadLetterEnabled)
                     {
-                        _logger.LogError($"Message: {messageName} with ID: {messageContext.MessageId}, Correlation ID: " +
+                        _logger.LogError($"Message: {messageName} with ID: {messageContext!.MessageId}, Correlation ID: " +
                                          $"{context.CorrelationId} will be moved to DLX");
                     }
 

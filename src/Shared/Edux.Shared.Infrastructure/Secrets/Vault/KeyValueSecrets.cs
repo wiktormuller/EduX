@@ -16,7 +16,7 @@ namespace Edux.Shared.Infrastructure.Secrets.Vault
             _options = options;
         }
 
-        public async Task<T> GetAsync<T>(string path)
+        public async Task<T?> GetAsync<T>(string path)
             => JsonSerializer.Deserialize<T>(JsonSerializer.Serialize(await GetAsync(path)));
 
         public async Task<IDictionary<string, object>> GetAsync(string path)

@@ -20,7 +20,8 @@ namespace Edux.Modules.Users.Infrastructure.EF.Configurations
 
             builder.Property(x => x.Claims)
             .HasConversion(x => JsonSerializer.Serialize(x, SerializerOptions),
-                x => JsonSerializer.Deserialize<Dictionary<string, IEnumerable<string>>>(x, SerializerOptions));
+                x => JsonSerializer.Deserialize<Dictionary<string, IEnumerable<string>>>(x, SerializerOptions) 
+                    ?? new Dictionary<string, IEnumerable<string>>());
         }
     }
 }

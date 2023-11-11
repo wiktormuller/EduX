@@ -4,6 +4,6 @@ namespace Edux.Shared.Infrastructure.Messaging.RabbitMQ.Messaging.BackgroundServ
 {
     internal class EmptyExceptionToFailedMessageMapper : IExceptionToFailedMessageMapper
     {
-        public FailedMessage Map(Exception exception, object message) => null;
+        public FailedMessage? Map(Exception exception, object message) => null;
     }
 }

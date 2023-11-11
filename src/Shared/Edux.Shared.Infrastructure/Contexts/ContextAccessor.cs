@@ -6,9 +6,9 @@ namespace Edux.Shared.Infrastructure.Contexts
     {
         private static readonly AsyncLocal<ContextHolder> Holder = new();
 
-        public IContext Context
+        public IContext? Context
         {
-            get => Holder.Value?.Context;
+            get => Holder?.Value?.Context;
             set
             {
                 var holder = Holder.Value;
@@ -29,7 +29,7 @@ namespace Edux.Shared.Infrastructure.Contexts
 
         private class ContextHolder
         {
-            public IContext Context;
+            public IContext? Context;
         }
     }
 }

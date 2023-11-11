@@ -125,7 +125,7 @@ namespace Edux.Shared.Infrastructure.Messaging.RabbitMQ
                 }
 
                 chain = new X509Chain();
-                var certificate2 = new X509Certificate2(certificate);
+                var certificate2 = new X509Certificate2(certificate!);
                 var signerCertificate2 = new X509Certificate2(options.Ssl.CaCertificatePath);
                 chain.ChainPolicy.ExtraStore.Add(signerCertificate2);
                 chain.Build(certificate2);

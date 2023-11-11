@@ -4,6 +4,6 @@ namespace Edux.Shared.Infrastructure.Messaging.RabbitMQ.Messaging.BackgroundServ
 {
     internal class EmptyExceptionToMessageMapper : IExceptionToMessageMapper
     {
-        public object Map(Exception exception, object message) => null;
+        public object? Map(Exception exception, object message) => null;
     }
 }

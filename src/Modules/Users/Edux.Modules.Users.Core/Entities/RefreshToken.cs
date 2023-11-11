@@ -11,10 +11,6 @@ namespace Edux.Modules.Users.Core.Entities
         public DateTime? RevokedAt { get; private set; }
         public bool Revoked => RevokedAt.HasValue;
 
-        protected RefreshToken()
-        {
-        }
-
         public RefreshToken(Guid id, AggregateId userId, string token, DateTime createdAt,
             DateTime? revokedAt = null)
         {

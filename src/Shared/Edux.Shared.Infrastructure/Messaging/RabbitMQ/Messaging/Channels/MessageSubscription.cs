@@ -8,7 +8,7 @@ namespace Edux.Shared.Infrastructure.Messaging.RabbitMQ.Messaging.Channels
 
         public Func<IServiceProvider, object, CancellationToken, Task> Handler { get; }
 
-        public MessageSubscription(Type type, Func<IServiceProvider, object, CancellationToken, Task> handler = null)
+        public MessageSubscription(Type type, Func<IServiceProvider, object, CancellationToken, Task> handler)
         {
             Type = type;
             Handler = handler;

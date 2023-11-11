@@ -30,11 +30,11 @@ namespace Edux.Shared.Infrastructure.Observability.Logging.Decorators
             var context = _contextProvider.Current();
             var module = domainEvent.GetModuleName();
             var name = domainEvent.GetType().Name.Underscore();
-            var requestId = context?.RequestContext.RequestId;
-            var traceId = context.TraceId;
+            var requestId = context?.RequestContext?.RequestId;
+            var traceId = context?.TraceId;
             var userId = context?.IdentityContext?.Id;
             var correlationId = context?.CorrelationId;
-            var messageId = context?.MessageContext.MessageId;
+            var messageId = context?.MessageContext?.MessageId;
 
             try
             {

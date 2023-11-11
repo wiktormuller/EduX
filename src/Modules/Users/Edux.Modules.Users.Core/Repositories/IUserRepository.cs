@@ -8,7 +8,7 @@ namespace Edux.Modules.Users.Core.Repositories
         Task<User?> GetAsync(AggregateId id);
         Task<User?> GetAsync(string email);
         Task AddAsync(User user);
-        Task UpdateAsync(User user);
+        void Update(User user);
         Task SaveChangesAsync();
     }
 }

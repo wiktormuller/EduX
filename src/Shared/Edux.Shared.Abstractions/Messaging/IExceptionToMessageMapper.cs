@@ -2,6 +2,6 @@
 {
     public interface IExceptionToMessageMapper
     {
-        object Map(Exception exception, object message);
+        object? Map(Exception exception, object message);
     }
 }

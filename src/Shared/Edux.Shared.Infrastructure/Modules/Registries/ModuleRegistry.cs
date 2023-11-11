@@ -22,7 +22,7 @@
         }
 
         public void AddRequestAction(string path, Type requestType, Type responseType,
-            Func<object, CancellationToken, Task<object>> action)
+            Func<object, CancellationToken, Task<object?>> action)
         {
             if (path is null)
             {
@@ -33,7 +33,7 @@
             _requestRegistrations.Add(path, registration);
         }
 
-        public ModuleRequestRegistration GetRequestRegistration(string path)
+        public ModuleRequestRegistration? GetRequestRegistration(string path)
         {
             return _requestRegistrations.TryGetValue(path, out var registration)
                 ? registration

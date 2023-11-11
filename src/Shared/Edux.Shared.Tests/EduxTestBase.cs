@@ -30,7 +30,7 @@ namespace Edux.Shared.Tests
                 .CreateClient();
         }
 
-        protected Task<T> GetAsync<T>(string endpoint)
+        protected Task<T?> GetAsync<T>(string endpoint)
             => Client.GetFromJsonAsync<T>(endpoint);
 
         protected Task<HttpResponseMessage> PostAsync<T>(string endpoint, T payload)
@@ -42,9 +42,10 @@ namespace Edux.Shared.Tests
         protected Task<HttpResponseMessage> DeleteAsync(string endpoint)
             => Client.DeleteAsync(endpoint);
 
-        protected void Authenticate(Guid userId, string email, IDictionary<string, IEnumerable<string>> claims = null)
+        protected void Authenticate(Guid userId, string email, string role, 
+            IDictionary<string, IEnumerable<string>>? claims = null)
         {
-            var jwt = AuthHelper.CreateJwtToken(userId, email, claims: claims);
+            var jwt = AuthHelper.CreateJwtToken(userId, email, role, claims: claims);
 
             Client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", jwt);
         }

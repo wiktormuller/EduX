@@ -2,7 +2,7 @@
 {
     public abstract class AggregateRoot
     {
-        public AggregateId Id { get; protected set; }
+        public AggregateId? Id { get; protected set; }
         public int Version { get; protected set; }
         public IEnumerable<IDomainEvent> Events => _events;
         private List<IDomainEvent> _events = new();

@@ -30,9 +30,9 @@ namespace Edux.Shared.Infrastructure.Exceptions.Dispatchers
             }
 
             // Fallback to default
-            var defaultMapper = mappers.SingleOrDefault(m => m is DefaultExceptionToResponseMapper);
+            var defaultMapper = mappers.Single(m => m is DefaultExceptionToResponseMapper);
 
-            return defaultMapper?.Map(exception);
+            return defaultMapper.Map(exception);
         }
     }
 }

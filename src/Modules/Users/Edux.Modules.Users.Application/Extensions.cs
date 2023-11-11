@@ -1,5 +1,5 @@
 ﻿using Edux.Modules.Users.Application.Contracts.Requests;
-using Edux.Modules.Users.Application.Services;
+using Edux.Modules.Users.Application.Mappers;
 using FluentValidation;
 using FluentValidation.AspNetCore;
 using Microsoft.Extensions.DependencyInjection;

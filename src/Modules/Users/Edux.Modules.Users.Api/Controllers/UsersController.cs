@@ -34,12 +34,12 @@ namespace Edux.Modules.Users.Api.Controllers
         [EnableRateLimiting("jwt")]
         public async Task<ActionResult<UserMeResponse>> Get(CancellationToken cancellationToken)
         {
-            if (string.IsNullOrWhiteSpace(User.Identity?.Name))
+            if (string.IsNullOrWhiteSpace(User?.Identity?.Name))
             {
                 return NotFound();
             }
 
-            var userId = Guid.Parse(User.Identity?.Name); // TODO: It could be taken from IContext
+            var userId = Guid.Parse(User.Identity.Name); // TODO: It could be taken from IContext
             var query = new GetUserMe(userId);
             var user = await _queryDispatcher.QueryAsync(query, cancellationToken);
 

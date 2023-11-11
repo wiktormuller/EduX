@@ -25,12 +25,14 @@ namespace Edux.Shared.Infrastructure.Modules.Clients
 
             foreach (var registration in registrations)
             {
-                var translatedMessageForReceiver = TranslateType(message, registration.ReceiverType);
+                var translatedMessageForReceiver = TranslateType(message, registration.ReceiverType)
+                    ?? throw new InvalidOperationException($"Invalid translation of types between modules while calling Publish in ModuleClient");
+
                 var action = registration.Action;
                 tasks.Add(action(translatedMessageForReceiver));
             }
 
-            Task.WhenAll(tasks); // It's fully synchronous operation
+            await Task.WhenAll(tasks); // It's fully synchronous operation (in the same process)
         }
 
         public Task SendAsync(string path, object request, CancellationToken cancellationToken = default)
@@ -38,16 +40,14 @@ namespace Edux.Shared.Infrastructure.Modules.Clients
             return SendAsync<object>(path, request, cancellationToken);
         }
 
-        public async Task<TResult> SendAsync<TResult>(string path, object request, CancellationToken cancellationToken = default) where TResult : class
+        public async Task<TResult?> SendAsync<TResult>(string path, object request, CancellationToken cancellationToken = default) where TResult : class
         {
-            var registration = _moduleRegistry.GetRequestRegistration(path);
+            var registration = _moduleRegistry.GetRequestRegistration(path)
+                ?? throw new InvalidOperationException($"No action has been defined for path: '{path}'."); ;
 
-            if (registration is null)
-            {
-                throw new InvalidOperationException($"No action has been defined for path: '{path}'.");
-            }
+            var receiverRequest = TranslateType(request, registration.RequestType)
+                ?? throw new InvalidOperationException($"Invalid translation of types between modules while calling Send in ModuleClient");
 
-            var receiverRequest = TranslateType(request, registration.RequestType);
             var result = await registration.Action(receiverRequest, cancellationToken);
 
             return result is null
@@ -55,12 +55,12 @@ namespace Edux.Shared.Infrastructure.Modules.Clients
                 : TranslateType<TResult>(result);
         }
 
-        private T TranslateType<T>(object value)
+        private T? TranslateType<T>(object value)
         {
             return _moduleSerializer.Deserialize<T>(_moduleSerializer.Serialize(value));
         }
 
-        private object TranslateType(object value, Type type)
+        private object? TranslateType(object value, Type type)
         {
             return _moduleSerializer.Deserialize(_moduleSerializer.Serialize(value), type);
         }

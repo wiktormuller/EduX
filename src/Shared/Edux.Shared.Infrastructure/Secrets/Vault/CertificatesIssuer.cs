@@ -35,7 +35,7 @@ namespace Edux.Shared.Infrastructure.Secrets.Vault
                 : _options.MountPoint;
         }
 
-        public async Task<X509Certificate2> IssueAsync()
+        public async Task<X509Certificate2?> IssueAsync()
         {
             var credentials =
                 await _client.V1.Secrets.PKI.GetCredentialsAsync(_options.RoleName,

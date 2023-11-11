@@ -7,7 +7,7 @@ namespace Edux.Shared.Abstractions.Modules
     {
         string Name { get; }
         string Path { get; }
-        IEnumerable<string> Policies => null;
+        IEnumerable<string> Policies => new List<string>();
         void Register(IServiceCollection services);
         void Use(IApplicationBuilder app);
     }

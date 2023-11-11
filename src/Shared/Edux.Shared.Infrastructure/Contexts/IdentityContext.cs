@@ -14,18 +14,20 @@ namespace Edux.Shared.Infrastructure.Contexts
         {
             Id = id ?? Guid.Empty;
             IsAuthenticated = id.HasValue;
+            Role = string.Empty;
+            Claims = new Dictionary<string, IEnumerable<string>>();
         }
 
         public IdentityContext(ClaimsPrincipal principal)
         {
             if (principal?.Identity is null || string.IsNullOrWhiteSpace(principal.Identity.Name))
             {
-                return;
+                throw new ArgumentException("Princippal Identity cannot be empty while creating IdentityContext via ClaimsPrincipal.");
             }
 
             IsAuthenticated = principal.Identity?.IsAuthenticated is true;
-            Id = IsAuthenticated ? Guid.Parse(principal.Identity.Name) : Guid.Empty;
-            Role = principal.Claims.SingleOrDefault(x => x.Type == ClaimTypes.Role)?.Value;
+            Id = IsAuthenticated ? Guid.Parse(principal.Identity!.Name) : Guid.Empty;
+            Role = principal.Claims.Single(x => x.Type == ClaimTypes.Role).Value;
             Claims = principal.Claims.GroupBy(x => x.Type)
                 .ToDictionary(x => x.Key, x => x.Select(c => c.Value.ToString()));
         }

@@ -12,16 +12,11 @@ namespace Edux.Shared.Infrastructure.Messaging.RabbitMQ.Initializers
         private const string DEFAULT_TYPE = "topic";
         private readonly IConnection _connection;
         private readonly RabbitMqOptions _options;
-        private readonly ILogger<RabbitMqExchangeInitializer> _logger;
-        private readonly bool _loggerEnabled;
 
-        public RabbitMqExchangeInitializer(ProducerConnection connection, RabbitMqOptions options,
-        ILogger<RabbitMqExchangeInitializer> logger)
+        public RabbitMqExchangeInitializer(ProducerConnection connection, RabbitMqOptions options)
         {
             _connection = connection.Connection;
             _options = options;
-            _logger = logger;
-            _loggerEnabled = _options?.Logger?.Enabled == true;
         }
 
         public Task InitializeAsync()
@@ -30,7 +25,9 @@ namespace Edux.Shared.Infrastructure.Messaging.RabbitMQ.Initializers
                 .GetAssemblies()
                 .SelectMany(a => a.GetTypes())
                 .Where(t => t.IsDefined(typeof(MessageAttribute), false))
-                .Select(t => t.GetCustomAttribute<MessageAttribute>().Exchange)
+                .Select(t => t.GetCustomAttribute<MessageAttribute>()!.Exchange)
+                .Where(e => e is not null)
+                .Cast<string>()
                 .Distinct()
                 .ToList();
 

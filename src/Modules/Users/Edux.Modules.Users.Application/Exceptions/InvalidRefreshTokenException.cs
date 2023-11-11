@@ -1,6 +1,4 @@
-﻿using Edux.Shared.Abstractions.SharedKernel.Exceptions;
-
-namespace Edux.Modules.Users.Application.Exceptions
+﻿namespace Edux.Modules.Users.Application.Exceptions
 {
     internal class InvalidRefreshTokenException : Shared.Abstractions.SharedKernel.Exceptions.ApplicationException
     {

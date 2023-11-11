@@ -6,10 +6,6 @@
         public bool ShouldRetry { get; }
         public bool MoveToDeadLetter { get; }
 
-        public FailedMessage(bool shouldRetry = true, bool moveToDeadLetter = true) : this(null, shouldRetry, moveToDeadLetter)
-        {
-        }
-
         public FailedMessage(object message, bool shouldRetry = true, bool moveToDeadLetter = true)
         {
             Message = message;

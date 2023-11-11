@@ -45,7 +45,7 @@ namespace Edux.Modules.Users.Application.Commands.Handlers
             }
 
             var jwtToken = _jwtProvider.CreateToken(token.UserId.ToString(), user.Email.Value, user.Role.Value, claims: user.Claims);
-            jwtToken.RefreshToken = command.RefreshToken;
+            jwtToken.SetRefreshToken(command.RefreshToken);
 
             _tokenStorage.Set(jwtToken);
         }

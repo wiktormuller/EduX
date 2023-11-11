@@ -7,7 +7,7 @@ namespace Edux.Shared.Infrastructure.Messaging.RabbitMQ.Serializers
     {
         private readonly JsonSerializerOptions _options;
 
-        public SystemTextJsonRabbitMqSerializer(JsonSerializerOptions options = null)
+        public SystemTextJsonRabbitMqSerializer(JsonSerializerOptions? options = null)
         {
             _options = options ?? new JsonSerializerOptions
             {
@@ -18,12 +18,12 @@ namespace Edux.Shared.Infrastructure.Messaging.RabbitMQ.Serializers
             };
         }
 
-        public object Deserialize(ReadOnlySpan<byte> value, Type type)
+        public object? Deserialize(ReadOnlySpan<byte> value, Type type)
         {
             return JsonSerializer.Deserialize(value, type, _options);
         }
 
-        public object Deserialize(ReadOnlySpan<byte> value)
+        public object? Deserialize(ReadOnlySpan<byte> value)
         {
             return JsonSerializer.Deserialize(value, typeof(object), _options);
         }

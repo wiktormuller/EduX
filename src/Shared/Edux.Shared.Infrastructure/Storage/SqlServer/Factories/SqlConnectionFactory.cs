@@ -6,7 +6,7 @@ namespace Edux.Shared.Infrastructure.Storage.SqlServer.Factories
 {
     public class SqlConnectionFactory : ISqlConnectionFactory, IDisposable
     {
-        private IDbConnection _connection;
+        private IDbConnection? _connection;
         private readonly string _connectionString;
 
         private bool _disposed = false;

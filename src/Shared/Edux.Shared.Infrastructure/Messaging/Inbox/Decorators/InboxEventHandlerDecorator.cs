@@ -35,9 +35,9 @@ namespace Edux.Shared.Infrastructure.Messaging.Inbox.Decorators
             var messageName = Names.GetOrAdd(typeof(T), typeof(T).Name.Underscore());
             var handlerAction = () => _eventHandler.HandleAsync(@event, cancellationToken);
             
-            if (_inboxOptions.Enabled && context?.MessageContext.MessageId is not null)
+            if (_inboxOptions.Enabled && context?.MessageContext?.MessageId is not null)
             {
-                await _inbox.HandleAsync(context?.MessageContext.MessageId, messageName, 
+                await _inbox.HandleAsync(context.MessageContext.MessageId, messageName, 
                     () => _eventHandler.HandleAsync(@event, cancellationToken));
             }
 

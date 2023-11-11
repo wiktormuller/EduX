@@ -29,7 +29,7 @@ var app = builder.Build();
 // Logging
 app.UseCorrelationContextLogging();
 
-var logger = app.Services.GetService<ILogger<Program>>();
+var logger = app.Services.GetRequiredService<ILogger<Program>>();
 logger.LogInformation($"Modules: {string.Join(", ", _modules.Select(x => x.Name))}");
 
 app.UseInfrastructure();

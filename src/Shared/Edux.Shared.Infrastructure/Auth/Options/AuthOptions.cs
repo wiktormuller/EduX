@@ -3,12 +3,12 @@
     public class AuthOptions
     {
         public bool AuthenticationDisabled { get; set; }
-        public string Issuer { get; set; }
-        public string IssuerSigningKey { get; set; }
-        public string Authority { get; set; }
-        public string Audience { get; set; }
+        public string Issuer { get; set; } = string.Empty;
+        public string IssuerSigningKey { get; set; } = string.Empty;
+        public string Authority { get; set; } = string.Empty;
+        public string Audience { get; set; } = string.Empty;
         public string Challenge { get; set; } = "Bearer";
-        public string MetadataAddress { get; set; }
+        public string MetadataAddress { get; set; } = string.Empty;
         public bool SaveToken { get; set; } = true;
         public bool SaveSigninToken { get; set; }
         public bool RequireAudience { get; set; } = true;
@@ -16,10 +16,10 @@
         public bool RequireExpirationTime { get; set; } = true;
         public bool RequireSignedTokens { get; set; } = true;
         public TimeSpan Expiry { get; set; }
-        public string ValidAudience { get; set; }
-        public IEnumerable<string> ValidAudiences { get; set; }
-        public string ValidIssuer { get; set; }
-        public IEnumerable<string> ValidIssuers { get; set; }
+        public string ValidAudience { get; set; } = string.Empty;
+        public IEnumerable<string> ValidAudiences { get; set; } = new List<string>();
+        public string ValidIssuer { get; set; } = string.Empty;
+        public IEnumerable<string> ValidIssuers { get; set; } = new List<string>();
         public bool ValidateActor { get; set; }
         public bool ValidateAudience { get; set; } = true;
         public bool ValidateIssuer { get; set; } = true;
@@ -28,8 +28,8 @@
         public bool ValidateIssuerSigningKey { get; set; }
         public bool RefreshOnIssuerKeyNotFound { get; set; } = true;
         public bool IncludeErrorDetails { get; set; } = true;
-        public string AuthenticationType { get; set; }
-        public string NameClaimType { get; set; }
-        public string RoleClaimType { get; set; }
+        public string AuthenticationType { get; set; } = string.Empty;
+        public string NameClaimType { get; set; } = string.Empty;
+        public string RoleClaimType { get; set; } = string.Empty;
     }
 }

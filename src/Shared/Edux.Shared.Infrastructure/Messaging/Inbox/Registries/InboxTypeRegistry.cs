@@ -10,10 +10,10 @@ namespace Edux.Shared.Infrastructure.Messaging.Inbox.Registries
         public void Register<T>() where T : IMessageInbox
             => _types[GetKey<T>()] = typeof(T);
 
-        public Type Resolve(IMessage message)
+        public Type? Resolve(IMessage message)
             => _types.TryGetValue(GetKey(message.GetType()), out var type) ? type : null;
 
-        public Type Resolve(ICommand command)
+        public Type? Resolve(ICommand command)
             => _types.TryGetValue(GetKey(command.GetType()), out var type) ? type : null;
 
         private static string GetKey<T>()

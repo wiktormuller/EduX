@@ -61,10 +61,11 @@ namespace Edux.Shared.Infrastructure.Contexts
             }
 
             httpContext.Request.Headers.TryGetValue(UserAgentKey, out var userAgent);
-            
-            if (!string.IsNullOrWhiteSpace(userAgent.FirstOrDefault()))
+
+            var userAgentValue = userAgent.FirstOrDefault();
+            if (!string.IsNullOrWhiteSpace(userAgentValue))
             {
-                return userAgent;
+                return userAgentValue;
             }
 
             return string.Empty;
@@ -72,7 +73,7 @@ namespace Edux.Shared.Infrastructure.Contexts
 
         public static Guid? TryGetCorrelationId(this HttpContext context)
             => context.Items.TryGetValue(CorrelationIdKey, out var id)
-                ? (Guid)id
+                ? (Guid)id!
                 : null;
 
         public static void TryAddCorrelationId(this HttpRequestHeaders headers, string correlationId)

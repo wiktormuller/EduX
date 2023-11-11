@@ -49,7 +49,7 @@ namespace Edux.Modules.Users.Application.Commands.Handlers
                 _clock.CurrentDate(), now, command.Claims);
             await _userRepository.AddAsync(user);
 
-            await _messageBroker.PublishAsync(new SignedUp(user.Id, user.Email, user.Role, now, user.Claims));
+            await _messageBroker.PublishAsync(new SignedUp(user.Id!, user.Email, user.Role, now, user.Claims));
         }
     }
 }

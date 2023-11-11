@@ -42,12 +42,8 @@ namespace Edux.Modules.Users.Application.Commands.Handlers
 
         public async Task HandleAsync(SignIn command, CancellationToken cancellationToken)
         {
-            var user = await _userRepository.GetAsync(command.Email);
-
-            if (user is null)
-            {
-                throw new InvalidCredentialsException();
-            }
+            var user = await _userRepository.GetAsync(command.Email)
+                ?? throw new InvalidCredentialsException();
 
             if (!user.IsActive)
             {
@@ -59,13 +55,13 @@ namespace Edux.Modules.Users.Application.Commands.Handlers
                 throw new InvalidCredentialsException();
             }
 
-            var jwt = _jwtProvider.CreateToken(user.Id.ToString(), email: user.Email, role: user.Role, claims: user.Claims);
+            var jwt = _jwtProvider.CreateToken(user.Id!.ToString(), email: user.Email, role: user.Role, claims: user.Claims);
 
             var token = _rng.Generate(30, true);
             var refreshToken = new RefreshToken(Guid.NewGuid(), user.Id, token, _clock.CurrentDate());
             await _refreshTokenRepository.AddAsync(refreshToken);
 
-            jwt.RefreshToken = token;
+            jwt.SetRefreshToken(token);
 
             _tokenStorage.Set(jwt);
 

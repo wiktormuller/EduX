@@ -29,7 +29,8 @@ namespace Edux.Shared.Infrastructure.Messaging.Outbox.EF
             T dbContext,
             ILogger<EfMessageOutbox<T>> logger,
             IBusPublisher busPublisher,
-            OutboxOptions outboxOptions)
+            OutboxOptions outboxOptions,
+            IContextProvider contextProvider)
         {
             _jsonSerializer = serializer;
             _clock = clock;
@@ -38,6 +39,7 @@ namespace Edux.Shared.Infrastructure.Messaging.Outbox.EF
             _logger = logger;
             _busPublisher = busPublisher;
             _outboxOptions = outboxOptions;
+            _contextProvider = contextProvider;
         }
 
         public async Task SaveAsync<TMessage>(TMessage message, string messageId, IMessageContext messageContext)
@@ -104,7 +106,9 @@ namespace Edux.Shared.Infrastructure.Messaging.Outbox.EF
 
             foreach (var outboxMessage in unsentMessages)
             {
-                var messageContext = _jsonSerializer.Deserialize<IMessageContext>(outboxMessage.Context);
+                var messageContext = _jsonSerializer.Deserialize<IMessageContext>(outboxMessage.Context)
+                    ?? throw new ArgumentNullException("Message context was null while processing outboxMessage");
+
                 _contextProvider.Current().SetMessageContext(messageContext);
 
                 _logger.LogInformation($"Publishing a message from outbox ('{module}'): {outboxMessage.Name} [Message ID: {outboxMessage.Id}]...");

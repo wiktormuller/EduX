@@ -9,7 +9,7 @@ namespace Edux.Shared.Infrastructure.Messaging.Outbox.Registries
         public void Register<T>() where T : IMessageOutbox
             => _types[GetKey<T>()] = typeof(T);
 
-        public Type Resolve(IMessage message)
+        public Type? Resolve(IMessage message)
             => _types.TryGetValue(GetKey(message.GetType()), out var type) ? type : null;
 
         private static string GetKey<T>()

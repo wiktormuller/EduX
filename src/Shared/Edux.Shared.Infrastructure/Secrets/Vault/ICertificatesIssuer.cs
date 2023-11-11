@@ -4,6 +4,6 @@ namespace Edux.Shared.Infrastructure.Secrets.Vault
 {
     internal interface ICertificatesIssuer
     {
-        Task<X509Certificate2> IssueAsync();
+        Task<X509Certificate2?> IssueAsync();
     }
 }

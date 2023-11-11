@@ -3,7 +3,7 @@ using Edux.Shared.Abstractions.Queries;
 
 namespace Edux.Modules.Users.Application.Queries
 {
-    public class GetUserMe : IQuery<UserMeResponse>
+    public class GetUserMe : IQuery<UserMeResponse?>
     {
         public Guid UserId { get; }
 

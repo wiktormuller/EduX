@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Edux.Modules.Users.Infrastructure.EF.Queries.Handlers
 {
-    internal sealed class GetUserDetailsHandler : IQueryHandler<GetUserDetails, UserDetailsResponse>
+    internal sealed class GetUserDetailsHandler : IQueryHandler<GetUserDetails, UserDetailsResponse?>
     {
         private readonly DbSet<UserReadModel> _users;
 
@@ -16,7 +16,7 @@ namespace Edux.Modules.Users.Infrastructure.EF.Queries.Handlers
             _users = dbContext.Users;
         }
 
-        public async Task<UserDetailsResponse> HandleAsync(GetUserDetails query)
+        public async Task<UserDetailsResponse?> HandleAsync(GetUserDetails query)
         {
             return await _users
                 .Where(u => u.Id == query.UserId)

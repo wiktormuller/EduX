@@ -2,6 +2,6 @@
 {
     public interface IContextAccessor
     {
-        IContext Context { get; set; }
+        IContext? Context { get; set; }
     }
 }

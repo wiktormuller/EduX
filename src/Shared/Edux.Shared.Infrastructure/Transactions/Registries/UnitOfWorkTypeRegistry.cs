@@ -7,7 +7,7 @@ namespace Edux.Shared.Infrastructure.Transactions.Registries
         private readonly Dictionary<string, Type> _types = new(); // UnitOfWork per module name
         public void Register<T>() where T : IUnitOfWork => _types[GetKey<T>()] = typeof(T);
 
-        public Type Resolve<T>() => _types.TryGetValue(GetKey<T>(), out var type)
+        public Type? Resolve<T>() => _types.TryGetValue(GetKey<T>(), out var type)
             ? type
             : null;
 

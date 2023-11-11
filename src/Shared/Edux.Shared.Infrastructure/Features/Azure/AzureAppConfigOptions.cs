@@ -2,7 +2,7 @@
 {
     public sealed class AzureAppConfigOptions
     {
-        public string ConnectionString { get; set; }
+        public string ConnectionString { get; set; } = string.Empty;
         public int CacheExpirationInterval { get; set; }
     }
 }

@@ -27,20 +27,40 @@ namespace Edux.Modules.Users.Infrastructure.Grpc
 
             if (userId is null)
             {
-                return null;
+                return new GetUserMeResponse
+                {
+                    Error = new Error
+                    {
+                        Message = "UserId was not found."
+                    }
+                };
             }
 
             var userMe = await _queryDispatcher.QueryAsync(new GetUserMe(Guid.Parse(userId)));
 
+            if (userMe is null)
+            {
+                return new GetUserMeResponse
+                {
+                    Error = new Error
+                    {
+                        Message = "User was not found."
+                    }
+                };
+            }
+
             return new GetUserMeResponse
             {
-                Id = userMe.Id.ToString(),
-                Email = userMe.Email,
-                Role = userMe.Role,
-                CreatedAt = Timestamp.FromDateTime(userMe.CreatedAt),
-                IsActive = userMe.IsActive,
-                UpdatedAt = Timestamp.FromDateTime(userMe.UpdatedAt),
-                ClaimsAsJson = _jsonSerializer.Serialize(userMe.Claims)
+                UserMe = new UserMe
+                {
+                    Id = userMe.Id.ToString(),
+                    Email = userMe.Email,
+                    Role = userMe.Role,
+                    CreatedAt = Timestamp.FromDateTime(userMe.CreatedAt),
+                    IsActive = userMe.IsActive,
+                    UpdatedAt = Timestamp.FromDateTime(userMe.UpdatedAt),
+                    ClaimsAsJson = _jsonSerializer.Serialize(userMe.Claims)
+                }
             };
         }
     }

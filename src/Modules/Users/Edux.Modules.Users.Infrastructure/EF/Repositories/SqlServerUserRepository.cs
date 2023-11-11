@@ -37,7 +37,7 @@ namespace Edux.Modules.Users.Infrastructure.EF.Repositories
             await _dbContext.SaveChangesAsync();
         }
 
-        public async Task UpdateAsync(User user)
+        public void Update(User user)
         {
             _users.Update(user);
         }

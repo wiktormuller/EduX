@@ -47,8 +47,8 @@ namespace Edux.Shared.Infrastructure.Auth.Services
             _tokenValidationParameters = tokenValidationParameters;
         }
 
-        public JsonWebToken CreateToken(string userId, string email, string role = null, string audience = null,
-            IDictionary<string, IEnumerable<string>> claims = null)
+        public JsonWebToken CreateToken(string userId, string email, string role, string? audience = null,
+            IDictionary<string, IEnumerable<string>>? claims = null)
         {
             if (string.IsNullOrWhiteSpace(userId))
             {
@@ -99,17 +99,18 @@ namespace Edux.Shared.Infrastructure.Auth.Services
             var accessToken = new JwtSecurityTokenHandler().WriteToken(jwt);
 
             return new JsonWebToken
-            {
-                AccessToken = accessToken,
-                RefreshToken = string.Empty,
-                Expires = expires.ToUnixTimeStamp(),
-                Id = userId,
-                Role = role ?? string.Empty,
-                Claims = claims ?? EmptyClaims
-            };
+            (
+                accessToken,
+                string.Empty,
+                expires.ToUnixTimeStamp(),
+                userId,
+                role ?? string.Empty,
+                email,
+                claims ?? EmptyClaims
+            );
         }
 
-        public JsonWebTokenPayload GetTokenPayload(string accessToken)
+        public JsonWebTokenPayload? GetTokenPayload(string accessToken)
         {
             _jwtSecurityTokenHandler.ValidateToken(accessToken, _tokenValidationParameters, out var validatedSecurityToken);
 
@@ -119,14 +120,14 @@ namespace Edux.Shared.Infrastructure.Auth.Services
             }
 
             return new JsonWebTokenPayload
-            {
-                Subject = jwt.Subject,
-                Role = jwt.Claims.SingleOrDefault(c => c.Type == ClaimTypes.Role)?.Value,
-                Expires = jwt.ValidTo.ToUnixTimeStamp(),
-                Claims = jwt.Claims.Where(c => !DefaultClaims.Contains(c.Type))
+            (
+                jwt.Subject,
+                jwt.Claims.Single(c => c.Type == ClaimTypes.Role).Value,
+                jwt.ValidTo.ToUnixTimeStamp(),
+                jwt.Claims.Where(c => !DefaultClaims.Contains(c.Type))
                     .GroupBy(c => c.Type)
                     .ToDictionary(k => k.Key, v => v.Select(c => c.Value))
-            };
+            );
         }
     }
 }

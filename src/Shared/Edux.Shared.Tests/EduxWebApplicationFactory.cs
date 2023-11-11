@@ -65,10 +65,11 @@ namespace Edux.Shared.Tests
             await _rabbitMqContainer.StartAsync();
         }
 
-        public async Task DisposeAsync()
+        async Task IAsyncLifetime.DisposeAsync()
         {
             // Override when want to dispose something like DbContext, etc.
             await _msSqlContainer.DisposeAsync();
+            await base.DisposeAsync();
         }
 
         private string GetUsernameFromUserInfo(string userInfo)

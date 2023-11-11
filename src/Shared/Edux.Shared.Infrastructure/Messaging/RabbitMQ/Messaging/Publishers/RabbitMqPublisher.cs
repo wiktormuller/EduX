@@ -18,7 +18,7 @@ namespace Edux.Shared.Infrastructure.Messaging.RabbitMQ.Messaging.Publishers
         }
 
         public Task PublishAsync<T>(T message, string messageId, IMessageContext messageContext,
-            string spanContext = null, IDictionary<string, object> headers = null)
+            string? spanContext = null, IDictionary<string, object>? headers = null)
                 where T : class
         {
             var conventions = _conventionsProvider.Get(message.GetType());

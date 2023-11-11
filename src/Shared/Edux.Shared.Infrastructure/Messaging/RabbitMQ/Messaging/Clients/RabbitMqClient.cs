@@ -14,8 +14,8 @@ namespace Edux.Shared.Infrastructure.Messaging.RabbitMQ.Messaging.Clients
         private readonly IConnection _connection;
         private readonly ILogger<RabbitMqClient> _logger;
         private readonly IRabbitMqSerializer _serializer;
-        private readonly IContextAccessor _contextAccessor;
         private readonly IChannelFactory _channelFactory;
+        private readonly IContextProvider _contextProvider;
 
         private readonly bool _loggerEnabled;
         private readonly bool _persistMessages;
@@ -27,8 +27,8 @@ namespace Edux.Shared.Infrastructure.Messaging.RabbitMQ.Messaging.Clients
             ProducerConnection connection,
             ILogger<RabbitMqClient> logger,
             IRabbitMqSerializer serializer,
-            IContextAccessor contextAccessor,
-            IChannelFactory channelFactory)
+            IChannelFactory channelFactory,
+            IContextProvider contextProvider)
         {
             _connection = connection.Connection;
             _loggerEnabled = options.Logger?.Enabled ?? false;
@@ -36,17 +36,17 @@ namespace Edux.Shared.Infrastructure.Messaging.RabbitMQ.Messaging.Clients
             _contextEnabled = options?.Context?.Enabled ?? false;
             _logger = logger;
             _serializer = serializer;
-            _contextAccessor = contextAccessor;
             _spanContextHeader = string.IsNullOrWhiteSpace(options?.SpanContextHeader)
                 ? "span_context"
                 : options.SpanContextHeader;
-            _messageContextHeader = string.IsNullOrWhiteSpace(options?.Context.Header)
+            _messageContextHeader = string.IsNullOrWhiteSpace(options?.Context?.Header)
                 ? "message_context"
                 : options.Context.Header;
             _channelFactory = channelFactory;
+            _contextProvider = contextProvider;
         }
 
-        public void Send(object message, IConventions conventions, IMessageContext messageContext, string spanContext = null)
+        public void Send(object message, IConventions conventions, IMessageContext messageContext, string? spanContext = null)
         {
             var channel = _channelFactory.Create(_connection);
 
@@ -66,7 +66,7 @@ namespace Edux.Shared.Infrastructure.Messaging.RabbitMQ.Messaging.Clients
         }
 
         private IBasicProperties BuildProperties(IModel channel, IMessageContext messageContext, 
-            string spanContext)
+            string? spanContext)
         {
             var properties = channel.CreateBasicProperties();
 
@@ -76,7 +76,7 @@ namespace Edux.Shared.Infrastructure.Messaging.RabbitMQ.Messaging.Clients
                 ? Guid.NewGuid().ToString("N")
                 : messageContext.MessageId;
 
-            var correlationId = _contextAccessor?.Context.CorrelationId.ToString("N");
+            var correlationId = _contextProvider.Current().CorrelationId.ToString("N");
             properties.CorrelationId = correlationId is null
             ? Guid.NewGuid().ToString("N")
             : correlationId;

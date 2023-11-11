@@ -26,7 +26,7 @@ namespace Edux.Modules.Users.Infrastructure.EF.Repositories
             return _refreshTokens.SingleOrDefaultAsync(x =>  x.Token == token);
         }
 
-        public async Task UpdateAsync(RefreshToken token)
+        public void Update(RefreshToken token)
         {
             _refreshTokens.Update(token);
         }

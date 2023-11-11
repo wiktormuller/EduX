@@ -81,6 +81,11 @@ namespace Edux.Shared.Infrastructure.Modules
                         continue;
                     }
 
+                    if (value is null)
+                    {
+                        continue;
+                    }
+
                     if (!bool.Parse(value))
                     {
                         disabledModules.Add(key.Split(":")[0]);
@@ -119,9 +124,9 @@ namespace Edux.Shared.Infrastructure.Modules
                 foreach (var type in eventTypes)
                 {
                     registry.AddBroadcastAction(type, (@event) =>
-                        (Task)eventDispatcherType.GetMethod(nameof(eventDispatcher.PublishAsync))
-                    ?.MakeGenericMethod(type)
-                            .Invoke(eventDispatcher, new[] { @event }));
+                        (Task)eventDispatcherType.GetMethod(nameof(eventDispatcher.PublishAsync))!
+                        .MakeGenericMethod(type)
+                        .Invoke(eventDispatcher, new[] { @event })!);
                 }
 
                 return registry;

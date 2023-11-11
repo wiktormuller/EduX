@@ -15,8 +15,8 @@ namespace Edux.Shared.Tests.Helpers
             _jwtProvider = new JwtProvider(new UtcClock(), options, new TokenValidationParameters());
         }
 
-        public static string CreateJwtToken(Guid userId, string email, string role = null, string audience = null,
-            IDictionary<string, IEnumerable<string>> claims = null)
+        public static string CreateJwtToken(Guid userId, string email, string role, string? audience = null,
+            IDictionary<string, IEnumerable<string>>? claims = null)
         {
             return _jwtProvider.CreateToken(userId.ToString(), email, role, audience, claims)
                 .AccessToken;

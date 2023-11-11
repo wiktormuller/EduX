@@ -21,7 +21,7 @@ namespace Edux.Modules.Users.Infrastructure.EF.Configurations
             builder.HasKey(u => u.Id);
 
             builder.Property(u => u.Id)
-                .HasConversion(x => x.Value, x => new AggregateId(x));
+                .HasConversion(x => x!.Value, x => new AggregateId(x));
 
             builder.Property(u => u.Email)
                 .HasConversion(x => x.Value, x => new Email(x))
@@ -47,7 +47,8 @@ namespace Edux.Modules.Users.Infrastructure.EF.Configurations
 
             builder.Property(x => x.Claims)
             .HasConversion(x => JsonSerializer.Serialize(x, SerializerOptions),
-                x => JsonSerializer.Deserialize<Dictionary<string, IEnumerable<string>>>(x, SerializerOptions));
+                x => JsonSerializer.Deserialize<Dictionary<string, IEnumerable<string>>>(x, SerializerOptions)
+                    ?? new Dictionary<string, IEnumerable<string>>());
 
             builder.Property(u => u.CreatedAt)
                 .IsRequired();

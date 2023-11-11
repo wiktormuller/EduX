@@ -9,7 +9,7 @@ namespace Edux.Shared.Infrastructure.Secrets.Vault
 
         public IReadOnlyDictionary<string, LeaseData> All => Secrets;
 
-        public LeaseData Get(string key) => Secrets.TryGetValue(key, out var data) ? data : null;
+        public LeaseData? Get(string key) => Secrets.TryGetValue(key, out var data) ? data : null;
 
         public void Set(string key, LeaseData data)
         {

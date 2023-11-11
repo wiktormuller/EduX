@@ -7,9 +7,9 @@ namespace Edux.Shared.Infrastructure.Contexts
     {
         public string TraceId { get; }
         public Guid CorrelationId { get; }
-        public IRequestContext RequestContext { get; }
-        public IIdentityContext IdentityContext { get; }
-        public IMessageContext MessageContext { get; private set; }
+        public IRequestContext? RequestContext { get; }
+        public IIdentityContext? IdentityContext { get; }
+        public IMessageContext? MessageContext { get; private set; }
 
         public Context(string messageId, IDictionary<string, object> headers, long timestamp)
             : this(Guid.NewGuid(), Guid.NewGuid().ToString("N"), null, null, new MessageContext(messageId, headers, timestamp))
@@ -18,13 +18,13 @@ namespace Edux.Shared.Infrastructure.Contexts
 
         public Context(HttpContext context)
             : this(context.TryGetCorrelationId(), context.TraceIdentifier,
-                new RequestContext(Guid.NewGuid(), context.GetUserIpAddress(), context.Request.Headers["user-agent"]),
+                new RequestContext(Guid.NewGuid(), context.GetUserIpAddress(), context.GetUserAgent()),
                 new IdentityContext(context.User))
         {
         }
 
-        public Context(Guid? correlationId, string traceId, IRequestContext requestContext = null,
-            IIdentityContext identityContext = null, IMessageContext messageContext = null)
+        public Context(Guid? correlationId, string traceId, IRequestContext? requestContext = null,
+            IIdentityContext? identityContext = null, IMessageContext? messageContext = null)
         {
             CorrelationId = correlationId ?? Guid.NewGuid();
             TraceId = traceId;

@@ -16,7 +16,7 @@ namespace Edux.Modules.Users.Infrastructure.EF.Queries.Handlers
             _users = dbContext.Users;
         }
 
-        public async Task<IEnumerable<UserResponse>> HandleAsync(GetUsers query)
+        public async Task<IEnumerable<UserResponse>?> HandleAsync(GetUsers query)
         {
             return await _users
                 .Select(u => u.AsUserResponse())

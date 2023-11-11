@@ -81,7 +81,7 @@ namespace Edux.Shared.Infrastructure.Secrets
                 var parser = new JsonParser(); // Used for mapping Dictionary<string, object> to JSON
                 var json = JsonConvert.SerializeObject(secret);
                 var data = parser.Parse(json);
-                var source = new MemoryConfigurationSource { InitialData = data }; // Adding new configuration that comes from Vault (which will overwrite our json settings)
+                var source = new MemoryConfigurationSource { InitialData = data! }; // Adding new configuration that comes from Vault (which will overwrite our json settings)
                 builder.Add(source);
             }
 
@@ -110,7 +110,7 @@ namespace Edux.Shared.Infrastructure.Secrets
 
             if (configuration.Any())
             {
-                var source = new MemoryConfigurationSource { InitialData = configuration };
+                var source = new MemoryConfigurationSource { InitialData = configuration! };
                 builder.Add(source);
             }
         }
@@ -203,13 +203,16 @@ namespace Edux.Shared.Infrastructure.Secrets
 
         private static IAuthMethodInfo GetAuthMethod(VaultOptions options)
         {
-            return options?.Authentication?.Type.ToLowerInvariant() switch
+            var authType = options?.Authentication?.Type
+                ?? throw new ArgumentNullException("Authentication Type for Vault is not set");
+
+            return authType.ToLowerInvariant() switch
             {
-                "token"
-                    => new TokenAuthMethodInfo(options.Authentication.Token.Token),
-                "userpass"
-                    => new UserPassAuthMethodInfo(options.Authentication.UserPass.Username, options.Authentication.UserPass.Password),
-                _ => throw new ArgumentException($"Vault auth type: '{options.Authentication.Type}' is not supported.")
+                "token" => new TokenAuthMethodInfo(options.Authentication.Token.Token),
+
+                "userpass" => new UserPassAuthMethodInfo(options.Authentication.UserPass.Username, options.Authentication.UserPass.Password),
+                
+                _ => throw new ArgumentException($"Vault auth type: '{authType}' is not supported.")
             };
         }
 

@@ -14,7 +14,7 @@ namespace Edux.Modules.Users.Infrastructure.EF.Configurations
             builder.HasKey(rt => rt.Id);
 
             builder.Property(rt => rt.Id)
-                .HasConversion(x => x.Value, x => new AggregateId(x));
+                .HasConversion(x => x!.Value, x => new AggregateId(x));
 
             builder.Property(rt => rt.Token)
                 .IsRequired()

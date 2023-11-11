@@ -8,11 +8,11 @@ namespace Edux.Shared.Infrastructure.Secrets.Vault
     //https://github.com/dotnet/runtime/blob/main/src/libraries/Microsoft.Extensions.Configuration.Json/src/JsonConfigurationFileParser.cs
     internal sealed class JsonParser
     {
-        private readonly Dictionary<string, string> _data = new(StringComparer.OrdinalIgnoreCase);
+        private readonly Dictionary<string, string?> _data = new(StringComparer.OrdinalIgnoreCase);
 
         private readonly Stack<string> _stack = new();
 
-        public IDictionary<string, string> Parse(string json)
+        public IDictionary<string, string?> Parse(string json)
         {
             var jsonDocumentOptions = new JsonDocumentOptions
             {
