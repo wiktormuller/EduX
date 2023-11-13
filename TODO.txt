@@ -37,9 +37,9 @@ TODO List:
   [x] Use gRPC
   [x] Integrate with GitHub Continuous Integration and apply feature branches
   [x] Share gRPC contracts via endpoint
+  [x] Use GraphQL
   
   [ ] Add integration with standalone quartz and integrate it with users domain
-  [ ] Use GraphQL
   [ ] Use MongoDB
   [ ] Add health checks
   [ ] WebHooks

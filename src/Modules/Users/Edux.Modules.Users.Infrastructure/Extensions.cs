@@ -1,4 +1,5 @@
-﻿using Edux.Modules.Users.Core.Repositories;
+﻿using Edux.Modules.Users.Application.Graphql.Schemas;
+using Edux.Modules.Users.Core.Repositories;
 using Edux.Modules.Users.Infrastructure.EF;
 using Edux.Modules.Users.Infrastructure.EF.Contexts;
 using Edux.Modules.Users.Infrastructure.EF.Repositories;
@@ -40,6 +41,16 @@ namespace Edux.Modules.Users.Infrastructure
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapGrpcService<UsersService>();
+            });
+
+            app.UseWebSockets();
+            app.UseGraphQL<UsersSchema>(path: "/graphql");
+
+            app.UseGraphQLPlayground("/ui/playground",
+            new GraphQL.Server.Ui.Playground.PlaygroundOptions
+            {
+                GraphQLEndPoint = "/graphql",
+                SubscriptionsEndPoint = "/graphql",
             });
 
             return app;
