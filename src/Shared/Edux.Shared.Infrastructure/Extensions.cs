@@ -34,6 +34,11 @@ using Microsoft.AspNetCore.Routing;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.AspNetCore.StaticFiles;
+using GraphQL;
+using Edux.Shared.Infrastructure.Api.Graphql;
+using Microsoft.AspNetCore.WebSockets;
+using Edux.Shared.Abstractions.Api.Graphql;
+using Microsoft.Extensions.Options;
 
 [assembly: InternalsVisibleTo("Edux.Bootstrapper")]
 [assembly: InternalsVisibleTo("Edux.Shared.Tests")]
@@ -78,6 +83,25 @@ namespace Edux.Shared.Infrastructure
             services.AddControllersWithOpenApi();
 
             services.AddSignalr();
+            services.AddGrpc();
+
+            services.AddSingleton<EduxCompositeQuery>();
+            services.AddSingleton<EduxCompositeSubscription>();
+            services
+                .AddGraphQL(config =>
+                {
+                    config.AddSchema<EduxSchema>()
+                        .AddSystemTextJson()
+                        .AddUserContextBuilder(httpContext => new GraphContext(httpContext))
+                        .AddErrorInfoProvider((options, serviceProvider) =>
+                        {
+                            options.ExposeExceptionStackTrace = false; // TODO: It should comes from settings
+                        });
+                })
+                .AddWebSockets(config =>
+                {
+                    config.KeepAliveInterval = TimeSpan.FromSeconds(5);
+                });
 
             return services;
         }
@@ -130,6 +154,16 @@ namespace Edux.Shared.Infrastructure
                 });
                 endpointRouteBuilder.MapModuleInfo();
                 endpointRouteBuilder.MapLogLevelEndpoint("~/logging/level");
+            });
+
+            app.UseWebSockets();
+            app.UseGraphQL<EduxSchema>(path: "/graphql");
+
+            app.UseGraphQLPlayground("/ui/playground",
+            new GraphQL.Server.Ui.Playground.PlaygroundOptions
+            {
+                GraphQLEndPoint = "/graphql",
+                SubscriptionsEndPoint = "/graphql",
             });
 
             return app;

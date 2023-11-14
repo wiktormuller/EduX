@@ -10,8 +10,11 @@ namespace Edux.Modules.Users.Application.Graphql.Types
         public UserMeType()
         {
             // We also can use resolvers here to get data from some other source
-            Field(userResponse => userResponse.Id,
-                type: typeof(StringGraphType));
+            Field(type: typeof(StringGraphType), name: "Id")
+                .Resolve(context =>
+                {
+                    return context.Source.Id.ToString("N");
+                });
 
             Field(userResponse => userResponse.Email,
                 type: typeof(StringGraphType));

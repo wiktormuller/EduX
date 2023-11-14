@@ -15,6 +15,10 @@ namespace Edux.Modules.Users.Core.Entities
         public DateTime UpdatedAt { get; private set; }
         public Dictionary<string, IEnumerable<string>> Claims { get; private set; }
 
+        private User()
+        {
+        }
+
         public User(Guid id, Email email, Username username, Password password, Role role, bool isActive,
             DateTime createdAt, DateTime updatedAt, 
             Dictionary<string, IEnumerable<string>>? claims = null)

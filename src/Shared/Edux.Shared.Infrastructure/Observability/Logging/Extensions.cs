@@ -58,19 +58,18 @@ namespace Edux.Shared.Infrastructure.Observability.Logging
                 var logger = httpContext.RequestServices.GetRequiredService<ILogger<IContextAccessor>>();
                 var context = httpContext.RequestServices.GetRequiredService<IContextProvider>().Current();
 
-                var userId = context.IdentityContext!.IsAuthenticated
-                    ? context.IdentityContext.Id.ToString("N")
-                    : string.Empty;
+                var userId = context?.IdentityContext?.Id.ToString("N")
+                    ?? string.Empty;
 
                 logger.LogInformation($"Started processing a request " +
-                    $"[Request ID: '{context.RequestContext!.RequestId}', Correlation ID: '{context.CorrelationId}', " +
-                    $"Trace ID: '{context.TraceId}', User ID: '{userId}']...");
+                    $"[Request ID: '{context?.RequestContext?.RequestId}', Correlation ID: '{context?.CorrelationId}', " +
+                    $"Trace ID: '{context?.TraceId}', User ID: '{userId}']...");
 
                 await next();
 
                 logger.LogInformation($"Finished processing a request with status code: {httpContext.Response.StatusCode} " +
-                    $"[Request ID: '{context.RequestContext.RequestId}', Correlation ID: '{context.CorrelationId}', " +
-                    $"Trace ID: '{context.TraceId}', User ID: '{userId}']");
+                    $"[Request ID: '{context?.RequestContext?.RequestId}', Correlation ID: '{context?.CorrelationId}', " +
+                    $"Trace ID: '{context?.TraceId}', User ID: '{userId}']");
             });
 
             return app;

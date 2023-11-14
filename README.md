@@ -76,3 +76,27 @@ From module's directory level
 
 - Update Database
 `dotnet ef database update --startup-project ..\..\..\Bootstrapper\Edux.Bootstrapper\ --context UsersWriteDbContext`
+
+## GraphQL
+All GraphQL requests go through this endpoint - `http://localhost:4000/graphql`
+
+We can play with GraphQL via Playground UI under this endpoint - `http://localhost:4000/ui/playground`
+
+Example of GraphQL query for Users Module:
+`query {
+  userMe {
+    email
+    id
+    role
+    createdAt
+    updatedAt
+    claims
+  }
+}`
+
+Example of GraphQL subscription for Users Module:
+`subscription {
+  returnedUserMe {
+    email
+  }
+}`

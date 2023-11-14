@@ -22,7 +22,7 @@ namespace Edux.Shared.Infrastructure.Contexts
         {
             if (principal?.Identity is null || string.IsNullOrWhiteSpace(principal.Identity.Name))
             {
-                throw new ArgumentException("Princippal Identity cannot be empty while creating IdentityContext via ClaimsPrincipal.");
+                return; // Not every request has Identity
             }
 
             IsAuthenticated = principal.Identity?.IsAuthenticated is true;

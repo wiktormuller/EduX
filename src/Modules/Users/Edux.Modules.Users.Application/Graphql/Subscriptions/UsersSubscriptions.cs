@@ -1,19 +1,19 @@
 ﻿using Edux.Modules.Users.Application.Graphql.Messaging;
+using Edux.Modules.Users.Application.Graphql.Types;
+using Edux.Shared.Abstractions.Api.Graphql;
 using GraphQL.Resolvers;
 using GraphQL.Types;
 
 namespace Edux.Modules.Users.Application.Graphql.Subscriptions
 {
-    public class UsersSubscriptions : ObjectGraphType
+    public class UsersSubscriptions : ObjectGraphType, IGraphQlModuleSubscription
     {
-        public UsersSubscriptions(UsersMessageService usersMessageService)
+        public UsersSubscriptions(IUsersMessageService usersMessageService)
         {
-            Name = "Subsription";
-
             AddField(new FieldType
             {
                 Name = "returnedUserMe", // For 'returnedUserMe' we will return ReturnedUserMeMessage
-                Type = typeof(ReturnedUserMeMessage),
+                Type = typeof(ReturnedUserMeMessageType),
                 StreamResolver = new SourceStreamResolver<ReturnedUserMeMessage>(_ => usersMessageService.GetMessages())
             });
         }

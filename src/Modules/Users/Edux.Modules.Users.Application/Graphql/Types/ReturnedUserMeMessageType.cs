@@ -3,9 +3,9 @@ using GraphQL.Types;
 
 namespace Edux.Modules.Users.Application.Graphql.Types
 {
-    public class ReturnedUserMeType : ObjectGraphType<ReturnedUserMeMessage>
+    public class ReturnedUserMeMessageType : ObjectGraphType<ReturnedUserMeMessage>
     {
-        public ReturnedUserMeType()
+        public ReturnedUserMeMessageType()
         {
             Field(returnedUserMe => returnedUserMe.Id,
                 type: typeof(StringGraphType));

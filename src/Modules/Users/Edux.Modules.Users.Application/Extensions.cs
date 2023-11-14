@@ -1,15 +1,13 @@
 ﻿using Edux.Modules.Users.Application.Contracts.Requests;
+using Edux.Modules.Users.Application.Graphql.Queries;
+using Edux.Modules.Users.Application.Graphql.Subscriptions;
+using Edux.Modules.Users.Application.Graphql.Types;
 using Edux.Modules.Users.Application.Mappers;
+using Edux.Shared.Abstractions.Api.Graphql;
 using FluentValidation;
 using FluentValidation.AspNetCore;
 using Microsoft.Extensions.DependencyInjection;
 using System.Runtime.CompilerServices;
-using GraphQL;
-using Edux.Modules.Users.Application.Graphql.Schemas;
-using Microsoft.AspNetCore.WebSockets;
-using Microsoft.AspNetCore.Http;
-using Edux.Modules.Users.Application.Graphql.Contexts;
-using Edux.Modules.Users.Application.Graphql.Messaging;
 
 [assembly: InternalsVisibleTo("Edux.Modules.Users.Api")]
 [assembly: InternalsVisibleTo("Edux.Architecture.Tests")]
@@ -24,20 +22,11 @@ namespace Edux.Modules.Users.Application
             services.AddValidatorsFromAssemblyContaining<GetUserDetailsRequest>();
             services.AddFluentValidationAutoValidation();
 
-            services
-                .AddGraphQL(config =>
-                {
-                    config.AddSchema<UsersSchema>()
-                        .AddSystemTextJson()
-                        .AddGraphTypes(typeof(UsersSchema).Assembly)
-                        .AddUserContextBuilder(httpContext => new UserContext(httpContext));
-                })
-                .AddWebSockets(config =>
-                {
-                    config.KeepAliveInterval = TimeSpan.FromSeconds(5);
-                });
+            services.AddSingleton<IGraphQlModuleQuery, UsersQueries>();
+            services.AddSingleton<IGraphQlModuleSubscription, UsersSubscriptions>();
 
-            services.AddSingleton<UsersMessageService>();
+            services.AddSingleton<UserMeType>();
+            services.AddSingleton<ReturnedUserMeMessageType>();
 
             return services;
         }

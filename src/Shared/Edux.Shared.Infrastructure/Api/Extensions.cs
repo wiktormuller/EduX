@@ -1,4 +1,5 @@
-﻿using Edux.Shared.Infrastructure.Api.Providers;
+﻿using Edux.Shared.Infrastructure.Api.Graphql;
+using Edux.Shared.Infrastructure.Api.Providers;
 using Edux.Shared.Infrastructure.Api.RateLimiting;
 using Microsoft.AspNetCore.Mvc.ApplicationParts;
 using Microsoft.Extensions.DependencyInjection;

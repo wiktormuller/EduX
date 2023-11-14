@@ -1,8 +1,9 @@
-﻿using Edux.Modules.Users.Application.Graphql.Schemas;
+﻿using Edux.Modules.Users.Application.Graphql.Messaging;
 using Edux.Modules.Users.Core.Repositories;
 using Edux.Modules.Users.Infrastructure.EF;
 using Edux.Modules.Users.Infrastructure.EF.Contexts;
 using Edux.Modules.Users.Infrastructure.EF.Repositories;
+using Edux.Modules.Users.Infrastructure.Graphql.Services;
 using Edux.Modules.Users.Infrastructure.Grpc;
 using Edux.Modules.Users.Infrastructure.Metrics;
 using Edux.Shared.Infrastructure.Messaging;
@@ -31,6 +32,8 @@ namespace Edux.Modules.Users.Infrastructure
 
             services.AddSingleton<CqrsMetricsMiddleware>();
 
+            services.AddSingleton<IUsersMessageService, UsersMessageService>();
+
             return services;
         }
 
@@ -41,16 +44,6 @@ namespace Edux.Modules.Users.Infrastructure
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapGrpcService<UsersService>();
-            });
-
-            app.UseWebSockets();
-            app.UseGraphQL<UsersSchema>(path: "/graphql");
-
-            app.UseGraphQLPlayground("/ui/playground",
-            new GraphQL.Server.Ui.Playground.PlaygroundOptions
-            {
-                GraphQLEndPoint = "/graphql",
-                SubscriptionsEndPoint = "/graphql",
             });
 
             return app;

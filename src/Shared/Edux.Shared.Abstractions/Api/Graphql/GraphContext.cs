@@ -1,13 +1,13 @@
 ﻿using Microsoft.AspNetCore.Http;
 using System.Security.Claims;
 
-namespace Edux.Modules.Users.Application.Graphql.Contexts
+namespace Edux.Shared.Abstractions.Api.Graphql
 {
-    public class UserContext : Dictionary<string, object?>
+    public sealed class GraphContext : Dictionary<string, object?>
     {
         public ClaimsPrincipal User { get; }
 
-        public UserContext(HttpContext context)
+        public GraphContext(HttpContext context)
         {
             User = context.User;
         }

@@ -1,10 +1,11 @@
 ﻿using Edux.Modules.Users.Application.Contracts.Responses;
+using Edux.Modules.Users.Application.Graphql.Messaging;
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
 
-namespace Edux.Modules.Users.Application.Graphql.Messaging
+namespace Edux.Modules.Users.Infrastructure.Graphql.Services
 {
-    public class UsersMessageService
+    public class UsersMessageService : IUsersMessageService
     {
         // In-memory message stream (it's Topic a.k.a Subject)
         private readonly ISubject<ReturnedUserMeMessage> _messageStream = new ReplaySubject<ReturnedUserMeMessage>(1);

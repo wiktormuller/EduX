@@ -39,6 +39,7 @@ TODO List:
   [x] Share gRPC contracts via endpoint
   [x] Use GraphQL
   
+  [ ] Implement MinimalAPI for modules
   [ ] Add integration with standalone quartz and integrate it with users domain
   [ ] Use MongoDB
   [ ] Add health checks
