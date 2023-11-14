@@ -6,10 +6,12 @@ using Edux.Modules.Users.Infrastructure.EF.Repositories;
 using Edux.Modules.Users.Infrastructure.Graphql.Services;
 using Edux.Modules.Users.Infrastructure.Grpc;
 using Edux.Modules.Users.Infrastructure.Metrics;
+using Edux.Shared.Infrastructure;
 using Edux.Shared.Infrastructure.Messaging;
 using Edux.Shared.Infrastructure.Storage.SqlServer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
+using System.Reflection;
 using System.Runtime.CompilerServices;
 
 [assembly: InternalsVisibleTo("Edux.Modules.Users.Api")]
@@ -45,6 +47,9 @@ namespace Edux.Modules.Users.Infrastructure
             {
                 endpoints.MapGrpcService<UsersService>();
             });
+
+            app.ShareProtoFiles("/users-proto",
+                Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "Grpc\\Protos"));
 
             return app;
         }

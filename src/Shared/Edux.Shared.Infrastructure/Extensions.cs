@@ -123,7 +123,6 @@ namespace Edux.Shared.Infrastructure
                 reDoc.DocumentTitle = "Edux API";
             });
             app.UseAuthentication();
-            app.ShareProtoFiles();
             app.UseRouting();
             app.UseAuthorization();
 
@@ -142,7 +141,7 @@ namespace Edux.Shared.Infrastructure
                         Results = endpointDataSource
                             .Endpoints
                             .OfType<RouteEndpoint>()
-                            .Where(e => e.DisplayName?.StartsWith("gRPC") is true)
+                            .Where(e => e.DisplayName?.StartsWith("gRPC - /") is true)
                             .Select(e => new
                             {
                                 Name = e.DisplayName,
@@ -169,18 +168,19 @@ namespace Edux.Shared.Infrastructure
             return app;
         }
 
-        private static IApplicationBuilder ShareProtoFiles(this IApplicationBuilder app)
+        public static IApplicationBuilder ShareProtoFiles(this IApplicationBuilder app, 
+            string requestPath, string protoFilePath)
         {
             var provider = new FileExtensionContentTypeProvider();
             provider.Mappings.Clear();
             provider.Mappings[".proto"] = "text/plain";
 
             return app.UseStaticFiles(new StaticFileOptions
-             {
-                 FileProvider = new PhysicalFileProvider(Path.Combine(((WebApplication)app).Environment.ContentRootPath, "Grpc/Protos")),
-                 RequestPath = "/proto",
-                 ContentTypeProvider = provider
-             });
+            {
+                FileProvider = new PhysicalFileProvider(protoFilePath),
+                RequestPath = requestPath,
+                ContentTypeProvider = provider
+            });
         }
 
         public static IApplicationBuilder UseInitializers(this IApplicationBuilder app)

@@ -37,7 +37,7 @@ POST {{url}}/users-module/users/sign-in
 Content-Type: application/json
 
 {
-    "email": "user1@email.com",
+    "email": "user47@email.com",
     "password": "Password123!"
 }
 
