@@ -13,7 +13,13 @@ GET {{url}}/proto
 GET {{url}}/modules
 
 ### Change Logging Level
-POST {{url}}logging/level?level=information
+POST {{url}}/logging/level?level=information
+
+### Health Checks of Liveness Probes
+GET {{url}}/health-checks/live
+
+### Health Checks of Readiness  Probes
+GET {{url}}/health-checks/ready
 
 ### Sign-Up
 POST {{url}}/users-module/users/sign-up

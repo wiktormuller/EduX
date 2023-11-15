@@ -9,6 +9,7 @@
   <ItemGroup>
     <PackageReference Include="MailKit" Version="4.2.0" />
     <PackageReference Include="MimeKit" Version="4.2.0" />
+	<PackageReference Include="AspNetCore.HealthChecks.SignalR" Version="7.0.0" />
   </ItemGroup>
 
   <ItemGroup>

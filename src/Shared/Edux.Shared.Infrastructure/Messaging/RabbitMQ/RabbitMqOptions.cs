@@ -108,5 +108,11 @@
                 public bool IgnoreQueue { get; set; }
             }
         }
+
+        public string GetConnectionString()
+        {
+            // The pattern is: "amqp://username:password@host:port/vhost"
+            return $"amqp://{Username}:{Password}@{HostNames.First()}:{Port}/{VirtualHost}";
+        }
     }
 }

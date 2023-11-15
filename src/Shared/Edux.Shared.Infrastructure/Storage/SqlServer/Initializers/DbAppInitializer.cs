@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Edux.Shared.Infrastructure.Api.HealthChecks;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
@@ -9,12 +10,15 @@ namespace Edux.Shared.Infrastructure.Storage.SqlServer.Initializers
     {
         private readonly IServiceProvider _serviceProvider;
         private readonly ILogger<DbAppInitializer> _logger;
+        private readonly DbAppInitializerHealthCheck _healthCheck;
 
         public DbAppInitializer(IServiceProvider serviceProvider,
-            ILogger<DbAppInitializer> logger)
+            ILogger<DbAppInitializer> logger,
+            DbAppInitializerHealthCheck healthCheck)
         {
             _serviceProvider = serviceProvider;
             _logger = logger;
+            _healthCheck = healthCheck;
         }
 
         public async Task StartAsync(CancellationToken cancellationToken)
@@ -34,6 +38,8 @@ namespace Edux.Shared.Infrastructure.Storage.SqlServer.Initializers
 
                 await dbContext.Database.MigrateAsync(cancellationToken);
             }
+
+            _healthCheck.StartupCompleted = true;
         }
 
         public Task StopAsync(CancellationToken cancellationToken) => Task.CompletedTask;

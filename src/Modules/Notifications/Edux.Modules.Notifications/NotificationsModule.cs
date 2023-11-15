@@ -1,7 +1,6 @@
 ﻿using Edux.Shared.Abstractions.Modules;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
-using System.Reflection;
 
 namespace Edux.Modules.Notifications
 {
@@ -17,6 +16,9 @@ namespace Edux.Modules.Notifications
         public void Register(IServiceCollection services)
         {
             services.AddCore();
+
+            services.AddHealthChecks()
+                .AddSignalRHub(url: NotificationsModule.BasePath + "/notifications", tags: new[] { "live" });
         }
 
         public void Use(IApplicationBuilder app)

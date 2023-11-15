@@ -4,6 +4,7 @@ using Edux.Modules.Users.Application.Contracts.Responses;
 using Edux.Modules.Users.Application.Queries;
 using Edux.Modules.Users.Core;
 using Edux.Modules.Users.Infrastructure;
+using Edux.Modules.Users.Infrastructure.EF.Contexts;
 using Edux.Shared.Abstractions.Modules;
 using Edux.Shared.Abstractions.Queries;
 using Edux.Shared.Infrastructure.Modules;
@@ -28,6 +29,10 @@ namespace Edux.Modules.Users.Api
             services.AddCore();
             services.AddApplication();
             services.AddInfrastructure();
+
+            services.AddHealthChecks()
+                // It calls EF Core's CanConnectAsync method, we can override it
+                .AddDbContextCheck<UsersWriteDbContext>(name: "users-write-db-context", tags: new[] { "live" });
         }
 
         public void Use(IApplicationBuilder app)

@@ -39,6 +39,10 @@ using Edux.Shared.Infrastructure.Api.Graphql;
 using Microsoft.AspNetCore.WebSockets;
 using Edux.Shared.Abstractions.Api.Graphql;
 using Microsoft.Extensions.Options;
+using Edux.Shared.Infrastructure.Api.HealthChecks;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
+using Edux.Shared.Infrastructure.Storage.Redis;
+using HealthChecks.UI.Client;
 
 [assembly: InternalsVisibleTo("Edux.Bootstrapper")]
 [assembly: InternalsVisibleTo("Edux.Shared.Tests")]
@@ -103,6 +107,13 @@ namespace Edux.Shared.Infrastructure
                     config.KeepAliveInterval = TimeSpan.FromSeconds(5);
                 });
 
+            services.AddSingleton<DbAppInitializerHealthCheck>();
+            services.AddHealthChecks()
+                .AddCheck<SampleHealthCheck>("sample-check", tags: new[] { "live" })
+                .AddCheck<DbAppInitializerHealthCheck>("DbAppInitializer", tags: new[] { "ready" })
+                .AddRabbitMQ(rabbitConnectionString: services.GetOptions<RabbitMqOptions>("rabbitmq").GetConnectionString(), tags: new[] { "live" })
+                .AddRedis(redisConnectionString: services.GetOptions<RedisOptions>("redis").ConnectionString, tags: new[] { "live" });
+
             return services;
         }
 
@@ -163,6 +174,18 @@ namespace Edux.Shared.Infrastructure
             {
                 GraphQLEndPoint = "/graphql",
                 SubscriptionsEndPoint = "/graphql",
+            });
+
+            ((WebApplication)app).MapHealthChecks("/health-checks/live", new HealthCheckOptions
+            {
+                Predicate = healthCheck => healthCheck.Tags.Contains("live"),
+                ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
+            });
+
+            ((WebApplication)app).MapHealthChecks("/health-checks/ready", new HealthCheckOptions
+            {
+                Predicate = healthCheck => healthCheck.Tags.Contains("ready"),
+                ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
             });
 
             return app;

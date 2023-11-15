@@ -64,6 +64,10 @@ RabbitMQ UI - `http://localhost:15672`
 
 MSSQLServer Connection - `http://localhost:1433`
 
+Health Checks of Liveness Probes - `http://localhost:4000/health-checks/live`
+
+Health Checks of Readiness  Probes - `http://localhost:4000/health-checks/ready`
+
 ## Adding New DB Migrations
 From module's directory level
 

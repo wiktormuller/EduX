@@ -38,11 +38,11 @@ TODO List:
   [x] Integrate with GitHub Continuous Integration and apply feature branches
   [x] Share gRPC contracts via endpoint
   [x] Use GraphQL
+  [x] Add health checks
   
   [ ] Implement MinimalAPI for modules
   [ ] Add integration with standalone quartz and integrate it with users domain
   [ ] Use MongoDB
-  [ ] Add health checks
   [ ] WebHooks
   [ ] Auth with BasicAuth
   [ ] Improve OpenAPI documentation + HATEOS
