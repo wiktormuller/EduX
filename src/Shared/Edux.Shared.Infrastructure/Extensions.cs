@@ -43,6 +43,7 @@ using Edux.Shared.Infrastructure.Api.HealthChecks;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Edux.Shared.Infrastructure.Storage.Redis;
 using HealthChecks.UI.Client;
+using Microsoft.AspNetCore.Http.Timeouts;
 
 [assembly: InternalsVisibleTo("Edux.Bootstrapper")]
 [assembly: InternalsVisibleTo("Edux.Shared.Tests")]
@@ -114,6 +115,15 @@ namespace Edux.Shared.Infrastructure
                 .AddRabbitMQ(rabbitConnectionString: services.GetOptions<RabbitMqOptions>("rabbitmq").GetConnectionString(), tags: new[] { "live" })
                 .AddRedis(redisConnectionString: services.GetOptions<RedisOptions>("redis").ConnectionString, tags: new[] { "live" });
 
+            services.AddRequestTimeouts(options =>
+            {
+                options.DefaultPolicy = new RequestTimeoutPolicy
+                {
+                    Timeout = TimeSpan.FromMilliseconds(3000),
+                    TimeoutStatusCode = 503
+                };
+            });
+
             return services;
         }
 
@@ -137,6 +147,7 @@ namespace Edux.Shared.Infrastructure
             app.UseRouting();
             app.UseAuthorization();
 
+            app.UseRequestTimeouts();
             app.UseRateLimiter();
 
             app.UseEndpoints(endpointRouteBuilder =>

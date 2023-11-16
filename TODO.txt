@@ -39,23 +39,24 @@ TODO List:
   [x] Share gRPC contracts via endpoint
   [x] Use GraphQL
   [x] Add health checks
+  [x] .NET8
+  [x] Add TimeoutMiddleware
   
   [ ] Implement MinimalAPI for modules
-  [ ] Add integration with standalone quartz and integrate it with users domain
-  [ ] Use MongoDB with Inbox for Notifications Module
   [ ] Auth with BasicAuth
   [ ] Add badges to repo
+  [ ] Implement Multi-Tenancy
+  [ ] Add ResponseCompression Middleware
+  [ ] Add integration with standalone quartz and integrate it with users domain
+  [ ] Use MongoDB with Inbox for Notifications Module
   [ ] WebHooks
   [ ] Integration with Kafka
   [ ] Use SpecFlow for BDD Testing
   [ ] Improve OpenAPI documentation + HATEOS
   [ ] Clean up appsettings
-  [ ] Add TimeoutMiddleware
-  [ ] Add ResponseCompression Middleware
 
   [ ] Configure Continuous Delivery with Azure DevOps
   [ ] CI/CD with Docker
-  [ ] Implement Multi-Tenancy
   [ ] Handle uploading images
   [ ] Implement Auditing of user accounts
   [ ] Add unit and integration tests with testcontainers (also for refresh tokens)
