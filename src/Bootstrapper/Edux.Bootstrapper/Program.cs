@@ -3,7 +3,6 @@ using Edux.Shared.Infrastructure;
 using Edux.Shared.Infrastructure.Modules;
 using Edux.Shared.Infrastructure.Secrets;
 using Edux.Shared.Infrastructure.Observability.Logging;
-
 var builder = WebApplication.CreateBuilder(args);
 
 // Configure IoC container.
@@ -23,8 +22,6 @@ builder.Host.InstallLogging();
 builder.InstallVault();
 
 var app = builder.Build();
-
-// Configure the HTTP request pipeline.
 
 // Logging
 app.UseCorrelationContextLogging();

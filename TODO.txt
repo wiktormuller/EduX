@@ -42,14 +42,16 @@ TODO List:
   
   [ ] Implement MinimalAPI for modules
   [ ] Add integration with standalone quartz and integrate it with users domain
-  [ ] Use MongoDB
-  [ ] WebHooks
+  [ ] Use MongoDB with Inbox for Notifications Module
   [ ] Auth with BasicAuth
-  [ ] Improve OpenAPI documentation + HATEOS
-  [ ] Integration with Kafka
   [ ] Add badges to repo
+  [ ] WebHooks
+  [ ] Integration with Kafka
   [ ] Use SpecFlow for BDD Testing
+  [ ] Improve OpenAPI documentation + HATEOS
   [ ] Clean up appsettings
+  [ ] Add TimeoutMiddleware
+  [ ] Add ResponseCompression Middleware
 
   [ ] Configure Continuous Delivery with Azure DevOps
   [ ] CI/CD with Docker
