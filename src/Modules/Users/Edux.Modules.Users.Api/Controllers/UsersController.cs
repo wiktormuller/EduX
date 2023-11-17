@@ -46,7 +46,7 @@ namespace Edux.Modules.Users.Api.Controllers
             return Ok(user);
         }
 
-        [Authorize(Policy = "is-admin")]
+        [Authorize(Policy = "api-key")]
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]

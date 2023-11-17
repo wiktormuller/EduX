@@ -43,7 +43,6 @@ TODO List:
   [x] Add TimeoutMiddleware
   
   [ ] Implement MinimalAPI for modules
-  [ ] Auth with BasicAuth
   [ ] Add badges to repo
   [ ] Implement Multi-Tenancy
   [ ] Add ResponseCompression Middleware

@@ -3,6 +3,7 @@ using Edux.Shared.Abstractions.Modules;
 using Edux.Shared.Infrastructure.Auth.Options;
 using Edux.Shared.Infrastructure.Auth.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Authorization.Policy;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
@@ -19,6 +20,9 @@ namespace Edux.Shared.Infrastructure.Auth
             services.AddSingleton<IJwtProvider, JwtProvider>();
             services.AddSingleton<ITokenStorage, HttpContextTokenStorage>();
             services.AddSingleton<IPasswordHasher<PasswordService>, PasswordHasher<PasswordService>>();
+
+            services.AddTransient<IApiKeyValidator, ApiKeyValidator>();
+            services.AddScoped<IAuthorizationHandler, ApiKeyAuthorizationHandler>();
 
             var options = services.GetOptions<AuthOptions>("auth");
             services.AddSingleton(options);
@@ -64,6 +68,12 @@ namespace Edux.Shared.Infrastructure.Auth
                 }
 
                 authOptions.AddPolicy("is-admin", x => x.RequireRole("admin"));
+
+                authOptions.AddPolicy("api-key", policy =>
+                {
+                    policy.AddAuthenticationSchemes(new[] { JwtBearerDefaults.AuthenticationScheme });
+                    policy.Requirements.Add(new ApiKeyRequirement());
+                });
             });
 
             return services;

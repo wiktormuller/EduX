@@ -31,5 +31,6 @@
         public string AuthenticationType { get; set; } = string.Empty;
         public string NameClaimType { get; set; } = string.Empty;
         public string RoleClaimType { get; set; } = string.Empty;
+        public string ApiKey { get; set; } = string.Empty;
     }
 }
