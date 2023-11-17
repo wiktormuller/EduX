@@ -26,8 +26,8 @@ POST {{url}}/users-module/users/sign-up
 Content-Type: application/json
 
 {
-  "email": "user47@email.com",
-  "username": "user47",
+  "email": "user48@email.com",
+  "username": "user48",
   "password": "Password123!",
   "role": "user",
   "claims": {
@@ -77,6 +77,8 @@ GET {{url}}/users-module/users
 Content-Type: application/json
 Authorization: Bearer {{accessToken}}
 #X-API-Key: 6CBxzdYcEgNDrRhMbDpkBF7e4d4Kib46dwL9ZE5egiL0iL5Y3dzREUBSUYVUwUkN
+#Accept-Encoding: gzip
+#Accept-Encoding: br
 
 ### Notifications
 GET {{url}}/notifications-module

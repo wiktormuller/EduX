@@ -41,11 +41,12 @@ TODO List:
   [x] Add health checks
   [x] .NET8
   [x] Add TimeoutMiddleware
+  [x] Add api-key authentication
+  [x] Add ResponseCompression Middleware
   
   [ ] Implement MinimalAPI for modules
   [ ] Add badges to repo
   [ ] Implement Multi-Tenancy
-  [ ] Add ResponseCompression Middleware
   [ ] Add integration with standalone quartz and integrate it with users domain
   [ ] Use MongoDB with Inbox for Notifications Module
   [ ] WebHooks

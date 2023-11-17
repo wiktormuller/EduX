@@ -46,7 +46,7 @@ namespace Edux.Modules.Users.Api.Controllers
             return Ok(user);
         }
 
-        [Authorize(Policy = "api-key")]
+        [Authorize(Policy = "is-admin")]
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
@@ -54,8 +54,8 @@ namespace Edux.Modules.Users.Api.Controllers
         public async Task<ActionResult<IEnumerable<UserResponse>>> GetAll(/*GetUsersRequest request, */CancellationToken cancellationToken) // TODO: Add Filtering
         {
             var query = new GetUsers();
-            await _queryDispatcher.QueryAsync(query, cancellationToken);
-            return Ok();
+            var response = await _queryDispatcher.QueryAsync(query, cancellationToken);
+            return Ok(response);
         }
 
         [HttpPost("sign-up")]

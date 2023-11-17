@@ -43,6 +43,8 @@ using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Edux.Shared.Infrastructure.Storage.Redis;
 using HealthChecks.UI.Client;
 using Microsoft.AspNetCore.Http.Timeouts;
+using Microsoft.AspNetCore.ResponseCompression;
+using System.IO.Compression;
 
 [assembly: InternalsVisibleTo("Edux.Bootstrapper")]
 [assembly: InternalsVisibleTo("Edux.Shared.Tests")]
@@ -123,11 +125,29 @@ namespace Edux.Shared.Infrastructure
                 };
             });
 
+            services.AddResponseCompression(options =>
+            {
+                options.EnableForHttps = true;
+                options.Providers.Add<BrotliCompressionProvider>();
+                options.Providers.Add<GzipCompressionProvider>();
+            });
+
+            services.Configure<BrotliCompressionProviderOptions>(options =>
+            {
+                options.Level = CompressionLevel.Fastest;
+            });
+
+            services.Configure<GzipCompressionProviderOptions>(options =>
+            {
+                options.Level = CompressionLevel.SmallestSize;
+            });
+
             return services;
         }
 
         public static IApplicationBuilder UseInfrastructure(this IApplicationBuilder app)
         {
+            app.UseResponseCompression();
             app.UseContext();
             app.UseInitializers();
             app.UseHttpsRedirection();
