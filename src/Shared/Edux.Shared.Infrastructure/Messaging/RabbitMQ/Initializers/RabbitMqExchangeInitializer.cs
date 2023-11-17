@@ -23,6 +23,10 @@ namespace Edux.Shared.Infrastructure.Messaging.RabbitMQ.Initializers
         {
             var exchanges = AppDomain.CurrentDomain
                 .GetAssemblies()
+                .Where(assembly =>
+                    !string.Equals(assembly.FullName,
+                        "Microsoft.Data.SqlClient, Version=5.0.0.0, Culture=neutral, PublicKeyToken=23ec7fc2d6eaa4a5",
+                        StringComparison.OrdinalIgnoreCase)) // https://github.com/dotnet/SqlClient/issues/1930
                 .SelectMany(a => a.GetTypes())
                 .Where(t => t.IsDefined(typeof(MessageAttribute), false))
                 .Select(t => t.GetCustomAttribute<MessageAttribute>()!.Exchange)

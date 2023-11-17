@@ -38,7 +38,6 @@ using GraphQL;
 using Edux.Shared.Infrastructure.Api.Graphql;
 using Microsoft.AspNetCore.WebSockets;
 using Edux.Shared.Abstractions.Api.Graphql;
-using Microsoft.Extensions.Options;
 using Edux.Shared.Infrastructure.Api.HealthChecks;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Edux.Shared.Infrastructure.Storage.Redis;

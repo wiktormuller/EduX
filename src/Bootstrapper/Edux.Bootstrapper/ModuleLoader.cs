@@ -56,7 +56,7 @@ namespace Edux.Bootstrapper
         public static IList<IModule> LoadModules(IEnumerable<Assembly> assemblies)
         {
             return assemblies
-                .SelectMany(assembly => assembly.GetTypes())
+                .SelectMany(assembly => assembly.GetTypes().Where(t => !t.FullName.Equals("")))
                 .Where(type => typeof(IModule).IsAssignableFrom(type) && !type.IsInterface)
                 .OrderBy(type => type.Name)
                 .Select(Activator.CreateInstance)

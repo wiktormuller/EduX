@@ -2,28 +2,29 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 
 namespace Edux.Shared.Infrastructure.Storage.SqlServer.Initializers
 {
     internal class DbAppInitializer : IHostedService
     {
         private readonly IServiceProvider _serviceProvider;
-        private readonly ILogger<DbAppInitializer> _logger;
         private readonly DbAppInitializerHealthCheck _healthCheck;
 
         public DbAppInitializer(IServiceProvider serviceProvider,
-            ILogger<DbAppInitializer> logger,
             DbAppInitializerHealthCheck healthCheck)
         {
             _serviceProvider = serviceProvider;
-            _logger = logger;
             _healthCheck = healthCheck;
         }
 
         public async Task StartAsync(CancellationToken cancellationToken)
         {
-            var dbContextTypes = AppDomain.CurrentDomain.GetAssemblies()
+            var dbContextTypes = AppDomain.CurrentDomain
+                .GetAssemblies()
+                .Where(assembly =>
+                    !string.Equals(assembly.FullName,
+                        "Microsoft.Data.SqlClient, Version=5.0.0.0, Culture=neutral, PublicKeyToken=23ec7fc2d6eaa4a5",
+                        StringComparison.OrdinalIgnoreCase)) // https://github.com/dotnet/SqlClient/issues/1930
                 .SelectMany(a => a.GetTypes())
                 .Where(t => typeof(DbContext).IsAssignableFrom(t) && !t.IsInterface && t != typeof(DbContext));
 

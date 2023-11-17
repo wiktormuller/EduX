@@ -74,7 +74,9 @@ Authorization: Bearer {{accessToken}}
 
 ### Get Users
 GET {{url}}/users-module/users
+Content-Type: application/json
 Authorization: Bearer {{accessToken}}
+#X-API-Key: 6CBxzdYcEgNDrRhMbDpkBF7e4d4Kib46dwL9ZE5egiL0iL5Y3dzREUBSUYVUwUkN
 
 ### Notifications
 GET {{url}}/notifications-module
