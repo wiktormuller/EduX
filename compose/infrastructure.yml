@@ -4,6 +4,7 @@ services:
   sql-server-db:
     container_name: sql-server-db
     image: mcr.microsoft.com/mssql/server
+    restart: unless-stopped
     user: root
     ports:
       - "1433:1433"
@@ -14,6 +15,17 @@ services:
       ACCEPT_EULA: "Y"
     volumes:
       - sqlserver:/var/opt/mssql/data
+
+  mongo:
+    container_name: mongo-db
+    image: mongo
+    restart: unless-stopped
+    networks:
+      - eduxnetwork
+    ports:
+      - 27017:27017
+    volumes:
+      - mongo:/data/db
 
   rabbitmq:
     build: ./rabbitmq
@@ -124,4 +136,6 @@ volumes:
   prometheus:
     driver: local
   grafana:
+    driver: local
+  mongo:
     driver: local
