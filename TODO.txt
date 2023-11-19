@@ -43,12 +43,14 @@ TODO List:
   [x] Add TimeoutMiddleware
   [x] Add api-key authentication
   [x] Add ResponseCompression Middleware
+  [x] Add MongoDB
+  [ ] Implement Outbox with MongoDB
+  [ ] Implement Inbox with MongoDB and use it in notifications module
   
   [ ] Implement MinimalAPI for modules
   [ ] Add badges to repo
   [ ] Implement Multi-Tenancy
   [ ] Add integration with standalone quartz and integrate it with users domain
-  [ ] Use MongoDB with Inbox for Notifications Module
   [ ] WebHooks
   [ ] Integration with Kafka
   [ ] Use SpecFlow for BDD Testing

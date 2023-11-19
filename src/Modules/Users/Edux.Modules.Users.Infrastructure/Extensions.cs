@@ -29,8 +29,8 @@ namespace Edux.Modules.Users.Infrastructure
 
             services.AddUnitOfWork<UsersUnitOfWork>();
 
-            services.AddOutbox<UsersWriteDbContext>();
-            services.AddInbox<UsersWriteDbContext>();
+            services.AddEfOutbox<UsersWriteDbContext>();
+            services.AddEfInbox<UsersWriteDbContext>();
 
             services.AddSingleton<CqrsMetricsMiddleware>();
 

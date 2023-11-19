@@ -1,6 +1,8 @@
-﻿namespace Edux.Shared.Abstractions.Messaging.Inbox
+﻿using Edux.Shared.Abstractions.SharedKernel.Types;
+
+namespace Edux.Shared.Abstractions.Messaging.Inbox
 {
-    public class InboxMessage
+    public class InboxMessage : IIdentifiable<string>
     {
         public string Id { get; set; } = string.Empty;
         public string Name { get; set; } = string.Empty;

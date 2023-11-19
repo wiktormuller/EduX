@@ -1,6 +1,7 @@
 ﻿using Edux.Shared.Abstraction.Messaging;
 using Edux.Shared.Abstractions.Messaging.Publishers;
 using Edux.Shared.Abstractions.Messaging.Subscribers;
+using Edux.Shared.Infrastructure.Initializers;
 using Edux.Shared.Infrastructure.Messaging.RabbitMQ.Connections;
 using Edux.Shared.Infrastructure.Messaging.RabbitMQ.Conventions;
 using Edux.Shared.Infrastructure.Messaging.RabbitMQ.Initializers;
@@ -83,18 +84,9 @@ namespace Edux.Shared.Infrastructure.Messaging.RabbitMQ
             services.AddSingleton(new ConsumerConnection(consumerConnection));
             services.AddSingleton(new ProducerConnection(producerConnection));
 
-            AddInitializerToRegistry<RabbitMqExchangeInitializer>(services);
+            services.AddInitializerToRegistry<RabbitMqExchangeInitializer>();
 
             return services;
-        }
-
-        private static void AddInitializerToRegistry<TInitializer>(IServiceCollection services) where TInitializer : IInitializer
-        {
-            using var serviceProvider = services.BuildServiceProvider();
-
-            var startupInitializer = serviceProvider.GetRequiredService<IStartupInitializer>();
-            var initializer = serviceProvider.GetRequiredService<TInitializer>();
-            startupInitializer.AddInitializer(initializer);
         }
 
         private static void ConfigureSsl(ConnectionFactory connectionFactory, RabbitMqOptions options)

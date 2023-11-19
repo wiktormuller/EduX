@@ -51,8 +51,4 @@
     <ProjectReference Include="..\Edux.Shared.Abstractions\Edux.Shared.Abstractions.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Messaging\Outbox\Mongo\" />
-  </ItemGroup>
-
 </Project>

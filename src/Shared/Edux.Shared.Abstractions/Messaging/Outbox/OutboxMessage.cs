@@ -1,6 +1,8 @@
-﻿namespace Edux.Shared.Abstractions.Messaging.Outbox
+﻿using Edux.Shared.Abstractions.SharedKernel.Types;
+
+namespace Edux.Shared.Abstractions.Messaging.Outbox
 {
-    public class OutboxMessage // TODO: Extend this object with data that message can contain, like correlationId, spanContext, headers etc.
+    public class OutboxMessage : IIdentifiable<string>
     {
         public string Id { get; set; } = string.Empty;
         public string Name { get; set; } = string.Empty;

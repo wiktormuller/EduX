@@ -1,6 +1,5 @@
 ﻿using Edux.Shared.Infrastructure.Storage.Mongo.Options;
 using Microsoft.Extensions.DependencyInjection;
-using Edux.Shared.Infrastructure;
 using MongoDB.Driver;
 using MongoDB.Bson.Serialization.Conventions;
 using MongoDB.Bson.Serialization.Serializers;
@@ -34,10 +33,10 @@ namespace Edux.Shared.Infrastructure.Storage.Mongo
             return services;
         }
 
-        public static IServiceCollection AddMongoRepository<TEntity, TIdentifiable>(this IServiceCollection services, string collectionName)
-            where TEntity : IIdentifiable<TIdentifiable>
+        public static IServiceCollection AddMongoRepository<TEntity, TIdentifiable>(this IServiceCollection services, 
+            string collectionName) where TEntity : IIdentifiable<TIdentifiable>
         {
-            services.AddTransient<IMongoRepository<TEntity, TIdentifiable>>(sp =>
+            services.AddScoped<IMongoRepository<TEntity, TIdentifiable>>(sp =>
             {
                 var database = sp.GetRequiredService<IMongoDatabase>();
                 return new MongoRepository<TEntity, TIdentifiable>(database, collectionName);

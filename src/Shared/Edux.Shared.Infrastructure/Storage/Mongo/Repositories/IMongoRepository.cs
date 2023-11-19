@@ -8,7 +8,7 @@ namespace Edux.Shared.Infrastructure.Storage.Mongo.Repositories
     public interface IMongoRepository<TEntity, in TIdentifiable> 
         where TEntity : IIdentifiable<TIdentifiable>
     {
-        IMongoCollection<TEntity> Collection { get; }
+        IMongoCollection<TEntity> DbSet { get; }
         Task<TEntity> GetAsync(TIdentifiable id);
         Task<TEntity> GetAsync(Expression<Func<TEntity, bool>> predicate);
         Task<IReadOnlyList<TEntity>> FindAsync(Expression<Func<TEntity, bool>> predicate);

@@ -24,7 +24,6 @@ using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using Edux.Shared.Infrastructure.Messaging.RabbitMQ;
-using Edux.Shared.Infrastructure.Messaging.RabbitMQ.Initializers;
 using Edux.Shared.Infrastructure.Observability.Logging;
 using Edux.Shared.Infrastructure.Storage.SqlServer;
 using Edux.Shared.Infrastructure.Storage.SqlServer.Initializers;
@@ -45,6 +44,7 @@ using HealthChecks.UI.Client;
 using Microsoft.AspNetCore.Http.Timeouts;
 using Microsoft.AspNetCore.ResponseCompression;
 using System.IO.Compression;
+using Edux.Shared.Infrastructure.Initializers;
 
 [assembly: InternalsVisibleTo("Edux.Bootstrapper")]
 [assembly: InternalsVisibleTo("Edux.Shared.Tests")]
@@ -76,8 +76,8 @@ namespace Edux.Shared.Infrastructure
             services.AddTransactionalDecorators();
             services.AddCommandHandlersLoggingDecorators();
 
-            services.AddOutbox();
-            services.AddInbox();
+            services.AddOutboxCore();
+            services.AddInboxCore();
             services.AddMsSqlServer();
 
             services.AddRedis();

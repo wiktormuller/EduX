@@ -16,8 +16,6 @@ namespace Edux.Shared.Infrastructure.Storage.SqlServer
 
             services.AddScoped<ISqlConnectionFactory, SqlConnectionFactory>();
 
-            services.AddSingleton(new UnitOfWorkTypeRegistry());
-
             return services;
         }
 
@@ -27,18 +25,6 @@ namespace Edux.Shared.Infrastructure.Storage.SqlServer
             var options = services.GetOptions<SqlServerOptions>("sqlserver");
             services.AddDbContext<T>(dbContextOptionsBuilder =>
                 dbContextOptionsBuilder.UseSqlServer(options.ConnectionString));
-
-            return services;
-        }
-
-        public static IServiceCollection AddUnitOfWork<T>(this IServiceCollection services)
-            where T : class, IUnitOfWork
-        {
-            services.AddScoped<IUnitOfWork, T>();
-            services.AddScoped<T>();
-
-            using var serviceProvider = services.BuildServiceProvider();
-            serviceProvider.GetRequiredService<UnitOfWorkTypeRegistry>().Register<T>();
 
             return services;
         }

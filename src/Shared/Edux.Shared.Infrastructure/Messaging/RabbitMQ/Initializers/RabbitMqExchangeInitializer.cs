@@ -1,4 +1,5 @@
 ﻿using Edux.Shared.Abstractions.Messaging;
+using Edux.Shared.Infrastructure.Initializers;
 using Edux.Shared.Infrastructure.Messaging.RabbitMQ;
 using Edux.Shared.Infrastructure.Messaging.RabbitMQ.Connections;
 using Microsoft.Extensions.Logging;

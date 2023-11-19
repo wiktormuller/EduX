@@ -1,4 +1,6 @@
-﻿using Edux.Shared.Infrastructure.Storage.Redis;
+﻿using Edux.Shared.Abstractions.Transactions;
+using Edux.Shared.Infrastructure.Storage.Redis;
+using Edux.Shared.Infrastructure.Transactions.Registries;
 using Microsoft.Extensions.DependencyInjection;
 using StackExchange.Redis;
 
@@ -23,6 +25,18 @@ namespace Edux.Shared.Infrastructure.Storage
                     opt.Configuration = options.ConnectionString;
                     opt.InstanceName = options.Instance;
                 });
+
+            return services;
+        }
+
+        public static IServiceCollection AddUnitOfWork<T>(this IServiceCollection services)
+            where T : class, IUnitOfWork
+        {
+            services.AddScoped<IUnitOfWork, T>();
+            services.AddScoped<T>();
+
+            using var serviceProvider = services.BuildServiceProvider();
+            serviceProvider.GetRequiredService<UnitOfWorkTypeRegistry>().Register<T>();
 
             return services;
         }

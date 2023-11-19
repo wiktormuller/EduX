@@ -8,22 +8,22 @@ namespace Edux.Shared.Infrastructure.Storage.Mongo.Repositories
     internal class MongoRepository<TEntity, TIdentifiable> : IMongoRepository<TEntity, TIdentifiable>
         where TEntity : IIdentifiable<TIdentifiable>
     {
+        public IMongoCollection<TEntity> DbSet { get; } // a.k.a Collection
+
         public MongoRepository(IMongoDatabase database, string collectionName)
         {
-            Collection = database.GetCollection<TEntity>(collectionName);
+            DbSet = database.GetCollection<TEntity>(collectionName);
         }
-
-        public IMongoCollection<TEntity> Collection { get; }
 
         public Task AddAsync(TEntity entity)
         {
-            return Collection.InsertOneAsync(entity);
+            return DbSet.InsertOneAsync(entity);
         }
 
         public Task<PagedResult<TEntity>> BrowseAsync<TQuery>(System.Linq.Expressions.Expression<Func<TEntity, bool>> predicate, TQuery query) 
             where TQuery : IPagedQuery
         {
-            return Collection
+            return DbSet
                 .AsQueryable()
                 .Where(predicate)
                 .PaginateAsync(query);
@@ -36,19 +36,19 @@ namespace Edux.Shared.Infrastructure.Storage.Mongo.Repositories
 
         public Task DeleteAsync(System.Linq.Expressions.Expression<Func<TEntity, bool>> predicate)
         {
-            return Collection.DeleteOneAsync(predicate);
+            return DbSet.DeleteOneAsync(predicate);
         }
 
         public Task<bool> ExistsAsync(System.Linq.Expressions.Expression<Func<TEntity, bool>> predicate)
         {
-            return Collection
+            return DbSet
                 .Find(predicate)
                 .AnyAsync();
         }
 
         public async Task<IReadOnlyList<TEntity>> FindAsync(System.Linq.Expressions.Expression<Func<TEntity, bool>> predicate)
         {
-            return await Collection
+            return await DbSet
                 .Find(predicate)
                 .ToListAsync();
         }
@@ -60,7 +60,7 @@ namespace Edux.Shared.Infrastructure.Storage.Mongo.Repositories
 
         public Task<TEntity> GetAsync(System.Linq.Expressions.Expression<Func<TEntity, bool>> predicate)
         {
-            return Collection
+            return DbSet
                 .Find(predicate)
                 .SingleOrDefaultAsync();
         }
@@ -72,7 +72,7 @@ namespace Edux.Shared.Infrastructure.Storage.Mongo.Repositories
 
         public Task UpdateAsync(TEntity entity, System.Linq.Expressions.Expression<Func<TEntity, bool>> predicate)
         {
-            return Collection.ReplaceOneAsync(predicate, entity);
+            return DbSet.ReplaceOneAsync(predicate, entity);
         }
     }
 }

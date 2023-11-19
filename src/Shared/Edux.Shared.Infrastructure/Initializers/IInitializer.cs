@@ -1,4 +1,4 @@
-﻿namespace Edux.Shared.Infrastructure.Messaging.RabbitMQ.Initializers
+﻿namespace Edux.Shared.Infrastructure.Initializers
 {
     internal interface IInitializer
     {
