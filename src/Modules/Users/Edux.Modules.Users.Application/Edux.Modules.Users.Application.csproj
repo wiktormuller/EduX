@@ -7,6 +7,16 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Grpc\Protos\Users.proto" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Grpc\Protos\Users.proto">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\Edux.Modules.Users.Core\Edux.Modules.Users.Core.csproj" />
 	<PackageReference Include="Google.Protobuf" Version="3.25.1" />
 	<PackageReference Include="GraphQL" Version="7.6.1" />
@@ -25,12 +35,6 @@
     <PackageReference Include="FluentValidation" Version="11.8.0" />
     <PackageReference Include="FluentValidation.AspNetCore" Version="11.3.0" />
     <PackageReference Include="System.Reactive" Version="6.0.1-preview.1" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Update="Grpc\Protos\Users.proto">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
   </ItemGroup>
 
 </Project>

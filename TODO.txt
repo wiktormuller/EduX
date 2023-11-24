@@ -44,11 +44,11 @@ TODO List:
   [x] Add api-key authentication
   [x] Add ResponseCompression Middleware
   [x] Add MongoDB
-  [ ] Implement Outbox with MongoDB
-  [ ] Implement Inbox with MongoDB and use it in notifications module
+  [x] Implement Outbox with MongoDB
+  [x] Implement Inbox with MongoDB
+  [x] Add badges to repo
   
   [ ] Implement MinimalAPI for modules
-  [ ] Add badges to repo
   [ ] Implement Multi-Tenancy
   [ ] Add integration with standalone quartz and integrate it with users domain
   [ ] WebHooks
@@ -56,6 +56,7 @@ TODO List:
   [ ] Use SpecFlow for BDD Testing
   [ ] Improve OpenAPI documentation + HATEOS
   [ ] Clean up appsettings
+  [ ] Use inbox in notifications module
 
   [ ] Configure Continuous Delivery with Azure DevOps
   [ ] CI/CD with Docker
