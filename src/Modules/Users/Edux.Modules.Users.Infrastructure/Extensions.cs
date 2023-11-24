@@ -50,7 +50,7 @@ namespace Edux.Modules.Users.Infrastructure
             });
 
             app.ShareProtoFiles("/users-proto",
-                Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "Grpc\\Protos"));
+                Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "Grpc/Protos"));
 
             return app;
         }
