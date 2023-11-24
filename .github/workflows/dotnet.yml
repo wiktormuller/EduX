@@ -11,7 +11,6 @@ on:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
 
     steps:
@@ -24,8 +23,8 @@ jobs:
       run: dotnet restore
     - name: Build
       run: dotnet build --no-restore
-    #- name: Test
-    #  run: dotnet test --verbosity normal --filter FullyQualifiedName!~Edux.Modules.Users.Tests.Performance
+    - name: Test
+      run: dotnet test --verbosity normal --filter FullyQualifiedName!~Edux.Modules.Users.Tests.Performance
     - name: Publish
       run: dotnet publish src/Bootstrapper/Edux.Bootstrapper/Edux.Bootstrapper.csproj -c Release -o backend-app
     - name: Upload a Build Artifact
