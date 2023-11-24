@@ -7,6 +7,7 @@ using MongoDB.Bson.Serialization;
 using MongoDB.Bson;
 using Edux.Shared.Infrastructure.Storage.Mongo.Repositories;
 using Edux.Shared.Abstractions.SharedKernel.Types;
+using Edux.Shared.Infrastructure.Storage.Mongo.Context;
 
 namespace Edux.Shared.Infrastructure.Storage.Mongo
 {
@@ -28,6 +29,8 @@ namespace Edux.Shared.Infrastructure.Storage.Mongo
                 return client.GetDatabase(options.Database);
             });
 
+            services.AddScoped<IOperationsContext, OperationsContext>();
+
             RegisterConventions();
 
             return services;
@@ -39,7 +42,9 @@ namespace Edux.Shared.Infrastructure.Storage.Mongo
             services.AddScoped<IMongoRepository<TEntity, TIdentifiable>>(sp =>
             {
                 var database = sp.GetRequiredService<IMongoDatabase>();
-                return new MongoRepository<TEntity, TIdentifiable>(database, collectionName);
+                var client = sp.GetRequiredService<IMongoClient>();
+                var operationsContext = sp.GetRequiredService<IOperationsContext>();
+                return new MongoRepository<TEntity, TIdentifiable>(database, collectionName, operationsContext, client);
             });
 
             return services;

@@ -1,5 +1,6 @@
 ﻿using Edux.Shared.Abstractions.SharedKernel.Types;
 using Edux.Shared.Abstractions.Transactions;
+using Edux.Shared.Infrastructure.Storage.Mongo.Context;
 using MongoDB.Driver;
 
 namespace Edux.Shared.Infrastructure.Storage.Mongo.UoW
@@ -7,10 +8,13 @@ namespace Edux.Shared.Infrastructure.Storage.Mongo.UoW
     public abstract class MongoDbUnitOfWork<T> : IUnitOfWork where T : IIdentifiable<T>
     {
         private readonly IMongoClient _mongoClient;
+        private readonly IOperationsContext _operationsContext;
 
-        public MongoDbUnitOfWork(IMongoClient mongoClient)
+        public MongoDbUnitOfWork(IMongoClient mongoClient,
+            IOperationsContext operationsContext)
         {
             _mongoClient = mongoClient;
+            _operationsContext = operationsContext;
         }
 
         public async Task ExecuteAsync(Func<Task> action, CancellationToken cancellationToken = default)
@@ -20,8 +24,8 @@ namespace Edux.Shared.Infrastructure.Storage.Mongo.UoW
 
             try
             {
-                var commandTasks = _commands.Select(command => command());
-                await Task.WhenAll(commandTasks);
+                var operationsTasks = _operationsContext.Operations.Select(operation => operation());
+                await Task.WhenAll(operationsTasks);
 
                 await session.CommitTransactionAsync(cancellationToken: cancellationToken);
             }

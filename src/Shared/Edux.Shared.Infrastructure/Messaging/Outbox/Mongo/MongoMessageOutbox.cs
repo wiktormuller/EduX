@@ -42,7 +42,9 @@ namespace Edux.Shared.Infrastructure.Messaging.Outbox.Mongo
 
         public async Task CleanupAsync(DateTime? to = null)
         {
-            var module = _repository.GetType().GetGenericArguments()[0].GetModuleName();
+            var module = _repository.GetType()
+                .GetGenericArguments()[0]
+                .GetModuleName();
 
             var dateTo = to ?? _clock.CurrentDate();
             var sentMessages = await _repository
@@ -58,16 +60,18 @@ namespace Edux.Shared.Infrastructure.Messaging.Outbox.Mongo
 
             foreach (var sentMessage in sentMessages)
             {
-                await _repository.DeleteAsync(sentMessage.Id);
+                _repository.Delete(sentMessage.Id);
             }
-            await _dbContext.SaveChangesAsync();
+            await _repository.SaveChangesAsync();
 
             _logger.LogTrace($"Found {sentMessages.Count} sent messages in outbox ('{module}') till: {dateTo}, cleaning up...");
         }
 
         public async Task PublishUnsentAsync()
         {
-            var module = _dbContext.GetModuleName();
+            var module = _repository.GetType()
+                .GetGenericArguments()[0]
+                .GetModuleName();
 
             var unsentMessages = await _repository
                 .FindAsync(message => message.SentAt == null);
@@ -90,12 +94,17 @@ namespace Edux.Shared.Infrastructure.Messaging.Outbox.Mongo
                 await _busPublisher.PublishAsync(outboxMessage, outboxMessage.Id, messageContext);
 
                 outboxMessage.SentAt = _clock.CurrentDate();
-                await _repository.UpdateAsync(outboxMessage);
+                _repository.Update(outboxMessage);
 
                 if (_outboxOptions.Type == OutboxType.Sequential.ToString().ToLowerInvariant())
                 {
-                    await _dbContext.SaveChangesAsync();
+                    await _repository.SaveChangesAsync();
                 }
+            }
+
+            if (_outboxOptions.Type == OutboxType.Parallel.ToString().ToLowerInvariant())
+            {
+                await _repository.SaveChangesAsync();
             }
         }
 
@@ -116,7 +125,8 @@ namespace Edux.Shared.Infrastructure.Messaging.Outbox.Mongo
                 CreatedAt = _clock.CurrentDate()
             };
 
-            await _repository.AddAsync(outboxMessage);
+            _repository.Add(outboxMessage);
+            await _repository.SaveChangesAsync();
         }
     }
 }

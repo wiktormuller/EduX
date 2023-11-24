@@ -2,6 +2,7 @@
 using Edux.Shared.Abstractions.Events;
 using Edux.Shared.Abstractions.Messaging;
 using Edux.Shared.Abstractions.Messaging.Outbox;
+using Edux.Shared.Abstractions.SharedKernel.Types;
 using Edux.Shared.Infrastructure.Initializers;
 using Edux.Shared.Infrastructure.Messaging.Brokers;
 using Edux.Shared.Infrastructure.Messaging.Inbox;
@@ -71,7 +72,7 @@ namespace Edux.Shared.Infrastructure.Messaging
             return services;
         }
 
-        public static IServiceCollection AddMongoOutbox(this IServiceCollection services)
+        public static IServiceCollection AddMongoOutbox<T>(this IServiceCollection services) where T : IIdentifiable<T>
         {
             var outboxOptions = services.GetOptions<OutboxOptions>("outbox");
 
@@ -80,8 +81,8 @@ namespace Edux.Shared.Infrastructure.Messaging
                 return services;
             }
 
-            services.AddTransient<IMessageOutbox, MongoMessageOutbox>();
-            services.AddTransient<MongoMessageOutbox>();
+            services.AddTransient<IMessageOutbox, MongoMessageOutbox<T>>();
+            services.AddTransient<MongoMessageOutbox<T>>();
 
             services.AddMongoRepository<OutboxMessage, string>("outbox");
             
@@ -90,7 +91,7 @@ namespace Edux.Shared.Infrastructure.Messaging
 
             using var serviceProvider = services.BuildServiceProvider();
             serviceProvider.GetRequiredService<OutboxTypeRegistry>()
-                .Register<MongoMessageOutbox>();
+                .Register<MongoMessageOutbox<T>>();
 
             BsonClassMap.RegisterClassMap<OutboxMessage>(message =>
             {

@@ -8,6 +8,7 @@ using Edux.Modules.Users.Infrastructure.Grpc;
 using Edux.Modules.Users.Infrastructure.Metrics;
 using Edux.Shared.Infrastructure;
 using Edux.Shared.Infrastructure.Messaging;
+using Edux.Shared.Infrastructure.Storage;
 using Edux.Shared.Infrastructure.Storage.SqlServer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;

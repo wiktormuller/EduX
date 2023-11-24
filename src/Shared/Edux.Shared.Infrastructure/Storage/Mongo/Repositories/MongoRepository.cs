@@ -1,5 +1,6 @@
 ﻿using Edux.Shared.Abstractions.Queries;
 using Edux.Shared.Abstractions.SharedKernel.Types;
+using Edux.Shared.Infrastructure.Storage.Mongo.Context;
 using MongoDB.Driver;
 using MongoDB.Driver.Linq;
 
@@ -8,47 +9,40 @@ namespace Edux.Shared.Infrastructure.Storage.Mongo.Repositories
     internal class MongoRepository<TEntity, TIdentifiable> : IMongoRepository<TEntity, TIdentifiable>
         where TEntity : IIdentifiable<TIdentifiable>
     {
-        public IMongoCollection<TEntity> DbSet { get; } // a.k.a Collection
+        private readonly IMongoCollection<TEntity> _dbSet; // a.k.a Collection
+        private readonly IOperationsContext _operationsContext;
+        private readonly IMongoClient _mongoClient;
 
-        public MongoRepository(IMongoDatabase database, string collectionName)
+        public MongoRepository(IMongoDatabase database,
+            string collectionName,
+            IOperationsContext operationsContext,
+            IMongoClient mongoClient)
         {
-            DbSet = database.GetCollection<TEntity>(collectionName);
+            _dbSet = database.GetCollection<TEntity>(collectionName);
+            _operationsContext = operationsContext;
+            _mongoClient = mongoClient;
         }
 
-        public Task AddAsync(TEntity entity)
+        public Task<PagedResult<TEntity>> BrowseAsync<TQuery>(System.Linq.Expressions.Expression<Func<TEntity, bool>> predicate, 
+            TQuery query) 
+                where TQuery : IPagedQuery
         {
-            return DbSet.InsertOneAsync(entity);
-        }
-
-        public Task<PagedResult<TEntity>> BrowseAsync<TQuery>(System.Linq.Expressions.Expression<Func<TEntity, bool>> predicate, TQuery query) 
-            where TQuery : IPagedQuery
-        {
-            return DbSet
+            return _dbSet
                 .AsQueryable()
                 .Where(predicate)
                 .PaginateAsync(query);
         }
 
-        public Task DeleteAsync(TIdentifiable id)
-        {
-            return DeleteAsync(entity => entity.Id.Equals(id));
-        }
-
-        public Task DeleteAsync(System.Linq.Expressions.Expression<Func<TEntity, bool>> predicate)
-        {
-            return DbSet.DeleteOneAsync(predicate);
-        }
-
         public Task<bool> ExistsAsync(System.Linq.Expressions.Expression<Func<TEntity, bool>> predicate)
         {
-            return DbSet
+            return _dbSet
                 .Find(predicate)
                 .AnyAsync();
         }
 
         public async Task<IReadOnlyList<TEntity>> FindAsync(System.Linq.Expressions.Expression<Func<TEntity, bool>> predicate)
         {
-            return await DbSet
+            return await _dbSet
                 .Find(predicate)
                 .ToListAsync();
         }
@@ -60,19 +54,59 @@ namespace Edux.Shared.Infrastructure.Storage.Mongo.Repositories
 
         public Task<TEntity> GetAsync(System.Linq.Expressions.Expression<Func<TEntity, bool>> predicate)
         {
-            return DbSet
+            return _dbSet
                 .Find(predicate)
                 .SingleOrDefaultAsync();
         }
 
-        public Task UpdateAsync(TEntity entity)
+        public void Add(TEntity entity)
         {
-            return UpdateAsync(entity, e => e.Id.Equals(entity.Id));
+            Func<Task> operation = () => _dbSet.InsertOneAsync(entity);
+
+            _operationsContext.AddOperation(operation);
         }
 
-        public Task UpdateAsync(TEntity entity, System.Linq.Expressions.Expression<Func<TEntity, bool>> predicate)
+        public void Delete(TIdentifiable id)
         {
-            return DbSet.ReplaceOneAsync(predicate, entity);
+            Delete(entity => entity.Id.Equals(id));
+        }
+
+        public void Delete(System.Linq.Expressions.Expression<Func<TEntity, bool>> predicate)
+        {
+            var operation = () => _dbSet.DeleteOneAsync(predicate);
+
+            _operationsContext.AddOperation(operation);
+        }
+
+        public void Update(TEntity entity)
+        {
+            Update(entity, e => e.Id.Equals(entity.Id));
+        }
+
+        public void Update(TEntity entity, System.Linq.Expressions.Expression<Func<TEntity, bool>> predicate)
+        {
+            Func<Task> operation = () => _dbSet.ReplaceOneAsync(predicate, entity);
+
+            _operationsContext.AddOperation(operation);
+        }
+
+        public async Task SaveChangesAsync()
+        {
+            using var session = await _mongoClient.StartSessionAsync();
+            session.StartTransaction();
+
+            try
+            {
+                var operationsTasks = _operationsContext.Operations.Select(operation => operation());
+                await Task.WhenAll(operationsTasks);
+
+                await session.CommitTransactionAsync();
+            }
+            catch
+            {
+                await session.AbortTransactionAsync();
+                throw;
+            }
         }
     }
 }
