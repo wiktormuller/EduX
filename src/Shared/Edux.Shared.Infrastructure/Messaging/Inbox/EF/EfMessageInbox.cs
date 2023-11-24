@@ -46,7 +46,6 @@ namespace Edux.Shared.Infrastructure.Messaging.Inbox.EF
             inboxMessage.Process(_clock.CurrentDate());
 
             await _inboxMessages.AddAsync(inboxMessage);
-            await _dbContext.SaveChangesAsync(cancellationToken); // TODO: Should it be removed?
 
             _logger.LogInformation($"Processed a message with ID: '{messageId}'.");
         }
