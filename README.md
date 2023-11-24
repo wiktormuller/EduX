@@ -1,5 +1,10 @@
 # EduX
 
+![GitHub Workflow Status (with event)](https://img.shields.io/github/actions/workflow/status/wiktormuller/Edux/dotnet.yml)
+![GitHub top language](https://img.shields.io/github/languages/top/wiktormuller/Edux)
+![GitHub commit activity (branch)](https://img.shields.io/github/commit-activity/m/wiktormuller/Edux)
+![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/wiktormuller/Edux)
+
 ![.Net](https://img.shields.io/badge/.NET-5C2D91?style=for-the-badge&logo=.net&logoColor=white)
 ![C#](https://img.shields.io/badge/c%23-%23239120.svg?style=for-the-badge&logo=c-sharp&logoColor=white)
 ![Azure](https://img.shields.io/badge/azure-%230072C6.svg?style=for-the-badge&logo=microsoftazure&logoColor=white)
