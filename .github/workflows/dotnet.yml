@@ -22,9 +22,9 @@ jobs:
     - name: Restore dependencies
       run: dotnet restore
     - name: Build
-      run: dotnet build --configuration Release --no-restore
+      run: dotnet build --configuration Release
     - name: Test
-      run: dotnet test --verbosity normal --no-build --filter FullyQualifiedName!~Edux.Modules.Users.Tests.Performance
+      run: dotnet test --filter FullyQualifiedName!~Edux.Modules.Users.Tests.Performance
     - name: Publish
       run: dotnet publish src/Bootstrapper/Edux.Bootstrapper/Edux.Bootstrapper.csproj -c Release -o backend-app
     - name: Upload a Build Artifact
