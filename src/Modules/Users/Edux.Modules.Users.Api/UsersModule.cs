@@ -1,4 +1,5 @@
-﻿using Edux.Modules.Users.Application;
+﻿using Edux.Modules.Users.Api.Endpoints;
+using Edux.Modules.Users.Application;
 using Edux.Modules.Users.Application.Contracts.Requests;
 using Edux.Modules.Users.Application.Contracts.Responses;
 using Edux.Modules.Users.Application.Queries;
@@ -37,6 +38,8 @@ namespace Edux.Modules.Users.Api
 
         public void Use(IApplicationBuilder app)
         {
+            app.UseEndpoints(builder => builder.AddUsersEndpoints());
+
             app.UseInfrastructure();
 
             app.UseModuleRequests() // We register here another entry point, similarly like event handlers or controllers

@@ -35,6 +35,7 @@ namespace Edux.Shared.Infrastructure.Api
                 });
 
             services
+                .AddEndpointsApiExplorer() // For Minimal API endpoints
                 .AddSwaggerGen(swaggerGenOptions =>
                 {
                     swaggerGenOptions.CustomSchemaIds(x => x.FullName); // It's required, because there may be the same types in two different modules

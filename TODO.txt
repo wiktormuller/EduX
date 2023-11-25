@@ -47,8 +47,8 @@ TODO List:
   [x] Implement Outbox with MongoDB
   [x] Implement Inbox with MongoDB
   [x] Add badges to repo
+  [x] Implement MinimalAPI for modules
   
-  [ ] Implement MinimalAPI for modules
   [ ] Implement Multi-Tenancy
   [ ] Add integration with standalone quartz and integrate it with users domain
   [ ] WebHooks

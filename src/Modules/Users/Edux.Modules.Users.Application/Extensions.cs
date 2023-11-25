@@ -19,8 +19,7 @@ namespace Edux.Modules.Users.Application
         {
             services.AddSingleton<IEventMapper, EventMapper>();
 
-            services.AddValidatorsFromAssemblyContaining<GetUserDetailsRequest>();
-            services.AddFluentValidationAutoValidation();
+            services.AddValidatorsFromAssemblyContaining<GetUserDetailsRequest>(ServiceLifetime.Singleton);
 
             services.AddSingleton<IGraphQlModuleQuery, UsersQueries>();
             services.AddSingleton<IGraphQlModuleSubscription, UsersSubscriptions>();
