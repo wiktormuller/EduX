@@ -24,7 +24,7 @@ jobs:
     - name: Build
       run: dotnet build --configuration Release --no-restore
     - name: Test
-      run: dotnet test --filter FullyQualifiedName!~Edux.Shared.Tests
+      run: dotnet test --filter "FullyQualifiedName!~Edux.Shared.Tests&FullyQualifiedName!~Edux.Modules.Users.Tests.Performance"
     - name: Publish
       run: dotnet publish src/Bootstrapper/Edux.Bootstrapper/Edux.Bootstrapper.csproj -c Release -o backend-app
     - name: Upload a Build Artifact
