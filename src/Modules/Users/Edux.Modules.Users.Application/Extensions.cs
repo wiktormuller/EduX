@@ -5,7 +5,6 @@ using Edux.Modules.Users.Application.Graphql.Types;
 using Edux.Modules.Users.Application.Mappers;
 using Edux.Shared.Abstractions.Api.Graphql;
 using FluentValidation;
-using FluentValidation.AspNetCore;
 using Microsoft.Extensions.DependencyInjection;
 using System.Runtime.CompilerServices;
 
