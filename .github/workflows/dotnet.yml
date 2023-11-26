@@ -24,7 +24,11 @@ jobs:
     - name: Build
       run: dotnet build --configuration Release --no-restore
     - name: Test
-      run: dotnet test --filter "FullyQualifiedName!~Edux.Shared.Tests&FullyQualifiedName!~Edux.Modules.Users.Tests.Performance"
+      run: dotnet test --filter "FullyQualifiedName!~Edux.Shared.Tests&FullyQualifiedName!~Edux.Modules.Users.Tests.Performance" --collect "XPlat Code Coverage"
+    - name: Upload coverage reports to Codecov
+      uses: codecov/codecov-action@v3
+      env:
+        CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
     - name: Publish
       run: dotnet publish src/Bootstrapper/Edux.Bootstrapper/Edux.Bootstrapper.csproj -c Release -o backend-app
     - name: Upload a Build Artifact
