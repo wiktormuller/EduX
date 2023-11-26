@@ -72,7 +72,7 @@ namespace Edux.Shared.Infrastructure.Messaging
             return services;
         }
 
-        public static IServiceCollection AddMongoOutbox<T>(this IServiceCollection services) where T : IIdentifiable<T>
+        public static IServiceCollection AddMongoOutbox<T>(this IServiceCollection services) where T : class
         {
             var outboxOptions = services.GetOptions<OutboxOptions>("outbox");
 

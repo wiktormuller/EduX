@@ -11,7 +11,7 @@ using Edux.Shared.Infrastructure.Storage.Mongo.Context;
 
 namespace Edux.Shared.Infrastructure.Storage.Mongo
 {
-    internal static class Extensions
+    public static class Extensions
     {
         public static IServiceCollection AddMongo(this IServiceCollection services)
         {

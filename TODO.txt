@@ -48,22 +48,21 @@ TODO List:
   [x] Implement Inbox with MongoDB
   [x] Add badges to repo
   [x] Implement MinimalAPI for modules
-  
+  [x] Use test coverage metrics (app.codecov.io)
+  [x] Use inbox in notifications module
+
   [ ] Implement Multi-Tenancy
   [ ] Add integration with standalone quartz and integrate it with users domain
   [ ] WebHooks
   [ ] Integration with Kafka
   [ ] Use SpecFlow for BDD Testing
-  [ ] Improve OpenAPI documentation + HATEOS
   [ ] Clean up appsettings
-  [ ] Use inbox in notifications module
 
   [ ] Configure Continuous Delivery with Azure DevOps
   [ ] CI/CD with Docker
   [ ] Handle uploading images
   [ ] Implement Auditing of user accounts
   [ ] Add unit and integration tests with testcontainers (also for refresh tokens)
-  [ ] Use test coverage metrics
   [ ] Async Web API testing with TaskCompletionSource
   [ ] Use Bogus for generating fake data in tests
   [ ] Implement missing actions for users module

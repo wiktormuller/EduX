@@ -6,6 +6,10 @@ using Edux.Shared.Infrastructure;
 using Edux.Shared.Infrastructure.Messaging.RabbitMQ;
 using Edux.Modules.Notifications.Messages.Events;
 using Edux.Modules.Notifications.Hubs;
+using Edux.Shared.Infrastructure.Storage.Mongo;
+using Edux.Shared.Infrastructure.Messaging;
+using Edux.Shared.Infrastructure.Storage;
+using Edux.Modules.Notifications.UoW;
 
 namespace Edux.Modules.Notifications
 {
@@ -20,6 +24,14 @@ namespace Edux.Modules.Notifications
 
             services.AddTransient<IHubService, HubService>();
             services.AddTransient<IHubWrapper, HubWrapper>();
+
+            services.AddMongo();
+
+            services.AddUnitOfWork<NotificationsUnitOfWork>();
+
+            services.AddMongoOutbox<NotificationsModule>();
+            services.AddMongoInbox();
+
 
             return services;
         }

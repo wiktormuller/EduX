@@ -13,7 +13,7 @@ using Microsoft.Extensions.Logging;
 
 namespace Edux.Shared.Infrastructure.Messaging.Outbox.Mongo
 {
-    internal sealed class MongoMessageOutbox<T> : IMessageOutbox where T : IIdentifiable<T>
+    internal sealed class MongoMessageOutbox<T> : IMessageOutbox where T : class
     {
         private readonly IJsonSerializer _jsonSerializer;
         private readonly IClock _clock;
@@ -42,9 +42,7 @@ namespace Edux.Shared.Infrastructure.Messaging.Outbox.Mongo
 
         public async Task CleanupAsync(DateTime? to = null)
         {
-            var module = _repository.GetType()
-                .GetGenericArguments()[0]
-                .GetModuleName();
+            var module = typeof(T).GetModuleName();
 
             var dateTo = to ?? _clock.CurrentDate();
             var sentMessages = await _repository
@@ -69,9 +67,7 @@ namespace Edux.Shared.Infrastructure.Messaging.Outbox.Mongo
 
         public async Task PublishUnsentAsync()
         {
-            var module = _repository.GetType()
-                .GetGenericArguments()[0]
-                .GetModuleName();
+            var module = typeof(T).GetModuleName();
 
             var unsentMessages = await _repository
                 .FindAsync(message => message.SentAt == null);

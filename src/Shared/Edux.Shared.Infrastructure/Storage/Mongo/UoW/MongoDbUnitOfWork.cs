@@ -1,11 +1,10 @@
-﻿using Edux.Shared.Abstractions.SharedKernel.Types;
-using Edux.Shared.Abstractions.Transactions;
+﻿using Edux.Shared.Abstractions.Transactions;
 using Edux.Shared.Infrastructure.Storage.Mongo.Context;
 using MongoDB.Driver;
 
 namespace Edux.Shared.Infrastructure.Storage.Mongo.UoW
 {
-    public abstract class MongoDbUnitOfWork<T> : IUnitOfWork where T : IIdentifiable<T>
+    public abstract class MongoDbUnitOfWork : IUnitOfWork
     {
         private readonly IMongoClient _mongoClient;
         private readonly IOperationsContext _operationsContext;
