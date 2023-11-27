@@ -50,38 +50,39 @@ TODO List:
   [x] Implement MinimalAPI for modules
   [x] Use test coverage metrics (app.codecov.io)
   [x] Use inbox in notifications module
+  [x] Testcontainers (with Redis and Mongo)
 
-  [ ] Implement Multi-Tenancy
-  [ ] Add integration with standalone quartz and integrate it with users domain
-  [ ] WebHooks
-  [ ] Integration with Kafka
+  [ ] Use Bogus for generating fake data in tests
+  [ ] Async Web API testing with TaskCompletionSource
   [ ] Use SpecFlow for BDD Testing
   [ ] Clean up appsettings
 
-  [ ] Configure Continuous Delivery with Azure DevOps
-  [ ] CI/CD with Docker
-  [ ] Handle uploading images
-  [ ] Implement Auditing of user accounts
-  [ ] Add unit and integration tests with testcontainers (also for refresh tokens)
-  [ ] Async Web API testing with TaskCompletionSource
-  [ ] Use Bogus for generating fake data in tests
-  [ ] Implement missing actions for users module
+  [ ] Implement Multi-Tenancy
+  [ ] Standalone Quartz (as outbox processor?)
+  [ ] WebHooks
+  [ ] Integration with Kafka
+  [ ] Auditing for aggregate
+  [ ] Implement ES with CQRS and two different databases
+  [ ] HTTP PATCH
+  [ ] Login via Google (OAuth 2.0)
 
-  [ ] Integrate with SonarQube
-  [ ] Add test environment for QAs
-  
+  [ ] Scale-out monolith
+  [ ] Scale-out database
+  [ ] Handle more sophisticated auth permissions in database instead of in the JWT
+
+  [ ] Azure DevOps for CD
+  [ ] CI/CD with Docker
+  [ ] Add test environment
+
+  [ ] Handle uploading images
+  [ ] Add unit/integration/e2e/performance tests
   [ ] Extend Message Broker to handle some type of Envelope
   [ ] Extend Message Broker to handle many messages
+
+  [ ] SonarQube
+  [ ] Miro with Architecture Diagrams
   
-  [ ] Implement UI for users module with React
+  [ ] React UI for Users
   [ ] Forward all requests via Gateway and hide modules
-  [ ] Implement distributed tracing with Jaeger
   [ ] Use Azure BlobStorage to store users profile images
   
-  [ ] Scale-out monolith properly
-  [ ] Scale-out database properly
-  [ ] Implement ES with CQRS and two different databases
-  [ ] JSON Patch
-  [ ] Login via Google (OAuth 2.0)
-  [ ] Handle more sophisticated auth permissions in database instead of in the JWT
-  [ ] Miro with Architecture Diagrams

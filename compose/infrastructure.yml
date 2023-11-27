@@ -3,7 +3,7 @@ version: '3.8'
 services:
   sql-server-db:
     container_name: sql-server-db
-    image: mcr.microsoft.com/mssql/server
+    image: 2022-preview-ubuntu-22.04
     restart: unless-stopped
     user: root
     ports:
@@ -17,7 +17,7 @@ services:
       - sqlserver:/var/opt/mssql/data
 
   mongo:
-    container_name: mongo-db
+    container_name: mongo-db:windowsservercore-ltsc2022
     image: mongo
     restart: unless-stopped
     networks:
@@ -70,7 +70,7 @@ services:
       - IPC_LOCK
 
   redis:
-    image: redis
+    image: redis:7.2.3
     container_name: redis
     restart: unless-stopped
     networks:
@@ -92,7 +92,7 @@ services:
       - prometheus:/prometheus
 
   grafana:
-    image: grafana/grafana
+    image: grafana/grafana:10.2.2
     container_name: grafana
     restart: unless-stopped
     networks:
