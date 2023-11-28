@@ -23,7 +23,7 @@ namespace Edux.Modules.Users.Core.Entities
                 throw new EmptyRefreshTokenException();
             }
 
-            if (token.Length < 5 && token.Length > 256)
+            if (token.Length < 5 || token.Length > 256)
             {
                 throw new InvalidRefreshTokenException();
             }

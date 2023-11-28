@@ -1,5 +1,4 @@
 ﻿using Edux.Modules.Users.Core.Exceptions;
-using System.Text.RegularExpressions;
 using System.Net.Mail;
 
 namespace Edux.Modules.Users.Core.ValueObjects
