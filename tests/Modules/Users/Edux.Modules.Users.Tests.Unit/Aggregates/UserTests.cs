@@ -3,22 +3,22 @@ using Edux.Modules.Users.Core.Events;
 using Edux.Modules.Users.Core.ValueObjects;
 using Shouldly;
 
-namespace Edux.Modules.Users.Tests.Unit
+namespace Edux.Modules.Users.Tests.Unit.Aggregates
 {
-    public class UserAggregateTests
+    public class UserTests
     {
         [Fact]
         public void change_role_when_passing_correct_data_should_change_role_and_emit_event()
         {
             // Arrange
             var now = DateTime.UtcNow;
-            var user = new User(Guid.NewGuid(), 
-                new Email("user1@email.com"), 
-                new Username("user1"), 
-                new Password("Password123!"), 
-                new Role("user"), 
-                true, 
-                now, 
+            var user = new User(Guid.NewGuid(),
+                new Email("user1@email.com"),
+                new Username("user1"),
+                new Password("Password123!"),
+                new Role("user"),
+                true,
+                now,
                 now);
 
             var occurredAt = now.AddMinutes(1);

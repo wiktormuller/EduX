@@ -1,12 +1,11 @@
 ﻿using Bogus;
-using Bogus.DataSets;
 using Edux.Modules.Users.Core.Exceptions;
 using Edux.Modules.Users.Core.ValueObjects;
 using Shouldly;
 
-namespace Edux.Modules.Users.Tests.Unit
+namespace Edux.Modules.Users.Tests.Unit.ValueObjects
 {
-    public class EmailValueObjectTests
+    public class EmailTests
     {
         [Fact]
         public void constructor_when_passing_correct_data_then_should_create_username()

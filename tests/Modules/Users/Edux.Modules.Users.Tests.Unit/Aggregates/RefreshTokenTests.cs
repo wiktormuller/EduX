@@ -3,9 +3,9 @@ using Edux.Modules.Users.Core.Entities;
 using Edux.Modules.Users.Core.Exceptions;
 using Shouldly;
 
-namespace Edux.Modules.Users.Tests.Unit
+namespace Edux.Modules.Users.Tests.Unit.Aggregates
 {
-    public class RefreshTokenAggregateTests
+    public class RefreshTokenTests
     {
         [Fact]
         public void revoke_when_passing_correct_data_should_should_be_revoked()

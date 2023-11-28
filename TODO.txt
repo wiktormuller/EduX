@@ -75,7 +75,7 @@ TODO List:
   [ ] Add test environment
 
   [ ] Handle uploading images
-  [ ] Add unit/integration/e2e/performance tests -> Use Bogus and TaskCompletionSource for async testing
+  [ ] Add integration/e2e/performance tests -> TaskCompletionSource for async testing
   [ ] Extend Message Broker to handle some type of Envelope
   [ ] Extend Message Broker to handle many messages
 

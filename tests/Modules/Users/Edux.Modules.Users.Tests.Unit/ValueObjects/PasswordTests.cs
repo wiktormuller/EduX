@@ -3,9 +3,9 @@ using Edux.Modules.Users.Core.Exceptions;
 using Edux.Modules.Users.Core.ValueObjects;
 using Shouldly;
 
-namespace Edux.Modules.Users.Tests.Unit
+namespace Edux.Modules.Users.Tests.Unit.ValueObjects
 {
-    public class PasswordValueObjectTests
+    public class PasswordTests
     {
         [Fact]
         public void constructor_when_passing_correct_data_should_create_username()
