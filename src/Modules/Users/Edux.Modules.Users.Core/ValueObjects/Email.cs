@@ -14,7 +14,7 @@ namespace Edux.Modules.Users.Core.ValueObjects
                 throw new InvalidEmailException(value);
             }
 
-            if (value.Length > 100)
+            if (value.Length is > 100 or < 3)
             {
                 throw new InvalidEmailException(value);
             }
