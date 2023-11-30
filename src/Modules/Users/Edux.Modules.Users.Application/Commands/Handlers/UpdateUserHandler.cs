@@ -30,6 +30,8 @@ namespace Edux.Modules.Users.Application.Commands.Handlers
 
             user.ChangeClaims(command.Claims, now);
 
+            // TOOD: Map Domain events to Integration ones
+
             _userRepository.Update(user);
         }
     }
