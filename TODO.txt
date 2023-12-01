@@ -52,8 +52,7 @@ TODO List:
   [x] Use inbox in notifications module
   [x] Testcontainers (with Redis and Mongo)
   [x] Use Bogus for generating fake data in tests
-  
-  [ ] Async Web API testing with TaskCompletionSource
+
   [ ] Use SpecFlow for BDD Testing
   [ ] Clean up appsettings
 
@@ -79,7 +78,6 @@ TODO List:
   [ ] Extend Message Broker to handle some type of Envelope
   [ ] Extend Message Broker to handle many messages
 
-  [ ] SonarQube
   [ ] Miro with Architecture Diagrams
   
   [ ] React UI for Users

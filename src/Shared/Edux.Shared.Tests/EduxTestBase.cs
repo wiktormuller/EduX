@@ -30,7 +30,10 @@ namespace Edux.Shared.Tests
                 .CreateClient();
         }
 
-        protected Task<T?> GetAsync<T>(string endpoint)
+        protected Task<HttpResponseMessage> GetAsync(string endpoint)
+            => Client.GetAsync(endpoint);
+
+        protected Task<T?> GetJsonAsync<T>(string endpoint)
             => Client.GetFromJsonAsync<T>(endpoint);
 
         protected Task<HttpResponseMessage> PostAsync<T>(string endpoint, T payload)
