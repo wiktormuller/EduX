@@ -51,8 +51,8 @@ TODO List:
   [x] Use test coverage metrics (app.codecov.io)
   [x] Use inbox in notifications module
   [x] Testcontainers (with Redis and Mongo)
-
-  [ ] Use Bogus for generating fake data in tests
+  [x] Use Bogus for generating fake data in tests
+  
   [ ] Async Web API testing with TaskCompletionSource
   [ ] Use SpecFlow for BDD Testing
   [ ] Clean up appsettings
@@ -75,7 +75,7 @@ TODO List:
   [ ] Add test environment
 
   [ ] Handle uploading images
-  [ ] Add integration/e2e/performance tests -> TaskCompletionSource for async testing
+  [ ] Add e2e/performance tests -> TaskCompletionSource for async testing
   [ ] Extend Message Broker to handle some type of Envelope
   [ ] Extend Message Broker to handle many messages
 
